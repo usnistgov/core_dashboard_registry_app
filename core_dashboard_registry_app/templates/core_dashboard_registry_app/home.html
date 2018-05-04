@@ -1,0 +1,55 @@
+{% load staticfiles %}
+
+{% block title %}
+<h1><span>Dashboard Home</span></h1>
+{% endblock %}
+
+{% block content%}
+<div id="body">
+	<div class="width">
+		<section id="content" class="one-column">
+			<article>
+				<div class="article-info"></div>
+
+				<div class="row col-sm-12">
+				  <div class="col-sm-3">
+					  <a href="{% url 'core_dashboard_profile' %}">
+							<i class="fa fa-user fa-5x" aria-hidden="true" style="color: #EBB057;"></i>
+						<br>
+						My Profile
+						</a>
+				  </div>
+					<div class="col-sm-3">
+						<a href="{% url 'core_dashboard_records' %}">
+							<i class="fa fa-globe fa-5x" aria-hidden="true" style="color: #557EB9"></i>
+						<br>
+						My Resources
+						</a>
+					</div>
+					{% if data.draft %}
+				  <div class="col-sm-3">
+					  <a href="{% url 'core_dashboard_forms' %}">
+							<i class="fa fa-copy fa-5x" aria-hidden="true" style="color: #FF5E00;"></i>
+						<br>
+						My Drafts
+						</a>
+				  </div>
+					{% endif %}
+				  <div class="col-sm-3">
+					  <a href="{% url 'core_dashboard_workspaces' %}">
+							<i class="fa fa-list-ul fa-5x" aria-hidden="true" style="color: #FF5E00;"></i>
+						<br>
+						My Workspaces
+						</a>
+				  </div>
+				</div>
+
+				<div class="clearer">&nbsp;</div>
+				<br/><br/>
+			</article>
+		</section>
+    	<div class="clear"></div>
+    </div>
+</div>
+
+{% endblock %}

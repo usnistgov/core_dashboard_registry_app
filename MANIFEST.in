@@ -1,0 +1,4 @@
+include README.rst
+include requirements.core.txt
+recursive-include core_dashboard_registry_app/static *
+recursive-include core_dashboard_registry_app/templates *
