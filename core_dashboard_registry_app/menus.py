@@ -3,6 +3,8 @@
 """
 from django.core.urlresolvers import reverse
 from menu import Menu, MenuItem
+
+from core_dashboard_registry_app.constants import FUNCTIONAL_OBJECT_ENUM
 from core_dashboard_registry_app.settings import DASHBOARD_MENU, INSTALLED_APPS
 
 for item in DASHBOARD_MENU:
@@ -15,12 +17,12 @@ Menu.add_item(
 )
 
 sharing_children = (
-    MenuItem("All Records", reverse("admin:core_dashboard_records"), icon="list"),
-    MenuItem("All Workspaces", reverse("admin:core_dashboard_workspaces"), icon="list"),
+    MenuItem('All {0}s'.format(FUNCTIONAL_OBJECT_ENUM.RESOURCE.title()), reverse("admin:core_dashboard_records"), icon="list"),
+    MenuItem('All {0}s'.format(FUNCTIONAL_OBJECT_ENUM.WORKSPACE.title()), reverse("admin:core_dashboard_workspaces"), icon="list"),
 )
 
 if 'core_curate_app' in INSTALLED_APPS:
-    sharing_children += (MenuItem("All Forms", reverse("admin:core_dashboard_forms"), icon="list"),)
+    sharing_children += (MenuItem('All {0}s'.format(FUNCTIONAL_OBJECT_ENUM.DRAFT.title()), reverse("admin:core_dashboard_forms"), icon="list"),)
 
 Menu.add_item(
     "admin", MenuItem("DASHBOARD", None, children=sharing_children)

@@ -8,6 +8,7 @@ from core_dashboard_registry_app.views.common import views as registry_common_vi
 from core_dashboard_common_app.views.common import ajax, views as common_views
 from core_dashboard_common_app.views.common.views import UserDashboardPasswordChangeFormView
 from core_dashboard_common_app.views.user import views as user_views
+from core_dashboard_registry_app import constants as dashboard_registry_constants
 
 urlpatterns = [
 
@@ -24,8 +25,12 @@ urlpatterns = [
     url(r'^edit-record', ajax.edit_record, name='core_dashboard_edit_record'),
 
     # User
-    url(r'^records$', login_required(common_views.DashboardRecords.as_view()), name='core_dashboard_records'),
-    url(r'^forms$', login_required(common_views.DashboardForms.as_view()), name='core_dashboard_forms'),
+    url(r'^records$', login_required(common_views.DashboardRecords.as_view(
+        document=dashboard_registry_constants.FUNCTIONAL_OBJECT_ENUM.RESOURCE
+    )), name='core_dashboard_records'),
+    url(r'^forms$', login_required(common_views.DashboardForms.as_view(
+        document=dashboard_registry_constants.FUNCTIONAL_OBJECT_ENUM.DRAFT
+    )), name='core_dashboard_forms'),
     url(r'^workspaces$', user_views.dashboard_workspaces, name='core_dashboard_workspaces'),
     url(r'^workspace-list-records/(?P<workspace_id>\w+)$', user_views.dashboard_workspace_records,
         name='core_dashboard_workspace_list_data'),
