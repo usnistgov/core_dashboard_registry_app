@@ -29,5 +29,5 @@ Menu.add_item(
 )
 
 Menu.add_item(
-    "main", MenuItem("Dashboard", reverse("core_dashboard_home"))
+    "main", MenuItem("Dashboard", reverse("core_dashboard_home"), check=lambda request: request.user.is_authenticated())
 )

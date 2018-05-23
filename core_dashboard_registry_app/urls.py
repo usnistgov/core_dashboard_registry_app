@@ -3,12 +3,13 @@
 """
 from django.conf.urls import url
 from django.contrib.auth.decorators import login_required
+from django.core.urlresolvers import reverse_lazy
 
-from core_dashboard_registry_app.views.common import views as registry_common_views
 from core_dashboard_common_app.views.common import ajax, views as common_views
 from core_dashboard_common_app.views.common.views import UserDashboardPasswordChangeFormView
 from core_dashboard_common_app.views.user import views as user_views
 from core_dashboard_registry_app import constants as dashboard_registry_constants
+from core_dashboard_registry_app.views.common import views as registry_common_views
 
 urlpatterns = [
 
@@ -27,10 +28,10 @@ urlpatterns = [
     # User
     url(r'^records$', login_required(common_views.DashboardRecords.as_view(
         document=dashboard_registry_constants.FUNCTIONAL_OBJECT_ENUM.RESOURCE
-    )), name='core_dashboard_records'),
+    ), login_url=reverse_lazy("core_main_app_login")), name='core_dashboard_records'),
     url(r'^forms$', login_required(common_views.DashboardForms.as_view(
         document=dashboard_registry_constants.FUNCTIONAL_OBJECT_ENUM.DRAFT
-    )), name='core_dashboard_forms'),
+    ), login_url=reverse_lazy("core_main_app_login")), name='core_dashboard_forms'),
     url(r'^workspaces$', user_views.dashboard_workspaces, name='core_dashboard_workspaces'),
     url(r'^workspace-list-records/(?P<workspace_id>\w+)$', user_views.dashboard_workspace_records,
         name='core_dashboard_workspace_list_data'),
