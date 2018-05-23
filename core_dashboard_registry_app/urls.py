@@ -27,7 +27,8 @@ urlpatterns = [
 
     # User
     url(r'^records$', login_required(common_views.DashboardRecords.as_view(
-        document=dashboard_registry_constants.FUNCTIONAL_OBJECT_ENUM.RESOURCE
+        document=dashboard_registry_constants.FUNCTIONAL_OBJECT_ENUM.RESOURCE,
+        allow_change_workspace_if_public=False,
     ), login_url=reverse_lazy("core_main_app_login")), name='core_dashboard_records'),
     url(r'^forms$', login_required(common_views.DashboardForms.as_view(
         document=dashboard_registry_constants.FUNCTIONAL_OBJECT_ENUM.DRAFT
