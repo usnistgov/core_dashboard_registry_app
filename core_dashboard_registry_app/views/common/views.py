@@ -20,4 +20,9 @@ def home(request):
     if 'core_curate_app' in INSTALLED_APPS:
         context.update({'draft': True})
 
-    return render(request, dashboard_constants.DASHBOARD_HOME_TEMPLATE, context=context)
+    assets = {
+        "css": ['core_dashboard_registry_app/user/css/home.css'],
+    }
+
+    return render(request, dashboard_constants.DASHBOARD_HOME_TEMPLATE, context=context,
+                  assets=assets)
