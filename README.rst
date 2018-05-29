@@ -1,6 +1,5 @@
-==================
 Core Dashboard Registry App
-==================
+===========================
 
 Resource management via a dashboard for the registry core project.
 
@@ -8,7 +7,7 @@ Quickstart
 ==========
 
 1. Add "core_dashboard_registry_app" to your INSTALLED_APPS setting
-----------------------------------------------------------
+-------------------------------------------------------------------
 
 .. code:: python
 
@@ -18,7 +17,7 @@ Quickstart
       ]
 
 2. Include the core_dashboard_registry_app URLconf in your project urls.py
------------------------------------------------------------------
+--------------------------------------------------------------------------
 
 .. code:: python
 
