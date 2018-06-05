@@ -1,0 +1,88 @@
+{% load dict_key_extras %}
+{% load draft_extras %}
+
+{% for data_loaded in objects %}
+<table class="card">
+    <tr objectid="{{data_loaded.data.id}}">
+        <td style="padding:10px;" class="pull-left">
+            {% if data_loaded.can_read %}
+                <a class="view-record-btn" style="font-weight: bold; color: black; cursor: pointer;">{{ data_loaded.data.title }}</a>
+            {% else %}
+                <span style="font-weight: bold;">{{ data_loaded.data.title }}</span>
+            {% endif %}
+            {% if data_loaded.data|has_draft %}, <text style="color: red;">&nbsp;Draft</text>{% endif %}
+
+        </td>
+        <td class="cell-dropdown">
+            <span class="pull-right dropdown">
+                {% if data_loaded.data_status == data_loaded.data_status_values.ACTIVE  %}
+                    <span data-status="active" class="dropbtn active"></span>
+                {% endif %}
+                {% if data_loaded.data_status == data_loaded.data_status_values.INACTIVE  %}
+                    <span data-status="inactive" class="dropbtn inactive"></span>
+                {% endif %}
+                {% if data_loaded.data_status == data_loaded.data_status_values.DELETED  %}
+                    <span data-status="deleted" class="dropbtn deleted"></span>
+                {% endif %}
+              <div class="dropdown-content">
+                  <a data-status="active" class="switch font-active">Active</a>
+                  <a data-status="inactive" class="switch font-inactive">Inactive</a>
+                  <!-- FIXME: Display Deleted button only for published data -->
+                  <a data-status="deleted" class="switch font-deleted">Deleted</a>
+              </div>
+            </span>
+            {% if data_loaded.data_status == data_loaded.data_status_values.ACTIVE  %}
+                <span class="pull-right label-status font-active">Active</span>
+            {% endif %}
+            {% if data_loaded.data_status == data_loaded.data_status_values.INACTIVE  %}
+                <span class="pull-right label-status font-inactive">Inactive</span>
+            {% endif %}
+            {% if data_loaded.data_status == data_loaded.data_status_values.DELETED  %}
+                <span class="pull-right label-status font-deleted">Deleted</span>
+            {% endif %}
+        </td>
+    </tr>
+    <tr>
+        <td style="padding: 10px;">
+            {% if data_loaded.data.workspace %}
+                <span style="background-color: #a5d1ed; padding:2px 10px 2px 10px;">
+                    {{ data_loaded.data.workspace.title }}
+                </span>
+            {% else %}
+                <span style="background-color: #d2d2d2; padding:2px 10px 2px 10px;">
+                    No workspace assigned
+                </span>
+            {% endif %}
+            <span style="background-color: #a5d1ed; padding:2px 10px 2px 10px; margin-left: 15px;">
+                {% with key=data_loaded.data.user_id %}
+                  {{ data_loaded.username_list|get:key }}
+                {% endwith %}
+            </span>
+        </td>
+    </tr>
+    <tr objectid="{{data_loaded.data.id}}">
+        <td style="vertical-align: middle; padding:10px">
+            {% if data_loaded.can_change_workspace %}
+                <a class="btn btn-default assign-workspace-record-btn">
+                    <i class="fa fa-folder"></i> Change workspace
+                </a>
+            {% endif %}
+            {% if data_loaded.is_owner %}
+                <a class="btn btn-default change-owner-btn">
+                    <i class="fa fa-user-circle-o"></i> Change owner
+                </a>
+            {% endif %}
+            {% if data_loaded.can_write %}
+                <a class="btn btn-default edit-record-btn">
+                    <i class="fa fa-edit"></i> {% if data_loaded.data|has_draft %} Edit draft {% else %} Create new version {% endif %}
+                </a>
+            {% endif %}
+        </td>
+        <td style="padding: 10px;">
+            <!-- FIXME: Display this value when is_public workspace's attribute will be implemented -->
+            <!-- FIXME: Otherwise display the button to publish the data -->
+            <span class="pull-right" style="font-size: 0.6em;"> {{ data_loaded.data.last_modification_date|date:"Y/m/d, g:i A " }} </span>
+        </td>
+    </tr>
+</table>
+{% endfor %}

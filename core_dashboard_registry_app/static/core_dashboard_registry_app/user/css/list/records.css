@@ -1,0 +1,92 @@
+/* Style The Dropdown Button */
+.dropbtn {
+    cursor: pointer;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 0.7em;
+    font-weight: bold;
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    display: inline-block;
+    border: 1px #BDC3C7 solid;
+}
+
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+    position: relative;
+    display: inline-block;
+    padding:10px;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+    cursor: pointer;
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    margin-left: -50px;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+/* Style a card */
+.card {
+    height: 100px;
+    padding:50px;
+    background-color: #f1f1f1;
+    width: 100%;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+/* Colors definition */
+.active {
+    background-color: #2ECC71;
+}
+
+.inactive {
+    background-color: #F39C12;
+}
+
+.deleted {
+    background-color: #EF4836;
+}
+
+.font-active {
+    color: #2ECC71 !important;
+    text-transform: capitalize;
+}
+
+.font-inactive {
+    color: #F39C12 !important;
+    text-transform: capitalize;
+}
+
+.font-deleted {
+    color: #EF4836 !important;
+    text-transform: capitalize;
+}
+
+.status-cell-admin {
+    min-width: 105px;
+    max-width: 105px;
+    width: 105px;
+}
+
+.label-status {
+    padding-top: 12px;
+}
