@@ -33,7 +33,8 @@ urlpatterns = [
     url(r'^forms$', login_required(common_views.DashboardForms.as_view(
         document=dashboard_constants.FUNCTIONAL_OBJECT_ENUM.FORM
     ), login_url=reverse_lazy("core_main_app_login")), name='core_dashboard_forms'),
-    url(r'^workspaces$', user_views.dashboard_workspaces, name='core_dashboard_workspaces'),
+    url(r'^workspaces$', login_required(common_views.DashboardWorkspaces.as_view(
+    ), login_url=reverse_lazy("core_main_app_login")), name='core_dashboard_workspaces'),
     url(r'^workspace-list-records/(?P<workspace_id>\w+)$', user_views.dashboard_workspace_records,
         name='core_dashboard_workspace_list_data'),
 ]
