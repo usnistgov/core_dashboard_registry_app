@@ -10,6 +10,7 @@ from core_main_app.components.user.api import get_id_username_dict
 from core_main_app.utils.rendering import render
 from core_main_registry_app.commons.constants import DataStatus
 from core_main_registry_app.components.data.api import get_status
+from core_main_app.components.workspace import api as workspace_api
 
 
 def home(request):
@@ -48,7 +49,9 @@ class DashboardRegistryRecords(DashboardRecords):
                                       'can_read': True,
                                       'can_write': True,
                                       'is_owner': True,
-                                      'can_change_workspace': self.can_change_workspace(data)})
+                                      'can_change_workspace': self.can_change_workspace(data),
+                                      'can_set_public': not (data.workspace is not None and workspace_api.is_workspace_public(data.workspace))
+                                      })
         return data_context_list
 
     def _get_assets(self):
@@ -64,6 +67,10 @@ class DashboardRegistryRecords(DashboardRecords):
         assets['js'].append({
             "path": 'core_dashboard_registry_app/user/js/list/records.raw.js',
             "is_raw": True
+        })
+        assets['js'].append({
+            "path": dashboard_constants.JS_PUBLISH_RESOURCE,
+            "is_raw": False
         })
         return assets
 

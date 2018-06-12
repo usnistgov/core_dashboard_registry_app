@@ -77,6 +77,11 @@
                     <i class="fa fa-edit"></i> {% if data_loaded.data|has_draft %} Edit draft {% else %} Create new version {% endif %}
                 </a>
             {% endif %}
+            {% if data_loaded.can_set_public %}
+                <a class="btn btn-default publish-record-btn">
+                    <i class="fa fa-share-alt"></i> Publish
+                </a>
+            {% endif %}
         </td>
         <td style="padding: 10px;">
             <!-- FIXME: Display this value when is_public workspace's attribute will be implemented -->

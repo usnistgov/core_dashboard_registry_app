@@ -41,4 +41,6 @@ urlpatterns = [
         login_required(registry_common_views.DashboardRegistryWorkspaceRecords.as_view(
             data_template='core_dashboard_registry_app/list/my_dashboard_my_records_table_pagination.html'),
             login_url=reverse_lazy("core_main_app_login")), name='core_dashboard_workspace_list_data'),
+
+    url(r'^publish-resource', registry_common_ajax.publish, name='core_dashboard_publish_resource_registry'),
 ]
