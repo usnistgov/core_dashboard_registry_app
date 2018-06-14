@@ -89,8 +89,9 @@
                   <div class="dropdown-content">
                       <a data-status="active" class="switch font-active">Active</a>
                       <a data-status="inactive" class="switch font-inactive">Inactive</a>
-                      <!-- FIXME: Display Deleted button only for published data -->
-                      <a data-status="deleted" class="switch font-deleted">Deleted</a>
+                        {% if data_loaded.data.workspace.is_public %}
+                            <a data-status="deleted" class="switch font-deleted">Deleted</a>
+                        {% endif %}
                   </div>
                 </span>
                 {% if data_loaded.data_status == data_loaded.data_status_values.ACTIVE  %}
