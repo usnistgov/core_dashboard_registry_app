@@ -5,9 +5,9 @@
         <th> <input type="checkbox" id="select_all_{{group}}" onchange="selectAll(this, '{{group}}')"> </th>
     {% endif %}
     <th>Name</th>
-    <th>Template</th>
+    <th>Role</th>
     <th>Last Modification date</th>
-    {% if data.usernames %}
+    {% if data.username_list %}
         <th>User</th>
     {% endif %}
     {% if not data.title%}
@@ -28,15 +28,15 @@
                 {{ data_loaded.data.title }}{% if data_loaded.data|has_draft %},<text style="color: red;">&nbsp;Draft</text>{% endif %}
             </td>
             <td>
-                {{ data_loaded.data.template.display_name }}
+                {{ data_loaded.data_role }}
             </td>
             <td>
                 {{ data_loaded.data.last_modification_date|date:"Y/m/d, g:i A " }}
             </td>
-            {% if data.usernames %}
+            {% if data.username_list %}
             <td>
                 {% with key=data_loaded.data.user_id %}
-                  {{ data.usernames|get:key }}
+                  {{ data.username_list|get:key }}
                 {% endwith %}
             </td>
             {% endif %}
@@ -66,12 +66,13 @@
                     {% endif %}
                 {% endif %}
                 {% if data_loaded.is_owner %}
-                    <a class="btn btn-default delete-document-btn">
-                        <i class="fa fa-trash"></i> Delete
-                    </a>
-
                     <a class="btn btn-default change-owner-btn">
                         <i class="fa fa-user-circle-o"></i> Change Owner
+                    </a>
+                {% endif %}
+                {% if data_loaded.can_set_public %}
+                    <a class="btn btn-default publish-record-btn">
+                        <i class="fa fa-share-alt"></i> Publish
                     </a>
                 {% endif %}
             </td>

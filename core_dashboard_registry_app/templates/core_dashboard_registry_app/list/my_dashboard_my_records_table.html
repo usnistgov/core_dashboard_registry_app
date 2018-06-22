@@ -6,9 +6,9 @@
     <tr objectid="{{data_loaded.data.id}}">
         <td style="padding:10px;" class="pull-left">
             {% if data_loaded.can_read %}
-                <a class="view-record-btn" style="font-weight: bold; color: black; cursor: pointer;">{{ data_loaded.data.title }}</a>
+                <a class="view-record-btn" style="font-weight: bold; color: black; cursor: pointer;">{{ data_loaded.data.title }}</a> ({{ data_loaded.data_role }})
             {% else %}
-                <span style="font-weight: bold;">{{ data_loaded.data.title }}</span>
+                <span style="font-weight: bold;">{{ data_loaded.data.title }}</span> ({{ data_loaded.data_role }})
             {% endif %}
             {% if data_loaded.data|has_draft %}, <text style="color: red;">&nbsp;Draft</text>{% endif %}
 
@@ -78,16 +78,18 @@
                     <i class="fa fa-edit"></i> {% if data_loaded.data|has_draft %} Edit draft {% else %} Create new version {% endif %}
                 </a>
             {% endif %}
-            {% if data_loaded.can_set_public %}
-                <a class="btn btn-default publish-record-btn">
-                    <i class="fa fa-share-alt"></i> Publish
-                </a>
-            {% endif %}
+
         </td>
         <td style="padding: 10px;">
-            <!-- FIXME: Display this value when is_public workspace's attribute will be implemented -->
-            <!-- FIXME: Otherwise display the button to publish the data -->
-            <span class="pull-right" style="font-size: 0.6em;"> {{ data_loaded.data.last_modification_date|date:"Y/m/d, g:i A " }} </span>
+            {% if data_loaded.can_set_public %}
+                <a class="btn btn-default publish-record-btn pull-right">
+                    <i class="fa fa-share-alt"></i> Publish
+                </a>
+            {% else %}
+                <span class="pull-right" style="font-size: 0.6em;"> Published on: {{ data_loaded.data.last_modification_date|date:"Y/m/d, g:i A " }} </span>
+            {% endif %}
+
+
         </td>
     </tr>
 </table>
