@@ -20,7 +20,7 @@
     {% for data_loaded in objects %}
         <tr objectid="{{data_loaded.data.id}}">
             {% if data.menu and not data.title %}
-            <td id="actionCheckbox">
+            <td id="actionCheckbox_{{forloop.counter}}">
                 <input type="checkbox" id={{data_loaded.data.id}} name={{group}}>
             </td>
             {% endif %}
