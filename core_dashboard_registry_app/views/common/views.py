@@ -166,6 +166,7 @@ class DashboardRegistryWorkspaceRecords(DashboardWorkspaceRecords):
                                        'username_list': username_list,
                                        'data_status': get_status(data),
                                        'data_status_values': DataStatus,
+                                       'data_role': ', '.join([DataRole.role[x] for x in get_role(data)]),
                                        'can_read': user_can_read or is_owner,
                                        'can_write': user_can_write or is_owner,
                                        'is_owner': is_owner})
