@@ -32,7 +32,7 @@ urlpatterns = [
     ), login_url=reverse_lazy("core_main_app_login")), name='core_dashboard_records'),
     url(r'^switch-status-record', registry_common_ajax.switch_data_status,
         name='core_dashboard_switch_status_record'),
-    url(r'^forms$', login_required(common_views.DashboardForms.as_view(
+    url(r'^forms$', login_required(registry_common_views.DashboardRegistryForms.as_view(
         document=dashboard_constants.FUNCTIONAL_OBJECT_ENUM.FORM
     ), login_url=reverse_lazy("core_main_app_login")), name='core_dashboard_forms'),
     url(r'^workspaces$', login_required(common_views.DashboardWorkspaces.as_view(

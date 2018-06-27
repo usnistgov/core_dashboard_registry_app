@@ -6,7 +6,7 @@ from django.core.urlresolvers import reverse
 from core_dashboard_common_app import constants as dashboard_common_constants
 from core_dashboard_common_app import settings
 from core_dashboard_common_app.views.common.forms import ActionForm, UserForm
-from core_dashboard_common_app.views.common.views import DashboardRecords
+from core_dashboard_common_app.views.common.views import DashboardRecords, DashboardForms
 from core_dashboard_common_app.views.user.views import DashboardWorkspaceRecords
 from core_dashboard_registry_app import constants as dashboard_constants
 from core_dashboard_registry_app.settings import INSTALLED_APPS
@@ -19,6 +19,10 @@ from core_main_app.utils.pagination.django_paginator.results_paginator import Re
 from core_main_app.utils.rendering import render
 from core_main_registry_app.commons.constants import DataStatus, DataRole
 from core_main_registry_app.components.data.api import get_status, get_role
+if 'core_curate_app' in INSTALLED_APPS:
+    import core_curate_app.components.curate_data_structure.api as curate_data_structure_api
+if 'core_curate_registry_app' in INSTALLED_APPS:
+    import core_curate_registry_app.components.curate_data_structure.api as curate_data_structure_registry_api
 
 
 def home(request):
@@ -187,3 +191,20 @@ class DashboardRegistryWorkspaceRecords(DashboardWorkspaceRecords):
             "is_raw": True
         })
         return assets
+
+
+class DashboardRegistryForms(DashboardForms):
+    """ List the forms.
+    """
+
+    def _get_detailed_forms(self, forms):
+
+        detailed_forms = []
+        for form in forms:
+            detailed_forms.append({'form': form,
+                                   'role': ', '.join([DataRole.role[x]
+                                                      for x in curate_data_structure_registry_api.get_role(form)
+                                                      ]
+                                                     if form.form_string is not None
+                                                     else ['None'])})
+        return detailed_forms
