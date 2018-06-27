@@ -118,7 +118,7 @@ class DashboardRegistryRecords(DashboardRecords):
                                       'username_list': username_list,
                                       'data_status': get_status(data),
                                       'data_status_values': DataStatus,
-                                      'data_role': DataRole.role[get_role(data)],
+                                      'data_role': ', '.join([DataRole.role[x] for x in get_role(data)]),
                                       'can_read': True,
                                       'can_write': True,
                                       'is_owner': True,
