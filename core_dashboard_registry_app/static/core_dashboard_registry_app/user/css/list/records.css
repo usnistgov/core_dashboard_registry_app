@@ -54,15 +54,15 @@
 }
 
 /* Colors definition */
-.active {
+.status-active {
     background-color: #2ECC71;
 }
 
-.inactive {
+.status-inactive {
     background-color: #F39C12;
 }
 
-.deleted {
+.status-deleted {
     background-color: #EF4836;
 }
 
