@@ -79,13 +79,13 @@
             <td class="status-cell-admin">
                 <span class="pull-right dropdown">
                     {% if data_loaded.data_status == data_loaded.data_status_values.ACTIVE  %}
-                        <span data-status="active" class="dropbtn active"></span>
+                        <span data-status="active" class="dropbtn status-active"></span>
                     {% endif %}
                     {% if data_loaded.data_status == data_loaded.data_status_values.INACTIVE  %}
-                        <span data-status="inactive" class="dropbtn inactive"></span>
+                        <span data-status="inactive" class="dropbtn status-inactive"></span>
                     {% endif %}
                     {% if data_loaded.data_status == data_loaded.data_status_values.DELETED  %}
-                        <span data-status="deleted" class="dropbtn deleted"></span>
+                        <span data-status="deleted" class="dropbtn status-deleted"></span>
                     {% endif %}
                   <div class="dropdown-content">
                       <a data-status="active" class="switch font-active">Active</a>
