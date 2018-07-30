@@ -1,13 +1,13 @@
 {% extends 'core_main_app/_render/admin/theme/tools/box.html' %}
 
 {% block box_title %}
-    {% if not come_from_admin %}
-        {% if data.title %}
-            <h1>{{data.title}}</h1>
-        {% else %}
-            <h1>My {{data.document}}s</h1>
-        {% endif %}
+
+    {% if data.title %}
+        {{data.title}}
+    {% else %}
+        {% if come_from_admin %} All {% else %} My {% endif %} {{data.document}}s
     {% endif %}
+
 {% endblock %}
 
 
