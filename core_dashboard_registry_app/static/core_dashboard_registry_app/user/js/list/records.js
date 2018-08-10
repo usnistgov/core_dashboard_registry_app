@@ -14,7 +14,7 @@ function switchStatus(data_id, old_status, new_status, btn_element){
                 "new_status": new_status
             },
             success: function(data){
-                btn_element.attr('class', 'dropbtn ' + new_status);
+                btn_element.attr('class', 'dropbtn status-' + new_status);
                 btn_element.attr('data-status', new_status);
                 btn_element.closest('td').children('span.label-status').attr('class', 'pull-right label-status font-'+ new_status);
                 btn_element.closest('td').children('span.label-status').text(new_status);
