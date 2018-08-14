@@ -11,6 +11,7 @@ from core_dashboard_common_app.views.user.views import DashboardWorkspaceRecords
 from core_dashboard_registry_app import constants as dashboard_constants
 from core_dashboard_registry_app.settings import INSTALLED_APPS
 from core_dashboard_registry_app.utils.query.mongo.prepare import create_query_dashboard_resources
+from core_main_app.commons import exceptions as exceptions
 from core_main_app.components.data import api as data_api
 from core_main_app.components.user import api as user_api
 from core_main_app.components.user.api import get_id_username_dict
@@ -19,6 +20,7 @@ from core_main_app.utils.pagination.django_paginator.results_paginator import Re
 from core_main_app.utils.rendering import render
 from core_main_registry_app.commons.constants import DataStatus, DataRole
 from core_main_registry_app.components.data.api import get_status, get_role
+
 if 'core_curate_app' in INSTALLED_APPS:
     import core_curate_app.components.curate_data_structure.api as curate_data_structure_api
 if 'core_curate_registry_app' in INSTALLED_APPS:
@@ -96,7 +98,7 @@ class DashboardRegistryRecords(DashboardRecords):
             'menu': self.administration,
             'administration': self.administration,
             'username_list': get_id_username_dict(user_api.get_all_users()),
-            'resources' : True,
+            'resources': True,
             'url_resources': reverse('admin:core_dashboard_records') if self.administration else
             reverse('core_dashboard_records')
         })
@@ -197,13 +199,17 @@ class DashboardRegistryForms(DashboardForms):
     """
 
     def _get_detailed_forms(self, forms):
-
         detailed_forms = []
         for form in forms:
+            try:
+                role = ', '.join([DataRole.role[x]
+                                  for x in curate_data_structure_registry_api.get_role(form)
+                                  ]
+                                 if form.form_string is not None
+                                 else ['None'])
+            except exceptions.ModelError:
+                role = 'None'
+
             detailed_forms.append({'form': form,
-                                   'role': ', '.join([DataRole.role[x]
-                                                      for x in curate_data_structure_registry_api.get_role(form)
-                                                      ]
-                                                     if form.form_string is not None
-                                                     else ['None'])})
+                                   'role': role})
         return detailed_forms
