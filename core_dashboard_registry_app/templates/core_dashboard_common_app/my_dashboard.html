@@ -5,7 +5,7 @@
     {% if data.title %}
         {{data.title}}
     {% else %}
-        {% if come_from_admin %} All {% else %} My {% endif %} {{data.document}}s
+        {% if come_from_admin %} {{ data.document|title}}s list {% else %} My {{data.document}}s {% endif %}
     {% endif %}
 
 {% endblock %}
