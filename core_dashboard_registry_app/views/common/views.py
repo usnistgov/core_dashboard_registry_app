@@ -56,6 +56,7 @@ class DashboardRegistryRecords(DashboardRecords):
 
         # Get arguments
         is_published = request.GET.get('ispublished', None)
+        is_published = None if is_published not in ['true', 'false'] else is_published
         role_name_list = request.GET.getlist('role', ['all'])
         page = request.GET.get('page', 1)
 
