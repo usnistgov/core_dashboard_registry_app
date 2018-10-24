@@ -91,7 +91,8 @@ class DashboardRegistryRecords(DashboardRecords):
         # Add user_form for change owner
         user_form = UserForm(request.user)
         context.update({
-            'other_users_data': results_paginator,
+            'number_total': len(filtered_data),
+            'user_data': results_paginator,
             'user_form': user_form,
             'document': self.document,
             'template': self.data_template,

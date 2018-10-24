@@ -28,6 +28,10 @@
 
 {% block box_body %}
 
+{% if data.user_data %}
+    Total number of {{data.document}}s: {{ data.number_total }}
+{% endif %}
+
     {% if data.menu and not data.title %}
         <div class="dropdown" id="id_actions" style="display:none">
             <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
@@ -128,11 +132,7 @@
         {% if data.user_data %}
             {% include data.template with objects=data.user_data group='user' %}
         {% else %}
-            {% if data.other_users_data %}
-                    {% include data.template with objects=data.other_users_data group='other' %}
-            {%else%}
-                No {{data.document}}s found.
-            {% endif %}
+            No {{data.document}}s found.
         {% endif %}
     </div>
 {% endblock %}
