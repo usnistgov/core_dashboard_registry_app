@@ -1,5 +1,6 @@
 {% load dict_key_extras %}
 {% load draft_extras %}
+{% load timestamptags %}
 
 {% for data_loaded in objects %}
 <table class="card">
@@ -86,7 +87,7 @@
                     <i class="fa fa-share-alt"></i> Publish
                 </a>
             {% else %}
-                <span class="pull-right" style="font-size: 0.6em;"> Published on: {{ data_loaded.data.last_modification_date|date:"Y/m/d, g:i A " }} </span>
+                <span class="pull-right" style="font-size: 0.6em;"> Published on: {{ data_loaded.data.last_modification_date|print_datetime_utc_unaware }} </span>
             {% endif %}
 
 

@@ -1,5 +1,7 @@
 {% load dict_key_extras %}
 {% load draft_extras %}
+{% load timestamptags %}
+
 <thead>
     {% if data.menu and not data.title %}
         <th> <input type="checkbox" id="select_all_{{group}}" onchange="selectAll(this, '{{group}}')"> </th>
@@ -31,7 +33,7 @@
                 {{ data_loaded.data_role }}
             </td>
             <td>
-                {{ data_loaded.data.last_modification_date|date:"Y/m/d, g:i A " }}
+                {{ data_loaded.data.last_modification_date|print_datetime_utc_unaware }}
             </td>
             {% if data.username_list %}
             <td>
