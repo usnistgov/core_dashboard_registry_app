@@ -7,7 +7,7 @@ from core_dashboard_common_app import constants as dashboard_common_constants
 from core_dashboard_common_app import settings
 from core_dashboard_common_app.views.common.forms import ActionForm, UserForm
 from core_dashboard_common_app.views.common.views import DashboardRecords, DashboardForms
-from core_dashboard_common_app.views.user.views import DashboardWorkspaceRecords
+from core_dashboard_common_app.views.common.views import DashboardWorkspaceRecords
 from core_dashboard_registry_app import constants as dashboard_constants
 from core_dashboard_registry_app.settings import INSTALLED_APPS
 from core_dashboard_registry_app.utils.query.mongo.prepare import create_query_dashboard_resources
@@ -168,7 +168,7 @@ class DashboardRegistryWorkspaceRecords(DashboardWorkspaceRecords):
         detailed_user_data = []
         username_list = get_id_username_dict(user_api.get_all_users())
         for data in data_list:
-            is_owner = str(data.user_id) == str(user.id)
+            is_owner = str(data.user_id) == str(user.id) or self.administration
             detailed_user_data.append({'data': data,
                                        'username_list': username_list,
                                        'data_status': get_status(data),
