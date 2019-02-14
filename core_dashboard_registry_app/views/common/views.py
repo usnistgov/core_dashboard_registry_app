@@ -157,6 +157,10 @@ class DashboardRegistryRecords(DashboardRecords):
             "path": dashboard_constants.JS_RECORD_REGISTRY,
             "is_raw": False
         })
+        assets['js'].append({
+            "path": 'core_dashboard_registry_app/user/js/get_url.js',
+            "is_raw": False
+        })
         return assets
 
 
@@ -192,6 +196,10 @@ class DashboardRegistryWorkspaceRecords(DashboardWorkspaceRecords):
         assets['js'].append({
             "path": 'core_dashboard_registry_app/user/js/list/records.raw.js',
             "is_raw": True
+        })
+        assets['js'].append({
+            "path": 'core_dashboard_registry_app/user/js/get_url.js',
+            "is_raw": False
         })
         return assets
 

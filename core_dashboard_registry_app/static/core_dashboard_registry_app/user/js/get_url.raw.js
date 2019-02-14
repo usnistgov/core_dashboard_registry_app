@@ -1,0 +1,1 @@
+urlResources = "{{data.url_resources}}";
