@@ -215,7 +215,7 @@ class DashboardRegistryForms(DashboardForms):
                 role = ', '.join([DataRole.role[x]
                                   for x in curate_data_structure_registry_api.get_role(form)
                                   ]
-                                 if form.form_string is not None
+                                 if form.form_string
                                  else ['None'])
             except exceptions.ModelError:
                 role = 'None'
