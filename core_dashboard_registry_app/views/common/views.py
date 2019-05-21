@@ -72,7 +72,7 @@ class DashboardRegistryRecords(DashboardRecords):
                                                                                   role_name_list,
                                                                                   self.administration),
                                                  request.user, '-last_modification_date')
-        except AccessControlError, ace:
+        except AccessControlError as ace:
             loaded_data = []
 
         # Filter publish/not published data
