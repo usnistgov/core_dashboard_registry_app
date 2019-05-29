@@ -1,5 +1,6 @@
 """ Mongo query builder tools
 """
+from builtins import str
 from core_dashboard_registry_app.constants import PATH_ROLE
 
 def create_query_dashboard_resources(request, role_name_list, administration):

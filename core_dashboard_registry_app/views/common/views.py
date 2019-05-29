@@ -1,6 +1,7 @@
 """
     Common views
 """
+from builtins import str
 from django.core.urlresolvers import reverse
 
 from core_dashboard_common_app import constants as dashboard_common_constants
