@@ -21,8 +21,6 @@ from core_main_app.utils.rendering import render
 from core_main_registry_app.commons.constants import DataStatus, DataRole
 from core_main_registry_app.components.data.api import get_status, get_role
 
-if 'core_curate_app' in INSTALLED_APPS:
-    import core_curate_app.components.curate_data_structure.api as curate_data_structure_api
 if 'core_curate_registry_app' in INSTALLED_APPS:
     import core_curate_registry_app.components.curate_data_structure.api as curate_data_structure_registry_api
 

@@ -4,9 +4,8 @@
 from django.core.urlresolvers import reverse
 from menu import Menu, MenuItem
 
-from core_dashboard_common_app.constants import FUNCTIONAL_OBJECT_ENUM
 import core_dashboard_registry_app.settings as settings
-
+from core_dashboard_common_app.constants import FUNCTIONAL_OBJECT_ENUM
 
 Menu.add_item(
     "dashboard", MenuItem('{0}s'.format(FUNCTIONAL_OBJECT_ENUM.RECORD.title()), reverse('core_dashboard_records'))
