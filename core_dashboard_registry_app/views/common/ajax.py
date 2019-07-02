@@ -6,8 +6,8 @@ from django.http.response import HttpResponse, HttpResponseBadRequest
 
 import core_main_app.components.data.api as data_api
 import core_main_registry_app.components.data.api as data_registry_api
+from core_main_app.access_control.exceptions import AccessControlError
 from core_main_app.commons import exceptions
-from core_main_app.utils.access_control.exceptions import AccessControlError
 
 
 def switch_data_status(request):

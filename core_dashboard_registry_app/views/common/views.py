@@ -11,11 +11,11 @@ from core_dashboard_common_app.views.common.views import DashboardWorkspaceRecor
 from core_dashboard_registry_app import constants as dashboard_constants
 from core_dashboard_registry_app.settings import INSTALLED_APPS
 from core_dashboard_registry_app.utils.query.mongo.prepare import create_query_dashboard_resources
+from core_main_app.access_control.exceptions import AccessControlError
 from core_main_app.commons import exceptions as exceptions
 from core_main_app.components.data import api as data_api
 from core_main_app.components.user import api as user_api
 from core_main_app.components.user.api import get_id_username_dict
-from core_main_app.utils.access_control.exceptions import AccessControlError
 from core_main_app.utils.pagination.django_paginator.results_paginator import ResultsPaginator
 from core_main_app.utils.rendering import render
 from core_main_registry_app.commons.constants import DataStatus, DataRole
