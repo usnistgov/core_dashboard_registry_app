@@ -1,7 +1,8 @@
+""" Common views for the registry dashboard
 """
-    Common views
-"""
+from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
+from django.urls import reverse_lazy
 
 from core_dashboard_common_app import constants as dashboard_common_constants
 from core_dashboard_common_app import settings
@@ -22,9 +23,11 @@ from core_main_registry_app.commons.constants import DataStatus, DataRole
 from core_main_registry_app.components.data.api import get_status, get_role
 
 if 'core_curate_registry_app' in INSTALLED_APPS:
-    import core_curate_registry_app.components.curate_data_structure.api as curate_data_structure_registry_api
+    import core_curate_registry_app.components.curate_data_structure.api as \
+        curate_data_structure_registry_api
 
 
+@login_required(login_url=reverse_lazy("core_main_app_login"))
 def home(request):
     """ Home page.
 
@@ -66,25 +69,31 @@ class DashboardRegistryRecords(DashboardRecords):
 
         # Get resources
         try:
-            loaded_data = data_api.execute_query(create_query_dashboard_resources(request,
-                                                                                  role_name_list,
-                                                                                  self.administration),
-                                                 request.user, '-last_modification_date')
-        except AccessControlError as ace:
+            loaded_data = data_api.execute_query(
+                create_query_dashboard_resources(
+                    request, role_name_list, self.administration
+                ),
+                request.user, '-last_modification_date')
+        except AccessControlError:
             loaded_data = []
 
         # Filter publish/not published data
         filtered_data = []
         for data in loaded_data:
-            if (is_published is None or (is_published == 'true' and data_api.is_data_public(data)) or
+            if (is_published is None or
+                    (is_published == 'true' and data_api.is_data_public(data)) or
                     (is_published == 'false' and not data_api.is_data_public(data))):
                 filtered_data.append(data)
 
         # Paginator
-        results_paginator = ResultsPaginator.get_results(filtered_data, page, settings.RECORD_PER_PAGE_PAGINATION)
+        results_paginator = ResultsPaginator.get_results(
+            filtered_data, page, settings.RECORD_PER_PAGE_PAGINATION
+        )
 
         # Data context
-        results_paginator.object_list = self._format_data_context_registry(results_paginator.object_list, is_published)
+        results_paginator.object_list = self._format_data_context_registry(
+            results_paginator.object_list, is_published
+        )
 
         # Add user_form for change owner
         user_form = UserForm(request.user)
@@ -115,21 +124,23 @@ class DashboardRegistryRecords(DashboardRecords):
                                   assets=assets,
                                   modals=modals)
 
+    # FIXME is_published is never used
     def _format_data_context_registry(self, data_list, is_published):
         data_context_list = []
         username_list = dict((str(x.id), x.username) for x in user_api.get_all_users())
         for data in data_list:
-            data_context_list.append({'data': data,
-                                      'username_list': username_list,
-                                      'data_status': get_status(data),
-                                      'data_status_values': DataStatus,
-                                      'data_role': ', '.join([DataRole.role[x] for x in get_role(data)]),
-                                      'can_read': True,
-                                      'can_write': True,
-                                      'is_owner': True,
-                                      'can_change_workspace': self.can_change_workspace(data),
-                                      'can_set_public': not data_api.is_data_public(data)
-                                      })
+            data_context_list.append({
+                'data': data,
+                'username_list': username_list,
+                'data_status': get_status(data),
+                'data_status_values': DataStatus,
+                'data_role': ', '.join([DataRole.role[x] for x in get_role(data)]),
+                'can_read': True,
+                'can_write': True,
+                'is_owner': True,
+                'can_change_workspace': self.can_change_workspace(data),
+                'can_set_public': not data_api.is_data_public(data)
+            })
         return data_context_list
 
     def _get_assets(self):
@@ -171,14 +182,16 @@ class DashboardRegistryWorkspaceRecords(DashboardWorkspaceRecords):
         username_list = get_id_username_dict(user_api.get_all_users())
         for data in data_list:
             is_owner = str(data.user_id) == str(user.id) or self.administration
-            detailed_user_data.append({'data': data,
-                                       'username_list': username_list,
-                                       'data_status': get_status(data),
-                                       'data_status_values': DataStatus,
-                                       'data_role': ', '.join([DataRole.role[x] for x in get_role(data)]),
-                                       'can_read': user_can_read or is_owner,
-                                       'can_write': user_can_write or is_owner,
-                                       'is_owner': is_owner})
+            detailed_user_data.append({
+                'data': data,
+                'username_list': username_list,
+                'data_status': get_status(data),
+                'data_status_values': DataStatus,
+                'data_role': ', '.join([DataRole.role[x] for x in get_role(data)]),
+                'can_read': user_can_read or is_owner,
+                'can_write': user_can_write or is_owner,
+                'is_owner': is_owner
+            })
         return detailed_user_data
 
     def _get_assets(self):
