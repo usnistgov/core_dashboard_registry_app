@@ -3,6 +3,7 @@
 import json
 
 from django.http.response import HttpResponse, HttpResponseBadRequest
+from django.contrib import messages
 
 import core_main_app.components.data.api as data_api
 import core_main_registry_app.components.data.api as data_registry_api
@@ -45,6 +46,7 @@ def publish(request):
         if data_id is not None:
             data = data_api.get_by_id(data_id, request.user)
             data_registry_api.publish(data, request.user)
+            messages.add_message(request, messages.SUCCESS, 'Data saved with success.')
         else:
             return HttpResponseBadRequest(json.dumps({'message': 'The data id is required'}),
                                           content_type='application/javascript')
