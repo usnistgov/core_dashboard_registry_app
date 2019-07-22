@@ -9,6 +9,8 @@ from core_dashboard_common_app import settings
 from core_dashboard_common_app.views.common.forms import ActionForm, UserForm
 from core_dashboard_common_app.views.common.views import DashboardRecords, DashboardForms
 from core_dashboard_common_app.views.common.views import DashboardWorkspaceRecords
+from django.core.urlresolvers import reverse
+
 from core_dashboard_registry_app import constants as dashboard_constants
 from core_dashboard_registry_app.settings import INSTALLED_APPS
 from core_dashboard_registry_app.utils.query.mongo.prepare import create_query_dashboard_resources
@@ -20,7 +22,9 @@ from core_main_app.components.user.api import get_id_username_dict
 from core_main_app.utils.pagination.django_paginator.results_paginator import ResultsPaginator
 from core_main_app.utils.rendering import render
 from core_main_registry_app.commons.constants import DataStatus, DataRole
+from core_main_registry_app.components.custom_resource import api as custom_resource_api
 from core_main_registry_app.components.data.api import get_status, get_role
+from core_main_registry_app.constants import CUSTOM_RESOURCE_TYPE
 
 if 'core_curate_registry_app' in INSTALLED_APPS:
     import core_curate_registry_app.components.curate_data_structure.api as \
@@ -53,19 +57,39 @@ class DashboardRegistryRecords(DashboardRecords):
     """ List the records for the registry
     """
 
+    def _get_list_name_in_shema_from_url(self, role_name_list, custom_resources):
+        """ Get list of name in schema for each role in url
+
+        Args:
+            role_name_list:
+            custom_resources:
+        Returns:
+        """
+        list_name_in_schema = []
+        for url in role_name_list:
+            for cr in custom_resources:
+                if cr.url == url:
+                    list_name_in_schema.append(cr.name_in_schema)
+
+        return list_name_in_schema
+
     def get(self, request, *args, **kwargs):
+
+        #TODO: use custom_resource to get cr_type_all
+        cr_type_all = custom_resource_api.get_current_custom_resource_type_all()
+
+        custom_resources = list(custom_resource_api.get_all_of_current_template())#TODO .sort(key=lambda x: x.sort)
 
         # Get arguments
         is_published = request.GET.get('ispublished', None)
         is_published = None if is_published not in ['true', 'false'] else is_published
-        role_name_list = request.GET.getlist('role', ['all'])
         page = request.GET.get('page', 1)
 
-        role_name = ','.join(role_name_list)
-
         context = {'page': page,
-                   'roles': role_name,
+                   'roles': ','.join(request.GET.getlist('role', [cr_type_all.url])),
                    'ispublished': is_published}
+
+        role_name_list = self._get_list_name_in_shema_from_url(request.GET.getlist('role', []), custom_resources)
 
         # Get resources
         try:
@@ -109,7 +133,14 @@ class DashboardRegistryRecords(DashboardRecords):
             'username_list': get_id_username_dict(user_api.get_all_users()),
             'resources': True,
             'url_resources': reverse('admin:core_dashboard_records') if self.administration else
-            reverse('core_dashboard_records')
+            reverse('core_dashboard_records'),
+            'custom_resources': custom_resources,
+            'display_not_resource': True, # display all resource
+            'role_custom_resource_type_all': cr_type_all.url,
+            'list_role_custom_resource': ','.join([cr.url for cr in custom_resources
+                                                   if custom_resource_api._is_custom_resource_type_resource(cr)
+                                                   and cr.display_icon]), #
+            'type_resource': CUSTOM_RESOURCE_TYPE.RESOURCE,
         })
 
         modals = ["core_main_app/user/workspaces/list/modals/assign_workspace.html",

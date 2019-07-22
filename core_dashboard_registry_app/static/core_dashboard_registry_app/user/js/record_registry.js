@@ -1,29 +1,21 @@
 $(document).ready(function(){
-    initRole(roles);
-});
 
-initRole = function (roles_list) {
-    var btns = $("#my_role").children("input");
-    for(var i = 0; i < btns.length; i++) {
-        // when value change
-        btns[i].onclick = function () {
-            var selected_val = $(this).val();
-            var td = $("#td_"+selected_val);
-            if ($(this).prop('checked') == true) {
-                td.addClass("selected_resource");
-            } else {
-                td.removeClass("selected_resource");
-            }
+    var tds = document.querySelectorAll("#icons_table td");
+    for (var i=0; i<tds.length; i++) {
+        tds[i].onclick = function () {
+            var id = this.id.replace('td_','');
+            action_click(id);
         };
     }
 
-    if (roles_list != "") {
-        roles_list = roles_list.split(',');
-        for (var i = 0 ; i<roles_list.length; i++) {
-            click_role(roles_list[i]);
+    if (roles != "") {
+        roles = roles.split(',');
+        for (var i = 0 ; i<roles.length; i++) {
+            click_role(roles[i]);
         }
     }
-};
+
+});
 
 
 /**
@@ -31,27 +23,37 @@ initRole = function (roles_list) {
  * @returns {boolean}
  */
 is_all_td_selected = function() {
-    return $("#Organization").prop('checked') == true
-        && $("#Dataset").prop('checked') == true
-        && $("#DataCollection").prop('checked') == true
-        && $("#ServiceAPI").prop('checked') == true
-        && $("#Software").prop('checked') == true
-        && $("#WebSite").prop('checked') == true ;
+    var list_roles = list_role_custom_resource.split(',');
+     for (var i = 0 ; i<list_roles.length; i++) {
+      if(!$("#td_" + list_roles[i]).hasClass('selected_resource')){
+          return false;
+      }
+    }
+    return true;
 };
 
 /**
  * Click for a role
  */
 click_role = function(role) {
-    if (role == 'all') {
-        $("#my_role").find('input:checked').prop('checked', false);
-        $("#td_" + role).addClass("selected_resource");
-    } else {
-        $("#td_all").css({'class': ''});
-        $("#"+role).click();
-        if (is_all_td_selected()) {
-            $("#my_role").find('input:checked').prop('checked',false);
-            $("#td_" + role).removeClass("selected_resource");
-        }
+
+    $("#td_" + role).addClass("selected_resource");
+    if (role != role_custom_resource_type_all) {
+         $("#td_"+ role_custom_resource_type_all).removeClass('selected_resource')
     }
+    if (role == role_custom_resource_type_all || is_all_td_selected()) {
+        var list_roles = list_role_custom_resource.split(',');
+        for (var i = 0 ; i<list_roles.length; i++) {
+            $("#td_" + list_roles[i]).removeClass('selected_resource');
+        }
+        $("#td_"+ role_custom_resource_type_all).addClass('selected_resource')
+    }
+};
+
+/**
+ * Action click
+ */
+action_click = function(action) {
+    click_role(action);
+    get_url(published, '');
 };

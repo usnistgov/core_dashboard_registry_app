@@ -47,75 +47,8 @@
     {% endif %}
 
     {% if data.resources %}
-        <div style='display: none' id="my_role" >
-            <input type="checkbox" name="my_role" id="Organization" value="Organization">
-            <input type="checkbox" name="my_role" id="DataCollection" value="DataCollection">
-            <input type="checkbox" name="my_role" id="Dataset" value="Dataset">
-            <input type="checkbox" name="my_role" id="ServiceAPI" value="ServiceAPI">
-            <input type="checkbox" name="my_role" id="WebSite" value="WebSite">
-            <input type="checkbox" name="my_role" id="Software" value="Software">
-        </div>
 
-
-        <table id="icons_table">
-            <tr>
-                <td id="td_all" align="center" onclick="click_role('all');get_url('{{data.ispublished}}', '');">
-                    <i class="fa fa-globe fa-5x" aria-hidden="true" style="color: #557EB9"></i>
-                    <div class="tick" align="right">
-                         <i class="fa fa-check-circle-o fa-2x" aria-hidden="true"></i>
-                    </div>
-                    <br/>
-                    All Resources
-                </td>
-                <td id="td_Organization" align="center" onclick="click_role('Organization');get_url('{{data.ispublished}}', '');" >
-                    <i class="fa fa-university fa-5x" aria-hidden="true" style="color: #2CAAE2;"></i>
-                    <div class="tick" align="right">
-                         <i class="fa fa-check-circle-o fa-2x" aria-hidden="true"></i>
-                    </div>
-                    <br>
-                    Organizations
-                </td>
-                <td id="td_DataCollection"  align="center" onclick="click_role('DataCollection');get_url('{{data.ispublished}}', '');" >
-                    <i class="fa fa-table fa-5x" aria-hidden="true" style="color: #A1C057;"></i>
-                    <div class="tick" align="right">
-                         <i class="fa fa-check-circle-o fa-2x" aria-hidden="true"></i>
-                    </div>
-                    <div style="position:relative;top:15px;">Data Collections</div>
-                </td>
-                <td id="td_Dataset" align="center" onclick="click_role('Dataset');get_url('{{data.ispublished}}', '');">
-                    <i class="fa fa-database fa-5x" aria-hidden="true" style="color: grey;"></i>
-                    <div class="tick" align="right">
-                         <i class="fa fa-check-circle-o fa-2x" aria-hidden="true"></i>
-                    </div>
-                    <br>
-                    Datasets
-                </td>
-                <td id="td_ServiceAPI" align="center" onclick="click_role('ServiceAPI');get_url('{{data.ispublished}}', '');">
-                    <i class="fa fa-cogs fa-5x" aria-hidden="true" style="color: #EBB057;"></i>
-                    <div class="tick" align="right">
-                         <i class="fa fa-check-circle-o fa-2x" aria-hidden="true"></i>
-                    </div>
-                    <br>
-                    Services
-                </td>
-                <td id="td_WebSite" align="center" onclick="click_role('WebSite');get_url('{{data.ispublished}}', '');">
-                    <i class="fa fa-laptop fa-5x" aria-hidden="true" style="color: #257ABC;"></i>
-                    <div class="tick" align="right">
-                         <i class="fa fa-check-circle-o fa-2x" aria-hidden="true"></i>
-                    </div>
-                    <br>
-                    Informational Sites
-                </td>
-                <td id="td_Software" align="center" onclick="click_role('Software');get_url('{{data.ispublished}}', '');">
-                    <i class="fa fa-tachometer fa-5x" aria-hidden="true" style="color: #79B320;"></i>
-                    <div class="tick" align="right">
-                         <i class="fa fa-check-circle-o fa-2x" aria-hidden="true"></i>
-                    </div>
-                    <br>
-                    Software
-                </td>
-            </tr>
-            </table>
+        {% include 'core_main_registry_app/resource_banner/resource_banner.html' %}
 
         <br/>
 

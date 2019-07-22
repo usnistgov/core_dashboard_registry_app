@@ -1,20 +1,21 @@
 /**
  * Update URL
  */
-get_url = function(ispublished, page) {
+get_url = function (ispublished, page) {
     var url = urlResources;
     var published = '';
     var list_role = '';
-    var i = 0;
 
-    // Get list of selected roles
-    $('input:checked[name=my_role]').each(function() {
-        if (i > 0) {
-            list_role += '&';
+
+    var list_roles = list_role_custom_resource.split(',');
+    for (var i = 0; i < list_roles.length; i++) {
+        if ($("#td_" + list_roles[i]).hasClass('selected_resource')) {
+            if (list_role != ''){
+                list_role += '&';
+            }
+            list_role += 'role=' + list_roles[i];
         }
-        list_role += 'role='+$(this).val();
-        i++;
-    });
+    }
 
     // Check if publish or not published
     if (ispublished === 'true') {
@@ -25,10 +26,11 @@ get_url = function(ispublished, page) {
 
     // Update URL with roles, publish and page
     if (list_role !== '') {
-        url += '?'+list_role;
+        url += '?' + list_role;
         if (published !== '') {
             url += '&' + published;
-        } if (page !== '' && page !== '1') {
+        }
+        if (page !== '' && page !== '1') {
             url += '&page=' + page;
         }
     } else if (published !== '') {
