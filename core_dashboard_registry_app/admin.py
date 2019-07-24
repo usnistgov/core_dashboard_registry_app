@@ -29,7 +29,7 @@ admin_urls = [
         staff_member_required(registry_common_views.DashboardRegistryWorkspaceRecords.as_view(
             administration=True,
             template=dashboard_constants.ADMIN_DASHBOARD_TEMPLATE)),
-        name='core_dashboard_workspace_list_data'),
+        name='core_dashboard_workspace_list'),
 ]
 
 
