@@ -57,8 +57,8 @@ class DashboardRegistryRecords(DashboardRecords):
     """ List the records for the registry
     """
 
-    def _get_list_name_in_shema_from_url(self, role_name_list, custom_resources):
-        """ Get list of name in schema for each role in url
+    def _get_list_name_in_shema_from_slug(self, role_name_list, custom_resources):
+        """ Get list of name in schema for each role in request
 
         Args:
             role_name_list:
@@ -66,9 +66,9 @@ class DashboardRegistryRecords(DashboardRecords):
         Returns:
         """
         list_name_in_schema = []
-        for url in role_name_list:
+        for role in role_name_list:
             for cr in custom_resources:
-                if cr.url == url:
+                if cr.slug == role:
                     list_name_in_schema.append(cr.name_in_schema)
 
         return list_name_in_schema
@@ -86,10 +86,10 @@ class DashboardRegistryRecords(DashboardRecords):
         page = request.GET.get('page', 1)
 
         context = {'page': page,
-                   'roles': ','.join(request.GET.getlist('role', [cr_type_all.url])),
+                   'roles': ','.join(request.GET.getlist('role', [cr_type_all.slug])),
                    'ispublished': is_published}
 
-        role_name_list = self._get_list_name_in_shema_from_url(request.GET.getlist('role', []), custom_resources)
+        role_name_list = self._get_list_name_in_shema_from_slug(request.GET.getlist('role', []), custom_resources)
 
         # Get resources
         try:
@@ -136,8 +136,8 @@ class DashboardRegistryRecords(DashboardRecords):
             reverse('core_dashboard_records'),
             'custom_resources': custom_resources,
             'display_not_resource': True, # display all resource
-            'role_custom_resource_type_all': cr_type_all.url,
-            'list_role_custom_resource': ','.join([cr.url for cr in custom_resources
+            'role_custom_resource_type_all': cr_type_all.slug,
+            'list_role_custom_resource': ','.join([cr.slug for cr in custom_resources
                                                    if custom_resource_api._is_custom_resource_type_resource(cr)
                                                    and cr.display_icon]), #
             'type_resource': CUSTOM_RESOURCE_TYPE.RESOURCE,
