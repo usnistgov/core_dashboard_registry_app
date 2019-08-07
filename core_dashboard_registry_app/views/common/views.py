@@ -78,7 +78,7 @@ class DashboardRegistryRecords(DashboardRecords):
         #TODO: use custom_resource to get cr_type_all
         cr_type_all = custom_resource_api.get_current_custom_resource_type_all()
 
-        custom_resources = list(custom_resource_api.get_all_of_current_template())#TODO .sort(key=lambda x: x.sort)
+        custom_resources = list(custom_resource_api.get_all_of_current_template().order_by('sort'))
 
         # Get arguments
         is_published = request.GET.get('ispublished', None)
@@ -139,7 +139,7 @@ class DashboardRegistryRecords(DashboardRecords):
             'role_custom_resource_type_all': cr_type_all.slug,
             'list_role_custom_resource': ','.join([cr.slug for cr in custom_resources
                                                    if custom_resource_api._is_custom_resource_type_resource(cr)
-                                                   and cr.display_icon]), #
+                                                   and cr.display_icon]),
             'type_resource': CUSTOM_RESOURCE_TYPE.RESOURCE,
         })
 
