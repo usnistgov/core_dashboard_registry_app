@@ -97,7 +97,7 @@ class DashboardRegistryRecords(DashboardRecords):
                 create_query_dashboard_resources(
                     request, role_name_list, self.administration
                 ),
-                request.user, '-last_modification_date')
+                request.user)
         except AccessControlError:
             loaded_data = []
 
