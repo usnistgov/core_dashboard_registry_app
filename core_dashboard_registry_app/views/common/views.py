@@ -25,6 +25,7 @@ from core_main_registry_app.commons.constants import DataStatus, DataRole
 from core_main_registry_app.components.custom_resource import api as custom_resource_api
 from core_main_registry_app.components.data.api import get_status, get_role
 from core_main_registry_app.constants import CUSTOM_RESOURCE_TYPE
+from core_main_app.components.workspace.api import check_if_workspace_can_be_changed
 
 if 'core_curate_registry_app' in INSTALLED_APPS:
     import core_curate_registry_app.components.curate_data_structure.api as \
@@ -75,7 +76,7 @@ class DashboardRegistryRecords(DashboardRecords):
 
     def get(self, request, *args, **kwargs):
 
-        #TODO: use custom_resource to get cr_type_all
+        # TODO: use custom_resource to get cr_type_all
         cr_type_all = custom_resource_api.get_current_custom_resource_type_all()
 
         custom_resources = list(custom_resource_api.get_all_of_current_template().order_by('sort'))
@@ -135,7 +136,7 @@ class DashboardRegistryRecords(DashboardRecords):
             'url_resources': reverse('admin:core_dashboard_records') if self.administration else
             reverse('core_dashboard_records'),
             'custom_resources': custom_resources,
-            'display_not_resource': True, # display all resource
+            'display_not_resource': True,  # display all resource
             'role_custom_resource_type_all': cr_type_all.slug,
             'list_role_custom_resource': ','.join([cr.slug for cr in custom_resources
                                                    if custom_resource_api._is_custom_resource_type_resource(cr)
@@ -169,7 +170,7 @@ class DashboardRegistryRecords(DashboardRecords):
                 'can_read': True,
                 'can_write': True,
                 'is_owner': True,
-                'can_change_workspace': self.can_change_workspace(data),
+                'can_change_workspace': check_if_workspace_can_be_changed(data),
                 'can_set_public': not data_api.is_data_public(data)
             })
         return data_context_list
