@@ -9,6 +9,7 @@ import core_main_app.components.data.api as data_api
 import core_main_registry_app.components.data.api as data_registry_api
 from core_main_app.access_control.exceptions import AccessControlError
 from core_main_app.commons import exceptions
+from core_main_app.utils.labels import get_data_label
 
 
 def switch_data_status(request):
@@ -44,9 +45,9 @@ def publish(request):
     try:
         data_id = request.POST.get('data_id', None)
         if data_id is not None:
-            data = data_api.get_by_id(data_id, request.user)
+            data = data_api.get_by_id(data_id, request.user)    
             data_registry_api.publish(data, request.user)
-            messages.add_message(request, messages.SUCCESS, 'Data saved with success.')
+            messages.add_message(request, messages.SUCCESS, get_data_label().capitalize() + ' published with success.')
         else:
             return HttpResponseBadRequest(json.dumps({'message': 'The data id is required'}),
                                           content_type='application/javascript')
