@@ -180,6 +180,7 @@ class DashboardRegistryRecords(DashboardRecords):
         assets = super(DashboardRegistryRecords, self)._get_assets()
         # add css relatives to the registry
         assets['css'].append("core_dashboard_registry_app/user/css/list/records.css")
+        assets['css'].append("core_main_registry_app/user/css/resource_banner/resource_banner.css")
         assets['css'].append(dashboard_constants.CSS_SELECTION)
         # add js relatives to the registry
         assets['js'].append({

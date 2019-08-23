@@ -9,7 +9,7 @@ get_url = function (ispublished, page) {
 
     var list_roles = list_role_custom_resource.split(',');
     for (var i = 0; i < list_roles.length; i++) {
-        if ($("#td_" + list_roles[i]).hasClass('selected_resource')) {
+        if ($("#cnt_" + list_roles[i]).hasClass('selected_resource')) {
             if (list_role != ''){
                 list_role += '&';
             }
