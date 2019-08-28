@@ -56,7 +56,7 @@
                     {% if data.ispublished == None %} <li id="all" class="active"> {%else%} <li> {% endif%} <a onclick="get_url('None', '');">All</a></li>
                     {% if data.ispublished == 'true' %} <li id="published" class="active"> {%else%} <li> {% endif%} <a onclick="get_url('true', '');">Published</a></li>
                     {% if data.ispublished == 'false' %} <li id="notpublished" class="active"> {%else%} <li> {% endif%} <a onclick="get_url('false', '');">Not Published</a></li>
-            </ul>
+                    {% if data.ispublished == 'draft' %} <li id="draft" class="active"> {%else%} <li> {% endif%} <a onclick="get_url('draft', '');">Drafts</a></li>            </ul>
 
         <br/>
     {% endif %}

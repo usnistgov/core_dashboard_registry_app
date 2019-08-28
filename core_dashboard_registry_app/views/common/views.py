@@ -26,6 +26,7 @@ from core_main_registry_app.components.custom_resource import api as custom_reso
 from core_main_registry_app.components.data.api import get_status, get_role
 from core_main_registry_app.constants import CUSTOM_RESOURCE_TYPE
 from core_main_app.components.workspace.api import check_if_workspace_can_be_changed
+import core_curate_app.components.curate_data_structure.api as curate_data_structure_api
 
 if 'core_curate_registry_app' in INSTALLED_APPS:
     import core_curate_registry_app.components.curate_data_structure.api as \
@@ -74,25 +75,17 @@ class DashboardRegistryRecords(DashboardRecords):
 
         return list_name_in_schema
 
-    def get(self, request, *args, **kwargs):
+    def load_records(self, request, is_published, custom_resources):
+        """ Get list of records
 
-        # TODO: use custom_resource to get cr_type_all
-        cr_type_all = custom_resource_api.get_current_custom_resource_type_all()
-
-        custom_resources = list(custom_resource_api.get_all_of_current_template().order_by('sort'))
-
-        # Get arguments
-        is_published = request.GET.get('ispublished', None)
-        is_published = None if is_published not in ['true', 'false'] else is_published
-        page = request.GET.get('page', 1)
-
-        context = {'page': page,
-                   'roles': ','.join(request.GET.getlist('role', [cr_type_all.slug])),
-                   'ispublished': is_published}
-
+             Args:
+                 role_name_list:
+                 custom_resources:
+             Returns:
+                 filtered_data
+             """
         role_name_list = self._get_list_name_in_shema_from_slug(request.GET.getlist('role', []), custom_resources)
-
-        # Get resources
+        filtered_data = []
         try:
             loaded_data = data_api.execute_query(
                 create_query_dashboard_resources(
@@ -101,14 +94,91 @@ class DashboardRegistryRecords(DashboardRecords):
                 request.user)
         except AccessControlError:
             loaded_data = []
-
-        # Filter publish/not published data
-        filtered_data = []
         for data in loaded_data:
             if (is_published is None or
                     (is_published == 'true' and data_api.is_data_public(data)) or
                     (is_published == 'false' and not data_api.is_data_public(data))):
                 filtered_data.append(data)
+        return filtered_data
+
+    def load_drafts(self, request, context):
+        """ Get list of drafts
+
+             Args:
+                 request:
+                 context:
+             Returns:
+                 filtered_data
+             """
+
+        role_name_list = request.GET.getlist('role', [])
+        filtered_data = []
+        if self.administration:
+            forms = curate_data_structure_registry_api.get_all_with_no_data()
+        else:
+            forms = curate_data_structure_api.get_all_by_user_id_with_no_data(request.user.id)
+
+        detailed_forms = []
+        for form in forms:
+            try:
+                role = ', '.join([DataRole.role[x]
+                                  for x in curate_data_structure_registry_api.get_role(form)
+                                  ]
+                                 if form.form_string
+                                 else ['None'])
+            except exceptions.ModelError:
+                role = 'None'
+            if role_name_list != []:
+                if '-'.join(role.lower().split()) in context['roles']:
+                    detailed_forms.append({'form': form,
+                                           'role': role})
+            else:
+                detailed_forms.append({'form': form,
+                                       'role': role})
+        filtered_data.extend(detailed_forms)
+        return filtered_data
+
+    def get(self, request, *args, **kwargs):
+        """ Retrieve a list of drafts or records
+
+        Args:
+
+            request: HTTP request
+
+        Returns:
+
+            - code: 200
+              content: Data
+            - code: 404
+              content: Object was not found
+            - code: 500
+              content: Internal server error
+        """
+
+
+        # TODO: use custom_resource to get cr_type_all
+        cr_type_all = custom_resource_api.get_current_custom_resource_type_all()
+
+        custom_resources = list(custom_resource_api.get_all_of_current_template().order_by('sort'))
+        # Get arguments
+
+        is_published = request.GET.get('ispublished', None)
+        is_published = None if is_published not in ['true', 'false', 'draft'] else is_published
+        page = request.GET.get('page', 1)
+        if is_published == 'draft':
+            template = dashboard_constants.DASHBOARD_FORMS_TEMPLATE_TABLE_PAGINATION
+        else:
+            template = self.data_template
+
+        context = {'page': page,
+                   'roles': ','.join(request.GET.getlist('role', [cr_type_all.slug])),
+                   'ispublished': is_published}
+
+        # Get resources
+        if is_published == 'draft':
+            filtered_data = self.load_drafts(request, context)
+        else:
+            filtered_data = self.load_records(request, is_published, custom_resources)
 
         # Paginator
         results_paginator = ResultsPaginator.get_results(
@@ -116,9 +186,10 @@ class DashboardRegistryRecords(DashboardRecords):
         )
 
         # Data context
-        results_paginator.object_list = self._format_data_context_registry(
-            results_paginator.object_list, is_published
-        )
+        if is_published != "draft":
+            results_paginator.object_list = self._format_data_context_registry(
+                results_paginator.object_list, is_published
+            )
 
         # Add user_form for change owner
         user_form = UserForm(request.user)
@@ -127,7 +198,7 @@ class DashboardRegistryRecords(DashboardRecords):
             'user_data': results_paginator,
             'user_form': user_form,
             'document': self.document,
-            'template': self.data_template,
+            'template': template,
             'action_form': ActionForm([('2', 'Change owner of selected records')]),
             'menu': self.administration,
             'administration': self.administration,

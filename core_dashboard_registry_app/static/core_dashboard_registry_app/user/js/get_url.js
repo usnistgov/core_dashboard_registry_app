@@ -3,9 +3,8 @@
  */
 get_url = function (ispublished, page) {
     var url = urlResources;
-    var published = '';
     var list_role = '';
-
+    url_name = '' ;
 
     var list_roles = list_role_custom_resource.split(',');
     for (var i = 0; i < list_roles.length; i++) {
@@ -19,22 +18,26 @@ get_url = function (ispublished, page) {
 
     // Check if publish or not published
     if (ispublished === 'true') {
-        published = 'ispublished=true';
+        url_name = 'ispublished=true';
     } else if (ispublished === 'false') {
-        published = 'ispublished=false';
+        url_name = 'ispublished=false';
     }
+    else if (ispublished === 'draft') {
+        url_name = 'ispublished=draft';
+    }
+
 
     // Update URL with roles, publish and page
     if (list_role !== '') {
         url += '?' + list_role;
-        if (published !== '') {
-            url += '&' + published;
+        if (url_name !== '') {
+            url += '&' + url_name;
         }
         if (page !== '' && page !== '1') {
             url += '&page=' + page;
         }
-    } else if (published !== '') {
-        url += '?' + published;
+    } else if (url_name !== '') {
+        url += '?' + url_name;
         if (page !== '' && page !== '1') {
             url += '&page=' + page;
         }
