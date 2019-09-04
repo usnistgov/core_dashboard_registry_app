@@ -26,14 +26,14 @@ urlpatterns = [
 
     # User
     url(r'^records$', login_required(registry_common_views.DashboardRegistryRecords.as_view(
-        document=dashboard_constants.FUNCTIONAL_OBJECT_ENUM.RECORD,
+        document=dashboard_constants.FUNCTIONAL_OBJECT_ENUM.RECORD.value,
         data_template='core_dashboard_registry_app/list/my_dashboard_my_records_table_pagination.html',
         allow_change_workspace_if_public=False,
     ), login_url=reverse_lazy("core_main_app_login")), name='core_dashboard_records'),
     url(r'^switch-status-record', registry_common_ajax.switch_data_status,
         name='core_dashboard_switch_status_record'),
     url(r'^forms$', login_required(registry_common_views.DashboardRegistryForms.as_view(
-        document=dashboard_constants.FUNCTIONAL_OBJECT_ENUM.FORM
+        document=dashboard_constants.FUNCTIONAL_OBJECT_ENUM.FORM.value
     ), login_url=reverse_lazy("core_main_app_login")), name='core_dashboard_forms'),
     url(r'^workspaces$', login_required(common_views.DashboardWorkspaces.as_view(
     ), login_url=reverse_lazy("core_main_app_login")), name='core_dashboard_workspaces'),

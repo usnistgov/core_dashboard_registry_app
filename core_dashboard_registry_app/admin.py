@@ -17,7 +17,7 @@ admin_urls = [
             template=dashboard_constants.ADMIN_DASHBOARD_TEMPLATE)),
         name='core_dashboard_records'),
     url(r'^forms$', staff_member_required(registry_common_views.DashboardRegistryForms.as_view(
-            document=dashboard_constants.FUNCTIONAL_OBJECT_ENUM.FORM,
+            document=dashboard_constants.FUNCTIONAL_OBJECT_ENUM.FORM.value,
             administration=True,
             template=dashboard_constants.ADMIN_DASHBOARD_TEMPLATE)),
         name='core_dashboard_forms'),

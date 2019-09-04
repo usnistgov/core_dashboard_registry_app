@@ -141,7 +141,7 @@ class DashboardRegistryRecords(DashboardRecords):
             'list_role_custom_resource': ','.join([cr.slug for cr in custom_resources
                                                    if custom_resource_api._is_custom_resource_type_resource(cr)
                                                    and cr.display_icon]),
-            'type_resource': CUSTOM_RESOURCE_TYPE.RESOURCE,
+            'type_resource': CUSTOM_RESOURCE_TYPE.RESOURCE.value,
         })
 
         modals = ["core_main_app/user/workspaces/list/modals/assign_workspace.html",
