@@ -113,10 +113,12 @@ class DashboardRegistryRecords(DashboardRecords):
 
         role_name_list = request.GET.getlist('role', [])
         filtered_data = []
+
         if self.administration:
-            forms = curate_data_structure_registry_api.get_all_with_no_data()
+            forms = curate_data_structure_api.get_all_with_no_data()
         else:
             forms = curate_data_structure_api.get_all_by_user_id_with_no_data(request.user.id)
+
 
         detailed_forms = []
         for form in forms:
@@ -166,8 +168,10 @@ class DashboardRegistryRecords(DashboardRecords):
         is_published = None if is_published not in ['true', 'false', 'draft'] else is_published
         page = request.GET.get('page', 1)
         if is_published == 'draft':
+            document = dashboard_common_constants.FUNCTIONAL_OBJECT_ENUM.FORM.value
             template = dashboard_constants.DASHBOARD_FORMS_TEMPLATE_TABLE_PAGINATION
         else:
+            document = dashboard_common_constants.FUNCTIONAL_OBJECT_ENUM.RECORD.value
             template = self.data_template
 
         context = {'page': page,
@@ -197,7 +201,7 @@ class DashboardRegistryRecords(DashboardRecords):
             'number_total': len(filtered_data),
             'user_data': results_paginator,
             'user_form': user_form,
-            'document': self.document,
+            'document': document,
             'template': template,
             'action_form': ActionForm([('2', 'Change owner of selected records')]),
             'menu': self.administration,

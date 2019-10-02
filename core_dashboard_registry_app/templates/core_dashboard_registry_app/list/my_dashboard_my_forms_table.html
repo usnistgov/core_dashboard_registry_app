@@ -3,12 +3,12 @@
 
 {% for data_loaded in objects %}
 <table class="card">
-    <tr objectid="{{data_loaded.data.id}}">
+    <tr objectid="{{data_loaded.form.id}}">
         <td style="padding:10px;" class="pull-left">
             <a class="view-record-btn" style="font-weight: bold; color: black; cursor: pointer;">{{ data_loaded.form.name }}</a> ({{ data_loaded.role }})
         </td>
     </tr>
-    <tr objectid="{{data_loaded.data.id}}">
+    <tr objectid="{{data_loaded.form.id}}">
         <td style="vertical-align: middle; padding:10px">
                 {% if come_from_admin %}
                     <a class="btn btn-default view-form-btn"
