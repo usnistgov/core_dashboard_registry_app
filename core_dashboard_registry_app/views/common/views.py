@@ -1,7 +1,7 @@
 """ Common views for the registry dashboard
 """
 from django.contrib.auth.decorators import login_required
-from django.urls import reverse
+from django.core.urlresolvers import reverse
 from django.urls import reverse_lazy
 
 from core_dashboard_common_app import constants as dashboard_common_constants
@@ -9,7 +9,7 @@ from core_dashboard_common_app import settings
 from core_dashboard_common_app.views.common.forms import ActionForm, UserForm
 from core_dashboard_common_app.views.common.views import DashboardRecords, DashboardForms
 from core_dashboard_common_app.views.common.views import DashboardWorkspaceRecords
-from django.urls import reverse
+from django.core.urlresolvers import reverse
 
 from core_dashboard_registry_app import constants as dashboard_constants
 from core_dashboard_registry_app.settings import INSTALLED_APPS
