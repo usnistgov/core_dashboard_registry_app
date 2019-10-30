@@ -1,7 +1,7 @@
 """
     User Dashboard menu
 """
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from menu import Menu, MenuItem
 
 import core_dashboard_registry_app.settings as settings
@@ -38,5 +38,5 @@ Menu.add_item(
 )
 
 Menu.add_item(
-    "main", MenuItem("Dashboard", reverse("core_dashboard_home"), check=lambda request: request.user.is_authenticated())
+    "main", MenuItem("Dashboard", reverse("core_dashboard_home"), check=lambda request: request.user.is_authenticated)
 )
