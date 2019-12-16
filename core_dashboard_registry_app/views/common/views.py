@@ -1,7 +1,6 @@
 """ Common views for the registry dashboard
 """
 from django.contrib.auth.decorators import login_required
-from django.urls import reverse
 from django.urls import reverse_lazy
 
 from core_dashboard_common_app import constants as dashboard_common_constants
@@ -21,7 +20,7 @@ from core_main_app.components.user import api as user_api
 from core_main_app.components.user.api import get_id_username_dict
 from core_main_app.utils.pagination.django_paginator.results_paginator import ResultsPaginator
 from core_main_app.utils.rendering import render
-from core_main_registry_app.commons.constants import DataStatus, DataRole
+from core_main_registry_app.commons.constants import DataStatus
 from core_main_registry_app.components.custom_resource import api as custom_resource_api
 from core_main_registry_app.components.data.api import get_status, get_role
 from core_main_registry_app.constants import CUSTOM_RESOURCE_TYPE
@@ -123,7 +122,7 @@ class DashboardRegistryRecords(DashboardRecords):
         detailed_forms = []
         for form in forms:
             try:
-                role = ', '.join([DataRole.role[x]
+                role = ', '.join([custom_resource_api.get_by_role_for_current_template(x).title
                                   for x in curate_data_structure_registry_api.get_role(form)
                                   ]
                                  if form.form_string
@@ -241,7 +240,7 @@ class DashboardRegistryRecords(DashboardRecords):
                 'username_list': username_list,
                 'data_status': get_status(data),
                 'data_status_values': DataStatus,
-                'data_role': ', '.join([DataRole.role[x] for x in get_role(data)]),
+                'data_role': ', '.join([custom_resource_api.get_by_role_for_current_template(x).title for x in get_role(data)]),
                 'can_read': True,
                 'can_write': True,
                 'is_owner': True,
@@ -295,7 +294,7 @@ class DashboardRegistryWorkspaceRecords(DashboardWorkspaceRecords):
                 'username_list': username_list,
                 'data_status': get_status(data),
                 'data_status_values': DataStatus,
-                'data_role': ', '.join([DataRole.role[x] for x in get_role(data)]),
+                'data_role': ', '.join([custom_resource_api.get_by_role_for_current_template(x).title for x in get_role(data)]),
                 'can_read': user_can_read or is_owner,
                 'can_write': user_can_write or is_owner,
                 'is_owner': is_owner
@@ -331,7 +330,7 @@ class DashboardRegistryForms(DashboardForms):
         detailed_forms = []
         for form in forms:
             try:
-                role = ', '.join([DataRole.role[x]
+                role = ', '.join([custom_resource_api.get_by_role_for_current_template(x).title
                                   for x in curate_data_structure_registry_api.get_role(form)
                                   ]
                                  if form.form_string
