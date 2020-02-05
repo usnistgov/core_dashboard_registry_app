@@ -23,7 +23,7 @@ chdir(normpath(join(abspath(__file__), pardir)))
 
 setup(
     name="core_dashboard_registry_app",
-    version="1.7.0",
+    version="1.8.0",
     description="Resource management via a dashboard for the registry core project",
     long_description=long_desc,
     author="NIST IT Lab",
