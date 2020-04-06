@@ -2,12 +2,13 @@
 {% load draft_extras %}
 {% load timestamptags %}
 
+
 {% for data_loaded in objects %}
-<table class="card">
+<table class="table table-borderless table-card">
     <tr objectid="{{data_loaded.data.id}}">
-        <td style="padding:10px;" class="pull-left">
+        <td class="px-3 pull-left">
             {% if data_loaded.can_read %}
-                <a class="view-record-btn" style="font-weight: bold; color: black; cursor: pointer;">{{ data_loaded.data.title }}</a> ({{ data_loaded.data_role }})
+                <a class="view-record-btn font-weight-bold pointer">{{ data_loaded.data.title }}</a> ({{ data_loaded.data_role }})
             {% else %}
                 <span style="font-weight: bold;">{{ data_loaded.data.title }}</span> ({{ data_loaded.data_role }})
             {% endif %}
@@ -17,15 +18,15 @@
         <td class="cell-dropdown">
             <span class="pull-right dropdown">
                 {% if data_loaded.data_status == data_loaded.data_status_values.ACTIVE  %}
-                    <span data-status="active" class="dropbtn status-active"></span>
+                    <span data-status="active" class="dropbtn status-active pointer"></span>
                 {% endif %}
                 {% if data_loaded.data_status == data_loaded.data_status_values.INACTIVE  %}
-                    <span data-status="inactive" class="dropbtn status-inactive"></span>
+                    <span data-status="inactive" class="dropbtn status-inactive pointer"></span>
                 {% endif %}
                 {% if data_loaded.data_status == data_loaded.data_status_values.DELETED  %}
-                    <span data-status="deleted" class="dropbtn status-deleted"></span>
+                    <span data-status="deleted" class="dropbtn status-deleted pointer"></span>
                 {% endif %}
-              <div class="dropdown-content">
+              <div class="dropdown-content pointer">
                   <a data-status="active" class="switch font-active">Active</a>
                   <a data-status="inactive" class="switch font-inactive">Inactive</a>
                     {% if data_loaded.data.workspace.is_public %}
@@ -45,7 +46,7 @@
         </td>
     </tr>
     <tr>
-        <td style="padding: 10px;">
+        <td class="px-3">
             {% if data_loaded.data.workspace %}
                 <span style="background-color: #a5d1ed; padding:2px 10px 2px 10px;">
                     {{ data_loaded.data.workspace.title }}
@@ -63,19 +64,19 @@
         </td>
     </tr>
     <tr objectid="{{data_loaded.data.id}}">
-        <td style="vertical-align: middle; padding:10px">
+        <td class="px-3">
             {% if data_loaded.can_change_workspace %}
-                <a class="btn btn-default assign-workspace-record-btn">
+                <a class="btn btn-secondary assign-workspace-record-btn">
                     <i class="fa fa-folder"></i> Change workspace
                 </a>
             {% endif %}
             {% if data_loaded.is_owner %}
-                <a class="btn btn-default change-owner-btn">
+                <a class="btn btn-secondary change-owner-btn">
                     <i class="fa fa-user-circle-o"></i> Change owner
                 </a>
             {% endif %}
             {% if data_loaded.can_write %}
-                <a class="btn btn-default edit-record-btn">
+                <a class="btn btn-secondary edit-record-btn">
                     <i class="fa fa-edit"></i> {% if data_loaded.data|has_draft %} Edit draft {% else %} Create new version {% endif %}
                 </a>
             {% endif %}
@@ -83,14 +84,12 @@
         </td>
         <td style="padding: 10px;">
             {% if data_loaded.can_set_public %}
-                <a class="btn btn-default publish-record-btn pull-right">
+                <a class="btn btn-secondary publish-record-btn pull-right">
                     <i class="fa fa-share-alt"></i> Publish
                 </a>
             {% else %}
                 <span class="pull-right" style="font-size: 0.6em;"> Published on: {{ data_loaded.data.last_modification_date|print_datetime_utc_unaware }} </span>
             {% endif %}
-
-
         </td>
     </tr>
 </table>

@@ -1,6 +1,9 @@
+.pointer {
+    cursor: pointer;
+}
+
 /* Style The Dropdown Button */
 .dropbtn {
-    cursor: pointer;
     text-align: center;
     vertical-align: middle;
     font-size: 0.7em;
@@ -21,7 +24,6 @@
 
 /* Dropdown Content (Hidden by Default) */
 .dropdown-content {
-    cursor: pointer;
     display: none;
     position: absolute;
     background-color: #f9f9f9;
@@ -44,13 +46,12 @@
 }
 
 /* Style a card */
-.card {
-    height: 100px;
-    padding:50px;
+.table-card {
     background-color: #f1f1f1;
-    width: 100%;
-    margin-bottom: 20px;
-    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 20px 0 rgba(0, 0, 0, 0.19);
+    border-radius: 5px;
+    margin-bottom: 1.5em;
+    -webkit-box-shadow: 0 2px 4px 0 #737373;
+    box-shadow: 0 2px 4px 0 #737373;
 }
 
 /* Colors definition */

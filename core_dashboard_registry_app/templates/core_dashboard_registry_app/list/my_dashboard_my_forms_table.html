@@ -2,7 +2,7 @@
 
 
 {% for data_loaded in objects %}
-<table class="card">
+<table class="table table-card">
     <tr objectid="{{data_loaded.form.id}}">
         <td style="padding:10px;" class="pull-left">
             <a class="view-record-btn" style="font-weight: bold; color: black; cursor: pointer;">{{ data_loaded.form.name }}</a> ({{ data_loaded.role }})
@@ -11,25 +11,25 @@
     <tr objectid="{{data_loaded.form.id}}">
         <td style="vertical-align: middle; padding:10px">
                 {% if come_from_admin %}
-                    <a class="btn btn-default view-form-btn"
+                    <a class="btn btn-secondary view-form-btn"
                        href="{% url 'admin:core_curate_view_form' data_loaded.form.id %}">
                         <i class="fa fa-file-text-o"></i> View
                     </a>
                 {% else %}
-                    <a class="btn btn-default view-form-btn"
+                    <a class="btn btn-secondary view-form-btn"
                        href="{% url 'core_curate_view_form' data_loaded.form.id %}">
                         <i class="fa fa-file-text-o"></i> View
                     </a>
                 {% endif %}
-                <a class="btn btn-default edit-form-btn" href="{% url 'core_curate_enter_data' data_loaded.form.id %}">
+                <a class="btn btn-secondary edit-form-btn" href="{% url 'core_curate_enter_data' data_loaded.form.id %}">
                     <i class="fa fa-edit"></i> Edit
                 </a>
 
-                <a class="btn btn-default delete-document-btn">
+                <a class="btn btn-secondary delete-document-btn">
                     <i class="fa fa-trash"></i> Delete
                 </a>
 
-                <a class="btn btn-default change-owner-btn">
+                <a class="btn btn-secondary change-owner-btn">
                     <i class="fa fa-user-circle-o"></i> Change Owner
                 </a>
             </td>

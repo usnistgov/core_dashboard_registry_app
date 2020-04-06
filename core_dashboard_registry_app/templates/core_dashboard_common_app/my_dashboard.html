@@ -13,13 +13,13 @@
 
 {% block box_tools %}
     {% if data.create_workspace %}
-    <a class="btn btn-default create-workspace-btn">
+    <a class="btn btn-secondary create-workspace-btn">
         <i class="fa fa-file-text-o"></i> Create workspace
     </a>
     {% endif %}
 
     {% if data.title %}
-        <a href="#" class="btn btn-default back-to-previous">
+        <a href="#" class="btn btn-secondary back-to-previous">
              <i class="fa fa-arrow-left"></i> Previous page
         </a>
     {% endif %}
@@ -34,7 +34,7 @@
 
     {% if data.menu and not data.title %}
         <div class="dropdown" id="id_actions" style="display:none">
-            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                 Choose action
                 <span class="caret"></span>
             </button>
@@ -47,18 +47,38 @@
     {% endif %}
 
     {% if data.resources %}
-
         {% include 'core_main_registry_app/resource_banner/resource_banner.html' %}
+        <ul class="nav nav-tabs">
+            <li class="nav-item pointer">
+            {% if data.ispublished == None %}
+                <a class="nav-link active" onclick="get_url('None', '');">All</a>
+            {%else%}
+                <a class="nav-link" onclick="get_url('None', '');">All</a>
+            {% endif%}
 
-        <br/>
-
-            <ul class="nav nav-tabs">
-                    {% if data.ispublished == None %} <li id="all" class="active"> {%else%} <li> {% endif%} <a onclick="get_url('None', '');">All</a></li>
-                    {% if data.ispublished == 'true' %} <li id="published" class="active"> {%else%} <li> {% endif%} <a onclick="get_url('true', '');">Published</a></li>
-                    {% if data.ispublished == 'false' %} <li id="notpublished" class="active"> {%else%} <li> {% endif%} <a onclick="get_url('false', '');">Not Published</a></li>
-                    {% if data.ispublished == 'draft' %} <li id="draft" class="active"> {%else%} <li> {% endif%} <a onclick="get_url('draft', '');">Drafts</a></li>            </ul>
-
-        <br/>
+            </li>
+            <li class="nav-item pointer">
+            {% if data.ispublished == 'true' %}
+                <a class="nav-link active" onclick="get_url('true', '');">Published</a>
+            {%else%}
+                <a class="nav-link" onclick="get_url('true', '');">Published</a>
+            {% endif%}
+            </li>
+            <li class="nav-item pointer">
+            {% if data.ispublished == 'false' %}
+                <a class="nav-link active" onclick="get_url('false', '');">Not Published</a>
+            {%else%}
+                    <a class="nav-link" onclick="get_url('false', '');">Not Published</a>
+            {% endif%}
+            </li>
+            <li id="draft" class="nav-item pointer">
+            {% if data.ispublished == 'draft' %}
+                <a class="nav-link active" onclick="get_url('draft', '');">Drafts</a>
+            {%else%}
+                <a class="nav-link" onclick="get_url('draft', '');">Drafts</a>
+            {% endif%}
+            </li>
+        </ul>
     {% endif %}
 
     <div class="tab-content">
