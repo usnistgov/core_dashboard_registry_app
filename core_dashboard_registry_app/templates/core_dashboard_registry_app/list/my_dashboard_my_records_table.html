@@ -16,7 +16,7 @@
 
         </td>
         <td class="cell-dropdown">
-            <span class="pull-right dropdown">
+            <span class="float-right dropdown">
                 {% if data_loaded.data_status == data_loaded.data_status_values.ACTIVE  %}
                     <span data-status="active" class="dropbtn status-active pointer"></span>
                 {% endif %}
@@ -35,13 +35,13 @@
               </div>
             </span>
             {% if data_loaded.data_status == data_loaded.data_status_values.ACTIVE  %}
-                <span class="pull-right label-status font-active">Active</span>
+                <span class="float-right label-status font-active">Active</span>
             {% endif %}
             {% if data_loaded.data_status == data_loaded.data_status_values.INACTIVE  %}
-                <span class="pull-right label-status font-inactive">Inactive</span>
+                <span class="float-right label-status font-inactive">Inactive</span>
             {% endif %}
             {% if data_loaded.data_status == data_loaded.data_status_values.DELETED  %}
-                <span class="pull-right label-status font-deleted">Deleted</span>
+                <span class="float-right label-status font-deleted">Deleted</span>
             {% endif %}
         </td>
     </tr>
@@ -72,7 +72,7 @@
             {% endif %}
             {% if data_loaded.is_owner %}
                 <a class="btn btn-secondary change-owner-btn">
-                    <i class="fa fa-user-circle-o"></i> Change owner
+                    <i class="fa fa-user-circle"></i> Change owner
                 </a>
             {% endif %}
             {% if data_loaded.can_write %}
@@ -84,11 +84,11 @@
         </td>
         <td style="padding: 10px;">
             {% if data_loaded.can_set_public %}
-                <a class="btn btn-secondary publish-record-btn pull-right">
+                <a class="btn btn-secondary publish-record-btn float-right">
                     <i class="fa fa-share-alt"></i> Publish
                 </a>
             {% else %}
-                <span class="pull-right" style="font-size: 0.6em;"> Published on: {{ data_loaded.data.last_modification_date|print_datetime_utc_unaware }} </span>
+                <span class="float-right" style="font-size: 0.6em;"> Published on: {{ data_loaded.data.last_modification_date|print_datetime_utc_unaware }} </span>
             {% endif %}
         </td>
     </tr>
