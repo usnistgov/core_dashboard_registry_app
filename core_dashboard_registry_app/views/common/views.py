@@ -118,7 +118,6 @@ class DashboardRegistryRecords(DashboardRecords):
         else:
             forms = curate_data_structure_api.get_all_by_user_id_with_no_data(request.user.id)
 
-
         detailed_forms = []
         for form in forms:
             try:
@@ -240,7 +239,7 @@ class DashboardRegistryRecords(DashboardRecords):
                 'username_list': username_list,
                 'data_status': get_status(data),
                 'data_status_values': DataStatus,
-                'data_role': ', '.join([custom_resource_api.get_by_role_for_current_template(x).title for x in get_role(data)]),
+                'data_role': ', '.join([_get_role_label(x) for x in get_role(data)]),
                 'can_read': True,
                 'can_write': True,
                 'is_owner': True,
@@ -294,7 +293,7 @@ class DashboardRegistryWorkspaceRecords(DashboardWorkspaceRecords):
                 'username_list': username_list,
                 'data_status': get_status(data),
                 'data_status_values': DataStatus,
-                'data_role': ', '.join([custom_resource_api.get_by_role_for_current_template(x).title for x in get_role(data)]),
+                'data_role': ', '.join([_get_role_label(x) for x in get_role(data)]),
                 'can_read': user_can_read or is_owner,
                 'can_write': user_can_write or is_owner,
                 'is_owner': is_owner
@@ -341,3 +340,20 @@ class DashboardRegistryForms(DashboardForms):
             detailed_forms.append({'form': form,
                                    'role': role})
         return detailed_forms
+
+
+def _get_role_label(role):
+    """ Get role label
+
+    Get role label from custom resources if found, get it from xsd otherwise
+
+    Args:
+        role:
+
+    Returns:
+
+    """
+    try:
+        return custom_resource_api.get_by_role_for_current_template(role).title
+    except (exceptions.ModelError, exceptions.DoesNotExist):
+        return role
