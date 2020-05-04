@@ -80,6 +80,14 @@
                     <i class="fa fa-edit"></i> {% if data_loaded.data|has_draft %} Edit draft {% else %} Create new version {% endif %}
                 </a>
             {% endif %}
+            {% if data_loaded.can_write %}
+                {% if data.administration %}
+                    {% url 'admin:core_dashboard_app_edit_data' data_loaded.data.id as edit_url %}
+                {% else %}
+                    {% url 'core_dashboard_app_edit_data' data_loaded.data.id as edit_url %}
+                {% endif %}
+                {% include 'core_main_app/common/buttons/edit.html' with label="Edit Title" %}
+            {% endif %}
 
         </td>
         <td style="padding: 10px;">

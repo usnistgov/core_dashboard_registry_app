@@ -3,11 +3,12 @@ Url router for the administration site
 """
 from django.contrib import admin
 from django.contrib.admin.views.decorators import staff_member_required
-from django.urls import re_path
+from django.urls import re_path, reverse_lazy
 
 from core_dashboard_common_app import constants as dashboard_constants
 from core_dashboard_common_app.views.common import views as common_views
 from core_dashboard_registry_app.views.common import views as registry_common_views
+from core_dashboard_registry_app.views.common.ajax import EditDataView
 
 admin_urls = [
     # Admin
@@ -30,6 +31,10 @@ admin_urls = [
                 administration=True,
                 template=dashboard_constants.ADMIN_DASHBOARD_TEMPLATE)),
             name='core_dashboard_workspace_list'),
+    re_path(r'^dashboard-data/(?P<pk>[\w-]+)/edit/$',
+            EditDataView.as_view(success_url=reverse_lazy(
+                "admin:core_dashboard_records")),
+            name='core_dashboard_app_edit_data'),
 ]
 
 urls = admin.site.get_urls()

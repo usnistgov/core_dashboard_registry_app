@@ -1,31 +1,31 @@
 """ Common views for the registry dashboard
 """
 from django.contrib.auth.decorators import login_required
+from django.urls import reverse
 from django.urls import reverse_lazy
 
+import core_curate_app.components.curate_data_structure.api as curate_data_structure_api
 from core_dashboard_common_app import constants as dashboard_common_constants
 from core_dashboard_common_app import settings
 from core_dashboard_common_app.views.common.forms import ActionForm, UserForm
 from core_dashboard_common_app.views.common.views import DashboardRecords, DashboardForms
 from core_dashboard_common_app.views.common.views import DashboardWorkspaceRecords
-from django.urls import reverse
-
 from core_dashboard_registry_app import constants as dashboard_constants
 from core_dashboard_registry_app.settings import INSTALLED_APPS
 from core_dashboard_registry_app.utils.query.mongo.prepare import create_query_dashboard_resources
+from core_dashboard_registry_app.views.common.ajax import EditDataView
 from core_main_app.access_control.exceptions import AccessControlError
 from core_main_app.commons import exceptions as exceptions
 from core_main_app.components.data import api as data_api
 from core_main_app.components.user import api as user_api
 from core_main_app.components.user.api import get_id_username_dict
+from core_main_app.components.workspace.api import check_if_workspace_can_be_changed
 from core_main_app.utils.pagination.django_paginator.results_paginator import ResultsPaginator
 from core_main_app.utils.rendering import render
 from core_main_registry_app.commons.constants import DataStatus
 from core_main_registry_app.components.custom_resource import api as custom_resource_api
 from core_main_registry_app.components.data.api import get_status, get_role
 from core_main_registry_app.constants import CUSTOM_RESOURCE_TYPE
-from core_main_app.components.workspace.api import check_if_workspace_can_be_changed
-import core_curate_app.components.curate_data_structure.api as curate_data_structure_api
 
 if 'core_curate_registry_app' in INSTALLED_APPS:
     import core_curate_registry_app.components.curate_data_structure.api as \
@@ -219,7 +219,8 @@ class DashboardRegistryRecords(DashboardRecords):
 
         modals = ["core_main_app/user/workspaces/list/modals/assign_workspace.html",
                   dashboard_common_constants.MODALS_COMMON_DELETE,
-                  dashboard_common_constants.MODALS_COMMON_CHANGE_OWNER
+                  dashboard_common_constants.MODALS_COMMON_CHANGE_OWNER,
+                  EditDataView.get_modal_html_path()
                   ]
 
         assets = self._get_assets()
@@ -276,6 +277,9 @@ class DashboardRegistryRecords(DashboardRecords):
             "path": 'core_dashboard_registry_app/user/js/get_url.js',
             "is_raw": False
         })
+        assets['js'].append(
+            EditDataView.get_modal_js_path()
+        )
         return assets
 
 

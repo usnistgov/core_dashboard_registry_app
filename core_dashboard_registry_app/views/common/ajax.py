@@ -2,14 +2,17 @@
 """
 import json
 
-from django.http.response import HttpResponse, HttpResponseBadRequest
 from django.contrib import messages
+from django.http.response import HttpResponse, HttpResponseBadRequest
 
-import core_main_app.components.data.api as data_api
 import core_main_registry_app.components.data.api as data_registry_api
+from core_dashboard_registry_app.views.common.forms import EditDataForm
 from core_main_app.access_control.exceptions import AccessControlError
 from core_main_app.commons import exceptions
+from core_main_app.components.data import api as data_api
+from core_main_app.components.data.models import Data
 from core_main_app.utils.labels import get_data_label
+from core_main_app.views.common.ajax import EditObjectModalView
 
 
 def switch_data_status(request):
@@ -61,3 +64,18 @@ def publish(request):
         return HttpResponseBadRequest(json.dumps({'message': str(e)}),
                                       content_type='application/javascript')
     return HttpResponse(json.dumps({}), content_type='application/javascript')
+
+
+class EditDataView(EditObjectModalView):
+    """ EditDataView
+    """
+    form_class = EditDataForm
+    document = Data
+    success_message = 'Title edited with success.'
+
+    def _save(self, form):
+        # Save treatment.
+        try:
+            data_api.upsert(self.object, self.request.user)
+        except Exception as e:
+            form.add_error(None, str(e))

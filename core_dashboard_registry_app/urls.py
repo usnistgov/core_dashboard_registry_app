@@ -10,6 +10,7 @@ from core_dashboard_common_app.views.common import ajax, views as common_views
 from core_dashboard_common_app.views.common.views import UserDashboardPasswordChangeFormView
 from core_dashboard_registry_app.views.common import ajax as registry_common_ajax
 from core_dashboard_registry_app.views.common import views as registry_common_views
+from core_dashboard_registry_app.views.common.ajax import EditDataView
 
 urlpatterns = [
     # Common
@@ -43,4 +44,8 @@ urlpatterns = [
                 login_url=reverse_lazy("core_main_app_login")), name='core_dashboard_workspace_list'),
 
     re_path(r'^publish-resource', registry_common_ajax.publish, name='core_dashboard_publish_resource_registry'),
+    re_path(r'^dashboard-data/(?P<pk>[\w-]+)/edit/$',
+            EditDataView.as_view(success_url=reverse_lazy(
+                "core_dashboard_records")),
+            name='core_dashboard_app_edit_data'),
 ]
