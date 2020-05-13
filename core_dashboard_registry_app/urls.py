@@ -45,7 +45,6 @@ urlpatterns = [
 
     re_path(r'^publish-resource', registry_common_ajax.publish, name='core_dashboard_publish_resource_registry'),
     re_path(r'^dashboard-data/(?P<pk>[\w-]+)/edit/$',
-            EditDataView.as_view(success_url=reverse_lazy(
-                "core_dashboard_records")),
+            EditDataView.as_view(),
             name='core_dashboard_app_edit_data'),
 ]

@@ -32,8 +32,7 @@ admin_urls = [
                 template=dashboard_constants.ADMIN_DASHBOARD_TEMPLATE)),
             name='core_dashboard_workspace_list'),
     re_path(r'^dashboard-data/(?P<pk>[\w-]+)/edit/$',
-            EditDataView.as_view(success_url=reverse_lazy(
-                "admin:core_dashboard_records")),
+            EditDataView.as_view(),
             name='core_dashboard_app_edit_data'),
 ]
 

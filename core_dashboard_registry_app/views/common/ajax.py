@@ -79,3 +79,6 @@ class EditDataView(EditObjectModalView):
             data_api.upsert(self.object, self.request.user)
         except Exception as e:
             form.add_error(None, str(e))
+
+    def get_success_url(self):
+        return self.request.META['HTTP_REFERER']

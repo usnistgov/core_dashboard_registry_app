@@ -304,6 +304,11 @@ class DashboardRegistryWorkspaceRecords(DashboardWorkspaceRecords):
             })
         return detailed_user_data
 
+    def _get_modals(self):
+        modals = super(DashboardRegistryWorkspaceRecords, self)._get_modals()
+        modals.append(EditDataView.get_modal_html_path())
+        return modals
+
     def _get_assets(self):
         # add js & css for the super class
         assets = super(DashboardRegistryWorkspaceRecords, self)._get_assets()
@@ -322,6 +327,9 @@ class DashboardRegistryWorkspaceRecords(DashboardWorkspaceRecords):
             "path": 'core_dashboard_registry_app/user/js/get_url.js',
             "is_raw": False
         })
+        assets['js'].append(
+            EditDataView.get_modal_js_path()
+        )
         return assets
 
 
