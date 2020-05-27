@@ -22,21 +22,25 @@ def switch_data_status(request):
 
     """
     try:
-        data_id = request.POST.get('data_id', None)
-        new_status = request.POST.get('new_status', None)
+        data_id = request.POST.get("data_id", None)
+        new_status = request.POST.get("new_status", None)
         if data_id is not None and new_status is not None:
             data = data_api.get_by_id(data_id, request.user)
             data_registry_api.set_status(data, new_status, request.user)
         else:
-            return HttpResponseBadRequest(json.dumps({'message': 'The data id and the new status are required'}),
-                                          content_type='application/javascript')
+            return HttpResponseBadRequest(
+                json.dumps({"message": "The data id and the new status are required"}),
+                content_type="application/javascript",
+            )
     except exceptions.DoesNotExist as dne:
-        return HttpResponseBadRequest(json.dumps({'message': str(dne)}),
-                                      content_type='application/json')
+        return HttpResponseBadRequest(
+            json.dumps({"message": str(dne)}), content_type="application/json"
+        )
     except Exception as e:
-        return HttpResponseBadRequest(json.dumps({'message': str(e)}),
-                                      content_type='application/javascript')
-    return HttpResponse(json.dumps({}), content_type='application/javascript')
+        return HttpResponseBadRequest(
+            json.dumps({"message": str(e)}), content_type="application/javascript"
+        )
+    return HttpResponse(json.dumps({}), content_type="application/javascript")
 
 
 def publish(request):
@@ -46,32 +50,45 @@ def publish(request):
 
     """
     try:
-        data_id = request.POST.get('data_id', None)
+        data_id = request.POST.get("data_id", None)
         if data_id is not None:
-            data = data_api.get_by_id(data_id, request.user)    
+            data = data_api.get_by_id(data_id, request.user)
             data_registry_api.publish(data, request.user)
-            messages.add_message(request, messages.SUCCESS, get_data_label().capitalize() + ' published with success.')
+            messages.add_message(
+                request,
+                messages.SUCCESS,
+                get_data_label().capitalize() + " published with success.",
+            )
         else:
-            return HttpResponseBadRequest(json.dumps({'message': 'The data id is required'}),
-                                          content_type='application/javascript')
+            return HttpResponseBadRequest(
+                json.dumps({"message": "The data id is required"}),
+                content_type="application/javascript",
+            )
     except exceptions.DoesNotExist as dne:
-        return HttpResponseBadRequest(json.dumps({'message': str(dne)}),
-                                      content_type='application/json')
+        return HttpResponseBadRequest(
+            json.dumps({"message": str(dne)}), content_type="application/json"
+        )
     except AccessControlError as ace:
-        return HttpResponseBadRequest(json.dumps({'message': 'You don\'t have enough right to perform this action.'}),
-                                      content_type='application/json')
+        return HttpResponseBadRequest(
+            json.dumps(
+                {"message": "You don't have enough right to perform this action."}
+            ),
+            content_type="application/json",
+        )
     except Exception as e:
-        return HttpResponseBadRequest(json.dumps({'message': str(e)}),
-                                      content_type='application/javascript')
-    return HttpResponse(json.dumps({}), content_type='application/javascript')
+        return HttpResponseBadRequest(
+            json.dumps({"message": str(e)}), content_type="application/javascript"
+        )
+    return HttpResponse(json.dumps({}), content_type="application/javascript")
 
 
 class EditDataView(EditObjectModalView):
     """ EditDataView
     """
+
     form_class = EditDataForm
     document = Data
-    success_message = 'Title edited with success.'
+    success_message = "Title edited with success."
 
     def _save(self, form):
         # Save treatment.
@@ -81,4 +98,4 @@ class EditDataView(EditObjectModalView):
             form.add_error(None, str(e))
 
     def get_success_url(self):
-        return self.request.META['HTTP_REFERER']
+        return self.request.META["HTTP_REFERER"]

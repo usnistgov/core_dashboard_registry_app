@@ -16,11 +16,11 @@ def create_query_dashboard_resources(request, role_name_list, administration):
     query = {}
 
     # if at least one role
-    if len(role_name_list) > 0 :
-        query['$or'] = [{PATH_ROLE: role} for role in role_name_list]
+    if len(role_name_list) > 0:
+        query["$or"] = [{PATH_ROLE: role} for role in role_name_list]
 
     # user
     if not administration:
-        query['user_id'] = str(request.user.id)
+        query["user_id"] = str(request.user.id)
 
     return query
