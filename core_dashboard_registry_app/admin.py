@@ -56,7 +56,7 @@ admin_urls = [
     ),
     re_path(
         r"^dashboard-data/(?P<pk>[\w-]+)/edit/$",
-        EditDataView.as_view(),
+        staff_member_required(EditDataView.as_view()),
         name="core_dashboard_app_edit_data",
     ),
 ]
