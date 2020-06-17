@@ -4,6 +4,7 @@ import json
 
 from django.contrib import messages
 from django.http.response import HttpResponse, HttpResponseBadRequest
+from django.utils.html import escape
 
 import core_main_registry_app.components.data.api as data_registry_api
 from core_dashboard_registry_app.views.common.forms import EditDataForm
@@ -34,11 +35,12 @@ def switch_data_status(request):
             )
     except exceptions.DoesNotExist as dne:
         return HttpResponseBadRequest(
-            json.dumps({"message": str(dne)}), content_type="application/json"
+            json.dumps({"message": escape(str(dne))}), content_type="application/json"
         )
     except Exception as e:
         return HttpResponseBadRequest(
-            json.dumps({"message": str(e)}), content_type="application/javascript"
+            json.dumps({"message": escape(str(e))}),
+            content_type="application/javascript",
         )
     return HttpResponse(json.dumps({}), content_type="application/javascript")
 
@@ -66,7 +68,7 @@ def publish(request):
             )
     except exceptions.DoesNotExist as dne:
         return HttpResponseBadRequest(
-            json.dumps({"message": str(dne)}), content_type="application/json"
+            json.dumps({"message": escape(str(dne))}), content_type="application/json"
         )
     except AccessControlError as ace:
         return HttpResponseBadRequest(
@@ -77,7 +79,8 @@ def publish(request):
         )
     except Exception as e:
         return HttpResponseBadRequest(
-            json.dumps({"message": str(e)}), content_type="application/javascript"
+            json.dumps({"message": escape(str(e))}),
+            content_type="application/javascript",
         )
     return HttpResponse(json.dumps({}), content_type="application/javascript")
 
