@@ -3,6 +3,7 @@
 import json
 
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.http.response import HttpResponse, HttpResponseBadRequest
 from django.utils.html import escape
 
@@ -16,6 +17,7 @@ from core_main_app.utils.labels import get_data_label
 from core_main_app.views.common.ajax import EditObjectModalView
 
 
+@login_required
 def switch_data_status(request):
     """ switch the data status
 
@@ -45,6 +47,7 @@ def switch_data_status(request):
     return HttpResponse(json.dumps({}), content_type="application/javascript")
 
 
+@login_required
 def publish(request):
     """ Publish a resource.
 
