@@ -27,7 +27,7 @@
             </td>
             {% endif %}
             <td>
-                {{ data_loaded.data.title }}{% if data_loaded.data|has_draft %},<text style="color: red;">&nbsp;Draft</text>{% endif %}
+                {{ data_loaded.data.title }}{% if data_loaded.data|has_draft:'request.user' %},<text class="text-danger">&nbsp;Draft</text>{% endif %}
             </td>
             <td>
                 {{ data_loaded.data_role }}
