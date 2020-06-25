@@ -12,7 +12,7 @@
             {% else %}
                 <span style="font-weight: bold;">{{ data_loaded.data.title }}</span> ({{ data_loaded.data_role }})
             {% endif %}
-            {% if data_loaded.data|has_draft:'request.user'%}, <text class="text-danger">&nbsp;Draft</text>{% endif %}
+            {% if data_loaded.data|has_draft:request.user%}, <text class="text-danger">&nbsp;Draft</text>{% endif %}
 
         </td>
         <td class="cell-dropdown">
@@ -77,7 +77,7 @@
             {% endif %}
             {% if data_loaded.can_write %}
                 <a class="btn btn-secondary edit-record-btn">
-                    <i class="fa fa-edit"></i> {% if data_loaded.data|has_draft:'request.user' %} Edit draft {% else %} Create new version {% endif %}
+                    <i class="fa fa-edit"></i> {% if data_loaded.data|has_draft:request.user %} Edit draft {% else %} Create new version {% endif %}
                 </a>
             {% endif %}
             {% if data_loaded.can_write %}
