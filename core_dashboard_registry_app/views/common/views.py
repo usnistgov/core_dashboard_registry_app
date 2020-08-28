@@ -40,7 +40,7 @@ if "core_curate_registry_app" in INSTALLED_APPS:
 
 @login_required(login_url=reverse_lazy("core_main_app_login"))
 def home(request):
-    """ Home page.
+    """Home page.
 
     Args:
         request:
@@ -65,11 +65,10 @@ def home(request):
 
 
 class DashboardRegistryRecords(DashboardRecords):
-    """ List the records for the registry
-    """
+    """List the records for the registry"""
 
     def _get_list_name_in_shema_from_slug(self, role_name_list, custom_resources):
-        """ Get list of name in schema for each role in request
+        """Get list of name in schema for each role in request
 
         Args:
             role_name_list:
@@ -85,14 +84,14 @@ class DashboardRegistryRecords(DashboardRecords):
         return list_name_in_schema
 
     def load_records(self, request, is_published, custom_resources):
-        """ Get list of records
+        """Get list of records
 
-             Args:
-                 role_name_list:
-                 custom_resources:
-             Returns:
-                 filtered_data
-             """
+        Args:
+            role_name_list:
+            custom_resources:
+        Returns:
+            filtered_data
+        """
         role_name_list = self._get_list_name_in_shema_from_slug(
             request.GET.getlist("role", []), custom_resources
         )
@@ -116,14 +115,14 @@ class DashboardRegistryRecords(DashboardRecords):
         return filtered_data
 
     def load_drafts(self, request, context):
-        """ Get list of drafts
+        """Get list of drafts
 
-             Args:
-                 request:
-                 context:
-             Returns:
-                 filtered_data
-             """
+        Args:
+            request:
+            context:
+        Returns:
+            filtered_data
+        """
 
         role_name_list = request.GET.getlist("role", [])
         filtered_data = []
@@ -157,7 +156,7 @@ class DashboardRegistryRecords(DashboardRecords):
         return filtered_data
 
     def get(self, request, *args, **kwargs):
-        """ Retrieve a list of drafts or records
+        """Retrieve a list of drafts or records
 
         Args:
 
@@ -320,8 +319,7 @@ class DashboardRegistryRecords(DashboardRecords):
 
 
 class DashboardRegistryWorkspaceRecords(DashboardWorkspaceRecords):
-    """ List the records of a workspace for the registry.
-    """
+    """List the records of a workspace for the registry."""
 
     def _format_data_context(self, data_list, user, user_can_read, user_can_write):
         detailed_user_data = []
@@ -375,8 +373,7 @@ class DashboardRegistryWorkspaceRecords(DashboardWorkspaceRecords):
 
 
 class DashboardRegistryForms(DashboardForms):
-    """ List the forms.
-    """
+    """List the forms."""
 
     def _get_detailed_forms(self, forms):
         detailed_forms = []
@@ -398,7 +395,7 @@ class DashboardRegistryForms(DashboardForms):
 
 
 def _get_role_label(role):
-    """ Get role label
+    """Get role label
 
     Get role label from custom resources if found, get it from xsd otherwise
 

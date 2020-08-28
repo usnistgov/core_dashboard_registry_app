@@ -19,7 +19,7 @@ from core_main_app.views.common.ajax import EditObjectModalView
 
 @login_required
 def switch_data_status(request):
-    """ switch the data status
+    """switch the data status
 
     Returns:
 
@@ -49,7 +49,7 @@ def switch_data_status(request):
 
 @login_required
 def publish(request):
-    """ Publish a resource.
+    """Publish a resource.
 
     Returns:
 
@@ -89,8 +89,7 @@ def publish(request):
 
 
 class EditDataView(EditObjectModalView):
-    """ EditDataView
-    """
+    """EditDataView"""
 
     form_class = EditDataForm
     document = Data

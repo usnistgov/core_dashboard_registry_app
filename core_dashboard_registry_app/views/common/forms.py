@@ -7,8 +7,7 @@ from core_main_app.components.data.models import Data
 
 
 class EditDataForm(DocumentForm):
-    """ EditDataForm
-    """
+    """EditDataForm"""
 
     title = forms.CharField(
         label="Title",
