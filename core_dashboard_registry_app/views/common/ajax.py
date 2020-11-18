@@ -29,7 +29,7 @@ def switch_data_status(request):
         new_status = request.POST.get("new_status", None)
         if data_id is not None and new_status is not None:
             data = data_api.get_by_id(data_id, request.user)
-            data_registry_api.set_status(data, new_status, request.user)
+            data_registry_api.set_status(data, new_status, request)
         else:
             return HttpResponseBadRequest(
                 json.dumps({"message": "The data id and the new status are required"}),
@@ -98,7 +98,7 @@ class EditDataView(EditObjectModalView):
     def _save(self, form):
         # Save treatment.
         try:
-            data_api.upsert(self.object, self.request.user)
+            data_api.upsert(self.object, self.request)
         except Exception as e:
             form.add_error(None, str(e))
 

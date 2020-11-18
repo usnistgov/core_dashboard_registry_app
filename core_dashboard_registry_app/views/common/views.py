@@ -139,7 +139,9 @@ class DashboardRegistryRecords(DashboardRecords):
             try:
                 role = ", ".join(
                     [
-                        custom_resource_api.get_by_role_for_current_template(x).title
+                        custom_resource_api.get_by_role_for_current_template(
+                            x, request=request
+                        ).title
                         for x in curate_data_structure_registry_api.get_role(form)
                     ]
                     if form.form_string
@@ -173,10 +175,14 @@ class DashboardRegistryRecords(DashboardRecords):
         """
 
         # TODO: use custom_resource to get cr_type_all
-        cr_type_all = custom_resource_api.get_current_custom_resource_type_all()
+        cr_type_all = custom_resource_api.get_current_custom_resource_type_all(
+            request=request
+        )
 
         custom_resources = list(
-            custom_resource_api.get_all_of_current_template().order_by("sort")
+            custom_resource_api.get_all_of_current_template(request=request).order_by(
+                "sort"
+            )
         )
         # Get arguments
 
@@ -272,7 +278,10 @@ class DashboardRegistryRecords(DashboardRecords):
                     "data_status": get_status(data),
                     "data_status_values": DataStatus,
                     "data_role": ", ".join(
-                        [_get_role_label(x) for x in get_role(data)]
+                        [
+                            _get_role_label(x, request=self.request)
+                            for x in get_role(data)
+                        ]
                     ),
                     "can_read": True,
                     "can_write": True,
@@ -333,7 +342,10 @@ class DashboardRegistryWorkspaceRecords(DashboardWorkspaceRecords):
                     "data_status": get_status(data),
                     "data_status_values": DataStatus,
                     "data_role": ", ".join(
-                        [_get_role_label(x) for x in get_role(data)]
+                        [
+                            _get_role_label(x, request=self.request)
+                            for x in get_role(data)
+                        ]
                     ),
                     "can_read": user_can_read or is_owner,
                     "can_write": user_can_write or is_owner,
@@ -381,7 +393,9 @@ class DashboardRegistryForms(DashboardForms):
             try:
                 role = ", ".join(
                     [
-                        custom_resource_api.get_by_role_for_current_template(x).title
+                        custom_resource_api.get_by_role_for_current_template(
+                            x, request=self.request
+                        ).title
                         for x in curate_data_structure_registry_api.get_role(form)
                     ]
                     if form.form_string
@@ -394,7 +408,7 @@ class DashboardRegistryForms(DashboardForms):
         return detailed_forms
 
 
-def _get_role_label(role):
+def _get_role_label(role, request):
     """Get role label
 
     Get role label from custom resources if found, get it from xsd otherwise
@@ -406,6 +420,8 @@ def _get_role_label(role):
 
     """
     try:
-        return custom_resource_api.get_by_role_for_current_template(role).title
+        return custom_resource_api.get_by_role_for_current_template(
+            role, request=request
+        ).title
     except (exceptions.ModelError, exceptions.DoesNotExist):
         return role
