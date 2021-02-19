@@ -5,6 +5,7 @@ import json
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.http.response import HttpResponse, HttpResponseBadRequest
+from django.utils.decorators import method_decorator
 from django.utils.html import escape
 
 import core_main_registry_app.components.data.api as data_registry_api
@@ -88,6 +89,7 @@ def publish(request):
     return HttpResponse(json.dumps({}), content_type="application/javascript")
 
 
+@method_decorator(login_required, name="dispatch")
 class EditDataView(EditObjectModalView):
     """EditDataView"""
 
