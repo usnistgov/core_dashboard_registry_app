@@ -45,6 +45,16 @@ admin_urls = [
         name="core_dashboard_workspaces",
     ),
     re_path(
+        r"^queries",
+        staff_member_required(
+            common_views.DashboardQueries.as_view(
+                administration=True,
+                template=dashboard_constants.ADMIN_DASHBOARD_TEMPLATE,
+            )
+        ),
+        name="core_dashboard_queries",
+    ),
+    re_path(
         r"^workspace-list-records/(?P<workspace_id>\w+)$",
         staff_member_required(
             registry_common_views.DashboardRegistryWorkspaceRecords.as_view(

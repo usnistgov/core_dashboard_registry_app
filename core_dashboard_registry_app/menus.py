@@ -23,6 +23,14 @@ Menu.add_item(
     ),
 )
 
+Menu.add_item(
+    "dashboard",
+    MenuItem(
+        "{0}".format(FUNCTIONAL_OBJECT_ENUM.QUERY.value.title()),
+        reverse("core_dashboard_queries"),
+    ),
+)
+
 sharing_children = (
     MenuItem(
         "All {0}s".format(FUNCTIONAL_OBJECT_ENUM.RECORD.value.title()),
@@ -32,6 +40,11 @@ sharing_children = (
     MenuItem(
         "All {0}s".format(FUNCTIONAL_OBJECT_ENUM.WORKSPACE.value.title()),
         reverse("admin:core_dashboard_workspaces"),
+        icon="list",
+    ),
+    MenuItem(
+        "All {0}".format(FUNCTIONAL_OBJECT_ENUM.QUERY.value.title()),
+        reverse("admin:core_dashboard_queries"),
         icon="list",
     ),
 )

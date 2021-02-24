@@ -77,6 +77,14 @@ urlpatterns = [
         name="core_dashboard_workspaces",
     ),
     re_path(
+        r"^queries",
+        login_required(
+            common_views.DashboardQueries.as_view(),
+            login_url=reverse_lazy("core_main_app_login"),
+        ),
+        name="core_dashboard_queries",
+    ),
+    re_path(
         r"^workspace-list-records/(?P<workspace_id>\w+)$",
         login_required(
             registry_common_views.DashboardRegistryWorkspaceRecords.as_view(
