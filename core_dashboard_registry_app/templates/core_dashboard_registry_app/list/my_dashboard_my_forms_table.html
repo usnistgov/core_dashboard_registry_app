@@ -13,24 +13,24 @@
                 {% if come_from_admin %}
                     <a class="btn btn-secondary view-form-btn"
                        href="{% url 'admin:core_curate_view_form' data_loaded.form.id %}">
-                        <i class="far fa-file-alt"></i> View
+                        <i class="fas fa-file-alt"></i> View
                     </a>
                 {% else %}
                     <a class="btn btn-secondary view-form-btn"
                        href="{% url 'core_curate_view_form' data_loaded.form.id %}">
-                        <i class="far fa-file-alt"></i> View
+                        <i class="fas fa-file-alt"></i> View
                     </a>
                 {% endif %}
                 <a class="btn btn-secondary edit-form-btn" href="{% url 'core_curate_enter_data' data_loaded.form.id %}">
-                    <i class="fa fa-edit"></i> Edit
+                    <i class="fas fa-edit"></i> Edit
                 </a>
 
 
                 <a class="btn btn-secondary change-owner-btn">
-                    <i class="fa fa-user-circle"></i> Change Owner
+                    <i class="fas fa-user-circle"></i> Change Owner
                 </a>
                 <button class="btn btn-danger delete-document-btn">
-                    <i class="fa fa-trash"></i> Delete
+                    <i class="fas fa-trash"></i> Delete
                 </button>
             </td>
         </tr>
