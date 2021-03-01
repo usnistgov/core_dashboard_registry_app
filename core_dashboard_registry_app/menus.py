@@ -6,11 +6,12 @@ from menu import Menu, MenuItem
 
 import core_dashboard_registry_app.settings as settings
 from core_dashboard_common_app.constants import FUNCTIONAL_OBJECT_ENUM
+from core_dashboard_common_app.templatetags.special_plural import special_case_plural
 
 Menu.add_item(
     "dashboard",
     MenuItem(
-        "{0}s".format(FUNCTIONAL_OBJECT_ENUM.RECORD.value.title()),
+        f"{special_case_plural(FUNCTIONAL_OBJECT_ENUM.RECORD.value.title())}",
         reverse("core_dashboard_records"),
     ),
 )
@@ -18,7 +19,7 @@ Menu.add_item(
 Menu.add_item(
     "dashboard",
     MenuItem(
-        "{0}s".format(FUNCTIONAL_OBJECT_ENUM.WORKSPACE.value.title()),
+        f"{special_case_plural(FUNCTIONAL_OBJECT_ENUM.WORKSPACE.value.title())}",
         reverse("core_dashboard_workspaces"),
     ),
 )
@@ -26,24 +27,24 @@ Menu.add_item(
 Menu.add_item(
     "dashboard",
     MenuItem(
-        "{0}".format(FUNCTIONAL_OBJECT_ENUM.QUERY.value.title()),
+        f"{special_case_plural(FUNCTIONAL_OBJECT_ENUM.QUERY.value.title())}",
         reverse("core_dashboard_queries"),
     ),
 )
 
 sharing_children = (
     MenuItem(
-        "All {0}s".format(FUNCTIONAL_OBJECT_ENUM.RECORD.value.title()),
+        f"All {special_case_plural(FUNCTIONAL_OBJECT_ENUM.RECORD.value.title())}",
         reverse("admin:core_dashboard_records"),
         icon="list",
     ),
     MenuItem(
-        "All {0}s".format(FUNCTIONAL_OBJECT_ENUM.WORKSPACE.value.title()),
+        f"All {special_case_plural(FUNCTIONAL_OBJECT_ENUM.WORKSPACE.value.title())}",
         reverse("admin:core_dashboard_workspaces"),
         icon="list",
     ),
     MenuItem(
-        "All {0}".format(FUNCTIONAL_OBJECT_ENUM.QUERY.value.title()),
+        f"All {special_case_plural(FUNCTIONAL_OBJECT_ENUM.QUERY.value.title())}",
         reverse("admin:core_dashboard_queries"),
         icon="list",
     ),
@@ -53,13 +54,13 @@ if "core_curate_app" in settings.INSTALLED_APPS:
     Menu.add_item(
         "dashboard",
         MenuItem(
-            "{0}s".format(FUNCTIONAL_OBJECT_ENUM.FORM.value.title()),
+            f"{special_case_plural(FUNCTIONAL_OBJECT_ENUM.FORM.value.title())}",
             reverse("core_dashboard_forms"),
         ),
     )
     sharing_children += (
         MenuItem(
-            "All {0}s".format(FUNCTIONAL_OBJECT_ENUM.FORM.value.title()),
+            f"All {special_case_plural(FUNCTIONAL_OBJECT_ENUM.FORM.value.title())}",
             reverse("admin:core_dashboard_forms"),
             icon="list",
         ),
