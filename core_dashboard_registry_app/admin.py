@@ -3,7 +3,8 @@ Url router for the administration site
 """
 from django.contrib import admin
 from django.contrib.admin.views.decorators import staff_member_required
-from django.urls import re_path, reverse_lazy
+from django.urls import re_path
+from core_explore_common_app.views.user import ajax as user_ajax
 
 from core_dashboard_common_app import constants as dashboard_constants
 from core_dashboard_common_app.views.common import views as common_views
@@ -53,6 +54,15 @@ admin_urls = [
             )
         ),
         name="core_dashboard_queries",
+    ),
+    re_path(
+        r"^query/(?P<persistent_query_type>\w+)/(?P<persistent_query_id>\w+)",
+        staff_member_required(
+            user_ajax.ContentPersistentQueryView.as_view(
+                administration=True,
+            )
+        ),
+        name="core_explore_common_persistent_query_content",
     ),
     re_path(
         r"^workspace-list-records/(?P<workspace_id>\w+)$",
