@@ -6,7 +6,7 @@
     {% if data.title %}
         {{data.title}}
     {% else %}
-        {% if come_from_admin %} {{ data.document|title}} list {% else %} My {{data.document|special_plural}} {% endif %}
+        {% if come_from_admin %} {{ data.document|title|special_plural}} list {% else %} My {{data.document|special_plural}} {% endif %}
     {% endif %}
 
 {% endblock %}
