@@ -82,7 +82,7 @@
             {% endif %}
             {% if data_loaded.can_write %}
                 {% if data.administration %}
-                    {% url 'admin:core_dashboard_app_edit_data' data_loaded.data.id as edit_url %}
+                    {% url 'core-admin:core_dashboard_app_edit_data' data_loaded.data.id as edit_url %}
                 {% else %}
                     {% url 'core_dashboard_app_edit_data' data_loaded.data.id as edit_url %}
                 {% endif %}

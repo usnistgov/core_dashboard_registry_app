@@ -15,7 +15,7 @@ from core_dashboard_common_app.views.common.views import (
 from core_dashboard_common_app.views.common.views import DashboardWorkspaceRecords
 from core_dashboard_registry_app import constants as dashboard_constants
 from core_dashboard_registry_app.settings import INSTALLED_APPS
-from core_dashboard_registry_app.utils.query.mongo.prepare import (
+from core_dashboard_registry_app.utils.query.django.prepare import (
     create_query_dashboard_resources,
 )
 from core_dashboard_registry_app.views.common.ajax import EditDataView
@@ -235,7 +235,7 @@ class DashboardRegistryRecords(DashboardRecords):
                 "administration": self.administration,
                 "username_list": get_id_username_dict(user_api.get_all_users()),
                 "resources": True,
-                "url_resources": reverse("admin:core_dashboard_records")
+                "url_resources": reverse("core-admin:core_dashboard_records")
                 if self.administration
                 else reverse("core_dashboard_records"),
                 "custom_resources": custom_resources,

@@ -1,15 +1,15 @@
 """
 Url router for the administration site
 """
-from django.contrib import admin
 from django.contrib.admin.views.decorators import staff_member_required
 from django.urls import re_path
-from core_explore_common_app.views.user import ajax as user_ajax
 
 from core_dashboard_common_app import constants as dashboard_constants
 from core_dashboard_common_app.views.common import views as common_views
 from core_dashboard_registry_app.views.common import views as registry_common_views
 from core_dashboard_registry_app.views.common.ajax import EditDataView
+from core_explore_common_app.views.user import ajax as user_ajax
+from core_main_app.admin import core_admin_site
 
 admin_urls = [
     # Admin
@@ -82,5 +82,5 @@ admin_urls = [
     ),
 ]
 
-urls = admin.site.get_urls()
-admin.site.get_urls = lambda: admin_urls + urls
+urls = core_admin_site.get_urls()
+core_admin_site.get_urls = lambda: admin_urls + urls

@@ -37,7 +37,7 @@
                 <td>
                     {% if come_from_admin %}
                         <a class="btn btn-secondary view-form-btn"
-                           href="{% url 'admin:core_curate_view_form' data_loaded.form.id %}">
+                           href="{% url 'core-admin:core_curate_view_form' data_loaded.form.id %}">
                             <i class="far fa-file-alt"></i> View
                         </a>
                     {% else %}

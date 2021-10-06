@@ -94,7 +94,7 @@ class EditDataView(EditObjectModalView):
     """EditDataView"""
 
     form_class = EditDataForm
-    document = Data
+    model = Data
     success_message = "Title edited with success."
 
     def _save(self, form):
