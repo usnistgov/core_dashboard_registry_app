@@ -1,12 +1,12 @@
 """Forms for admin views
 """
 from django import forms
-from django_mongoengine.forms import DocumentForm
+from django.forms import ModelForm
 
 from core_main_app.components.data.models import Data
 
 
-class EditDataForm(DocumentForm):
+class EditDataForm(ModelForm):
     """EditDataForm"""
 
     title = forms.CharField(
@@ -17,5 +17,5 @@ class EditDataForm(DocumentForm):
     )
 
     class Meta(object):
-        document = Data
+        model = Data
         fields = ["title"]
