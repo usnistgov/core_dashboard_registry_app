@@ -15,7 +15,7 @@ from core_dashboard_common_app.views.common.views import (
 from core_dashboard_common_app.views.common.views import DashboardWorkspaceRecords
 from core_dashboard_registry_app import constants as dashboard_constants
 from core_dashboard_registry_app.settings import INSTALLED_APPS
-from core_dashboard_registry_app.utils.query.django.prepare import (
+from core_dashboard_registry_app.utils.query.mongo.prepare import (
     create_query_dashboard_resources,
 )
 from core_dashboard_registry_app.views.common.ajax import EditDataView
@@ -87,7 +87,8 @@ class DashboardRegistryRecords(DashboardRecords):
         """Get list of records
 
         Args:
-            role_name_list:
+            request:
+            is_published:
             custom_resources:
         Returns:
             filtered_data
@@ -97,7 +98,7 @@ class DashboardRegistryRecords(DashboardRecords):
         )
         filtered_data = []
         try:
-            loaded_data = data_api.execute_query(
+            loaded_data = data_api.execute_json_query(
                 create_query_dashboard_resources(
                     request, role_name_list, self.administration
                 ),
