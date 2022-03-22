@@ -270,7 +270,7 @@ class DashboardRegistryRecords(DashboardRecords):
     # FIXME is_published is never used
     def _format_data_context_registry(self, data_list, is_published):
         data_context_list = []
-        username_list = dict((str(x.id), x.username) for x in user_api.get_all_users())
+        username_list = dict((x.id, x.username) for x in user_api.get_all_users())
         for data in data_list:
             data_context_list.append(
                 {
