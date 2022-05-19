@@ -33,6 +33,7 @@ from core_main_registry_app.commons.constants import DataStatus
 from core_main_registry_app.components.custom_resource import api as custom_resource_api
 from core_main_registry_app.components.data.api import get_status, get_role
 from core_main_registry_app.constants import CUSTOM_RESOURCE_TYPE
+from core_main_registry_app.settings import ENABLE_BLOB_ENDPOINTS
 
 if "core_curate_registry_app" in INSTALLED_APPS:
     import core_curate_registry_app.components.curate_data_structure.api as curate_data_structure_registry_api
@@ -51,6 +52,9 @@ def home(request):
     context = {}
     if "core_curate_app" in INSTALLED_APPS:
         context.update({"draft": True})
+
+    if ENABLE_BLOB_ENDPOINTS:
+        context.update({"show_blob_menu": True})
 
     assets = {
         "css": ["core_dashboard_registry_app/user/css/home.css"],

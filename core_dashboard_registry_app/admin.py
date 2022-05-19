@@ -10,6 +10,7 @@ from core_dashboard_registry_app.views.common import views as registry_common_vi
 from core_dashboard_registry_app.views.common.ajax import EditDataView
 from core_explore_common_app.views.user import ajax as user_ajax
 from core_main_app.admin import core_admin_site
+from core_main_registry_app.settings import ENABLE_BLOB_ENDPOINTS
 
 admin_urls = [
     # Admin
@@ -81,6 +82,20 @@ admin_urls = [
         name="core_dashboard_app_edit_data",
     ),
 ]
+
+if ENABLE_BLOB_ENDPOINTS:
+    admin_urls.append(
+        re_path(
+            r"^files$",
+            staff_member_required(
+                common_views.DashboardFiles.as_view(
+                    administration=True,
+                    template=dashboard_constants.ADMIN_DASHBOARD_TEMPLATE,
+                )
+            ),
+            name="core_dashboard_files",
+        ),
+    )
 
 urls = core_admin_site.get_urls()
 core_admin_site.get_urls = lambda: admin_urls + urls
