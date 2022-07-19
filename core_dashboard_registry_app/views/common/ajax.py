@@ -74,7 +74,7 @@ def publish(request):
         return HttpResponseBadRequest(
             json.dumps({"message": escape(str(dne))}), content_type="application/json"
         )
-    except AccessControlError as ace:
+    except AccessControlError:
         return HttpResponseBadRequest(
             json.dumps(
                 {"message": "You don't have enough right to perform this action."}
