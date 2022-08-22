@@ -3,10 +3,11 @@
 from django.urls import reverse
 from menu import Menu, MenuItem
 
-import core_dashboard_registry_app.settings as settings
+
 from core_dashboard_common_app.constants import FUNCTIONAL_OBJECT_ENUM
 from core_dashboard_common_app.templatetags.special_plural import special_case_plural
 from core_main_registry_app.settings import ENABLE_BLOB_ENDPOINTS
+import core_dashboard_registry_app.settings as settings
 
 Menu.add_item(
     "dashboard",

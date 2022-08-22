@@ -8,14 +8,14 @@ from django.http.response import HttpResponse, HttpResponseBadRequest
 from django.utils.decorators import method_decorator
 from django.utils.html import escape
 
-import core_main_registry_app.components.data.api as data_registry_api
-from core_dashboard_registry_app.views.common.forms import EditDataForm
 from core_main_app.access_control.exceptions import AccessControlError
 from core_main_app.commons import exceptions
 from core_main_app.components.data import api as data_api
 from core_main_app.components.data.models import Data
 from core_main_app.utils.labels import get_data_label
 from core_main_app.views.common.ajax import EditObjectModalView
+import core_main_registry_app.components.data.api as data_registry_api
+from core_dashboard_registry_app.views.common.forms import EditDataForm
 
 
 @login_required
@@ -40,9 +40,9 @@ def switch_data_status(request):
         return HttpResponseBadRequest(
             json.dumps({"message": escape(str(dne))}), content_type="application/json"
         )
-    except Exception as e:
+    except Exception as exception:
         return HttpResponseBadRequest(
-            json.dumps({"message": escape(str(e))}),
+            json.dumps({"message": escape(str(exception))}),
             content_type="application/javascript",
         )
     return HttpResponse(json.dumps({}), content_type="application/javascript")
@@ -81,9 +81,9 @@ def publish(request):
             ),
             content_type="application/json",
         )
-    except Exception as e:
+    except Exception as exception:
         return HttpResponseBadRequest(
-            json.dumps({"message": escape(str(e))}),
+            json.dumps({"message": escape(str(exception))}),
             content_type="application/javascript",
         )
     return HttpResponse(json.dumps({}), content_type="application/javascript")
@@ -101,8 +101,8 @@ class EditDataView(EditObjectModalView):
         # Save treatment.
         try:
             data_api.upsert(self.object, self.request)
-        except Exception as e:
-            form.add_error(None, str(e))
+        except Exception as exception:
+            form.add_error(None, str(exception))
 
     def get_success_url(self):
         return self.request.META["HTTP_REFERER"]

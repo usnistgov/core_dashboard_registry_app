@@ -6,11 +6,12 @@ from django.urls import re_path
 
 from core_dashboard_common_app import constants as dashboard_constants
 from core_dashboard_common_app.views.common import views as common_views
-from core_dashboard_registry_app.views.common import views as registry_common_views
-from core_dashboard_registry_app.views.common.ajax import EditDataView
 from core_explore_common_app.views.user import ajax as user_ajax
 from core_main_app.admin import core_admin_site
 from core_main_registry_app.settings import ENABLE_BLOB_ENDPOINTS
+from core_dashboard_registry_app.views.common import views as registry_common_views
+from core_dashboard_registry_app.views.common.ajax import EditDataView
+
 
 admin_urls = [
     # Admin

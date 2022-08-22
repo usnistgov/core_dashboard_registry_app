@@ -10,10 +10,11 @@ from core_dashboard_common_app.views.common import ajax, views as common_views
 from core_dashboard_common_app.views.common.views import (
     UserDashboardPasswordChangeFormView,
 )
+from core_main_registry_app.settings import ENABLE_BLOB_ENDPOINTS
 from core_dashboard_registry_app.views.common import ajax as registry_common_ajax
 from core_dashboard_registry_app.views.common import views as registry_common_views
 from core_dashboard_registry_app.views.common.ajax import EditDataView
-from core_main_registry_app.settings import ENABLE_BLOB_ENDPOINTS
+
 
 urlpatterns = [
     # Common

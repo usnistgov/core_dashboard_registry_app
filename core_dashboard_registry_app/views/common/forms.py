@@ -16,6 +16,8 @@ class EditDataForm(ModelForm):
         ),
     )
 
-    class Meta(object):
+    class Meta:
+        """Meta"""
+
         model = Data
         fields = ["title"]
