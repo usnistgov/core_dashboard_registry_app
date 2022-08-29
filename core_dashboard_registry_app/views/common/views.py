@@ -4,12 +4,6 @@ from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from django.urls import reverse_lazy
 
-from core_main_registry_app.commons.constants import DataStatus
-from core_main_registry_app.components.custom_resource import api as custom_resource_api
-from core_main_registry_app.constants import CUSTOM_RESOURCE_TYPE
-from core_main_registry_app.settings import ENABLE_BLOB_ENDPOINTS
-from core_main_registry_app.components.data.api import get_status, get_role
-
 import core_curate_app.components.curate_data_structure.api as curate_data_structure_api
 from core_dashboard_common_app import constants as dashboard_common_constants
 from core_dashboard_common_app import settings
@@ -19,6 +13,12 @@ from core_dashboard_common_app.views.common.views import (
     DashboardForms,
 )
 from core_dashboard_common_app.views.common.views import DashboardWorkspaceRecords
+from core_dashboard_registry_app import constants as dashboard_constants
+from core_dashboard_registry_app.settings import INSTALLED_APPS
+from core_dashboard_registry_app.utils.query.mongo.prepare import (
+    create_query_dashboard_resources,
+)
+from core_dashboard_registry_app.views.common.ajax import EditDataView
 from core_main_app.access_control.exceptions import AccessControlError
 from core_main_app.commons import exceptions as exceptions
 from core_main_app.components.data import api as data_api
@@ -29,17 +29,14 @@ from core_main_app.utils.pagination.django_paginator.results_paginator import (
     ResultsPaginator,
 )
 from core_main_app.utils.rendering import render
+from core_main_registry_app.commons.constants import DataStatus
+from core_main_registry_app.components.custom_resource import api as custom_resource_api
+from core_main_registry_app.components.data.api import get_status, get_role
+from core_main_registry_app.constants import CUSTOM_RESOURCE_TYPE
+from core_main_registry_app.settings import ENABLE_BLOB_ENDPOINTS
 
 if "core_curate_registry_app" in INSTALLED_APPS:
     import core_curate_registry_app.components.curate_data_structure.api as curate_data_structure_registry_api
-
-from core_dashboard_registry_app.settings import INSTALLED_APPS
-from core_dashboard_registry_app import constants as dashboard_constants
-
-from core_dashboard_registry_app.utils.query.mongo.prepare import (
-    create_query_dashboard_resources,
-)
-from core_dashboard_registry_app.views.common.ajax import EditDataView
 
 
 @login_required(login_url=reverse_lazy("core_main_app_login"))
