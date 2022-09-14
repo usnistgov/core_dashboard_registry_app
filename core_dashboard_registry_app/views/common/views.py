@@ -33,6 +33,7 @@ from core_main_registry_app.commons.constants import DataStatus
 from core_main_registry_app.components.custom_resource import api as custom_resource_api
 from core_main_registry_app.components.data.api import get_status, get_role
 from core_main_registry_app.constants import CUSTOM_RESOURCE_TYPE
+from core_main_registry_app.settings import ENABLE_BLOB_ENDPOINTS
 
 if "core_curate_registry_app" in INSTALLED_APPS:
     import core_curate_registry_app.components.curate_data_structure.api as curate_data_structure_registry_api
@@ -51,6 +52,9 @@ def home(request):
     context = {}
     if "core_curate_app" in INSTALLED_APPS:
         context.update({"draft": True})
+
+    if ENABLE_BLOB_ENDPOINTS:
+        context.update({"show_blob_menu": True})
 
     assets = {
         "css": ["core_dashboard_registry_app/user/css/home.css"],
@@ -77,9 +81,9 @@ class DashboardRegistryRecords(DashboardRecords):
         """
         list_name_in_schema = []
         for role in role_name_list:
-            for cr in custom_resources:
-                if cr.slug == role:
-                    list_name_in_schema.append(cr.name_in_schema)
+            for custom_resource in custom_resources:
+                if custom_resource.slug == role:
+                    list_name_in_schema.append(custom_resource.name_in_schema)
 
         return list_name_in_schema
 
@@ -87,7 +91,8 @@ class DashboardRegistryRecords(DashboardRecords):
         """Get list of records
 
         Args:
-            role_name_list:
+            request:
+            is_published:
             custom_resources:
         Returns:
             filtered_data
@@ -97,7 +102,7 @@ class DashboardRegistryRecords(DashboardRecords):
         )
         filtered_data = []
         try:
-            loaded_data = data_api.execute_query(
+            loaded_data = data_api.execute_json_query(
                 create_query_dashboard_resources(
                     request, role_name_list, self.administration
                 ),
@@ -235,7 +240,7 @@ class DashboardRegistryRecords(DashboardRecords):
                 "administration": self.administration,
                 "username_list": get_id_username_dict(user_api.get_all_users()),
                 "resources": True,
-                "url_resources": reverse("admin:core_dashboard_records")
+                "url_resources": reverse("core-admin:core_dashboard_records")
                 if self.administration
                 else reverse("core_dashboard_records"),
                 "custom_resources": custom_resources,
@@ -269,7 +274,7 @@ class DashboardRegistryRecords(DashboardRecords):
     # FIXME is_published is never used
     def _format_data_context_registry(self, data_list, is_published):
         data_context_list = []
-        username_list = dict((str(x.id), x.username) for x in user_api.get_all_users())
+        username_list = dict((x.id, x.username) for x in user_api.get_all_users())
         for data in data_list:
             data_context_list.append(
                 {
@@ -294,7 +299,7 @@ class DashboardRegistryRecords(DashboardRecords):
 
     def _get_assets(self):
         # add js & css for the super class
-        assets = super(DashboardRegistryRecords, self)._get_assets()
+        assets = super()._get_assets()
         # add css relatives to the registry
         assets["css"].append("core_dashboard_registry_app/user/css/list/records.css")
         assets["css"].append(
@@ -355,13 +360,13 @@ class DashboardRegistryWorkspaceRecords(DashboardWorkspaceRecords):
         return detailed_user_data
 
     def _get_modals(self):
-        modals = super(DashboardRegistryWorkspaceRecords, self)._get_modals()
+        modals = super()._get_modals()
         modals.append(EditDataView.get_modal_html_path())
         return modals
 
     def _get_assets(self):
         # add js & css for the super class
-        assets = super(DashboardRegistryWorkspaceRecords, self)._get_assets()
+        assets = super()._get_assets()
         # add css relatives to the registry
         assets["css"].append("core_dashboard_registry_app/user/css/list/records.css")
         # add js relatives to the registry

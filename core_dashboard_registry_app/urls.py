@@ -10,9 +10,11 @@ from core_dashboard_common_app.views.common import ajax, views as common_views
 from core_dashboard_common_app.views.common.views import (
     UserDashboardPasswordChangeFormView,
 )
+from core_main_registry_app.settings import ENABLE_BLOB_ENDPOINTS
 from core_dashboard_registry_app.views.common import ajax as registry_common_ajax
 from core_dashboard_registry_app.views.common import views as registry_common_views
 from core_dashboard_registry_app.views.common.ajax import EditDataView
+
 
 urlpatterns = [
     # Common
@@ -105,3 +107,15 @@ urlpatterns = [
         name="core_dashboard_app_edit_data",
     ),
 ]
+
+if ENABLE_BLOB_ENDPOINTS:
+    urlpatterns.append(
+        re_path(
+            r"^files$",
+            login_required(
+                common_views.DashboardFiles.as_view(),
+                login_url=reverse_lazy("core_main_app_login"),
+            ),
+            name="core_dashboard_files",
+        ),
+    )
