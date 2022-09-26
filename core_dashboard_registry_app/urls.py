@@ -11,15 +11,21 @@ from core_dashboard_common_app.views.common.views import (
     UserDashboardPasswordChangeFormView,
 )
 from core_main_registry_app.settings import ENABLE_BLOB_ENDPOINTS
-from core_dashboard_registry_app.views.common import ajax as registry_common_ajax
-from core_dashboard_registry_app.views.common import views as registry_common_views
+from core_dashboard_registry_app.views.common import (
+    ajax as registry_common_ajax,
+)
+from core_dashboard_registry_app.views.common import (
+    views as registry_common_views,
+)
 from core_dashboard_registry_app.views.common.ajax import EditDataView
 
 
 urlpatterns = [
     # Common
     re_path(r"^$", registry_common_views.home, name="core_dashboard_home"),
-    re_path(r"^my-profile$", common_views.my_profile, name="core_dashboard_profile"),
+    re_path(
+        r"^my-profile$", common_views.my_profile, name="core_dashboard_profile"
+    ),
     re_path(
         r"^my-profile/edit$",
         common_views.my_profile_edit,
@@ -34,14 +40,18 @@ urlpatterns = [
         name="core_dashboard_profile_change_password",
     ),
     re_path(
-        r"^delete-document", ajax.delete_document, name="core_dashboard_delete_document"
+        r"^delete-document",
+        ajax.delete_document,
+        name="core_dashboard_delete_document",
     ),
     re_path(
         r"^change-owner",
         ajax.change_owner_document,
         name="core_dashboard_change_owner_document",
     ),
-    re_path(r"^edit-record", ajax.edit_record, name="core_dashboard_edit_record"),
+    re_path(
+        r"^edit-record", ajax.edit_record, name="core_dashboard_edit_record"
+    ),
     # User
     re_path(
         r"^records$",

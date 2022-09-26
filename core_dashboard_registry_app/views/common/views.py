@@ -12,7 +12,9 @@ from core_dashboard_common_app.views.common.views import (
     DashboardRecords,
     DashboardForms,
 )
-from core_dashboard_common_app.views.common.views import DashboardWorkspaceRecords
+from core_dashboard_common_app.views.common.views import (
+    DashboardWorkspaceRecords,
+)
 from core_dashboard_registry_app import constants as dashboard_constants
 from core_dashboard_registry_app.settings import INSTALLED_APPS
 from core_dashboard_registry_app.utils.query.mongo.prepare import (
@@ -24,13 +26,17 @@ from core_main_app.commons import exceptions as exceptions
 from core_main_app.components.data import api as data_api
 from core_main_app.components.user import api as user_api
 from core_main_app.components.user.api import get_id_username_dict
-from core_main_app.components.workspace.api import check_if_workspace_can_be_changed
+from core_main_app.components.workspace.api import (
+    check_if_workspace_can_be_changed,
+)
 from core_main_app.utils.pagination.django_paginator.results_paginator import (
     ResultsPaginator,
 )
 from core_main_app.utils.rendering import render
 from core_main_registry_app.commons.constants import DataStatus
-from core_main_registry_app.components.custom_resource import api as custom_resource_api
+from core_main_registry_app.components.custom_resource import (
+    api as custom_resource_api,
+)
 from core_main_registry_app.components.data.api import get_status, get_role
 from core_main_registry_app.constants import CUSTOM_RESOURCE_TYPE
 from core_main_registry_app.settings import ENABLE_BLOB_ENDPOINTS
@@ -71,7 +77,9 @@ def home(request):
 class DashboardRegistryRecords(DashboardRecords):
     """List the records for the registry"""
 
-    def _get_list_name_in_shema_from_slug(self, role_name_list, custom_resources):
+    def _get_list_name_in_shema_from_slug(
+        self, role_name_list, custom_resources
+    ):
         """Get list of name in schema for each role in request
 
         Args:
@@ -114,7 +122,10 @@ class DashboardRegistryRecords(DashboardRecords):
             if (
                 is_published is None
                 or (is_published == "true" and data_api.is_data_public(data))
-                or (is_published == "false" and not data_api.is_data_public(data))
+                or (
+                    is_published == "false"
+                    and not data_api.is_data_public(data)
+                )
             ):
                 filtered_data.append(data)
         return filtered_data
@@ -133,7 +144,9 @@ class DashboardRegistryRecords(DashboardRecords):
         filtered_data = []
 
         if self.administration:
-            forms = curate_data_structure_api.get_all_with_no_data(request.user)
+            forms = curate_data_structure_api.get_all_with_no_data(
+                request.user
+            )
         else:
             forms = curate_data_structure_api.get_all_by_user_id_with_no_data(
                 request.user.id
@@ -147,7 +160,9 @@ class DashboardRegistryRecords(DashboardRecords):
                         custom_resource_api.get_by_role_for_current_template(
                             x, request=request
                         ).title
-                        for x in curate_data_structure_registry_api.get_role(form)
+                        for x in curate_data_structure_registry_api.get_role(
+                            form
+                        )
                     ]
                     if form.form_string
                     else ["None"]
@@ -185,22 +200,30 @@ class DashboardRegistryRecords(DashboardRecords):
         )
 
         custom_resources = list(
-            custom_resource_api.get_all_of_current_template(request=request).order_by(
-                "sort"
-            )
+            custom_resource_api.get_all_of_current_template(
+                request=request
+            ).order_by("sort")
         )
         # Get arguments
 
         is_published = request.GET.get("ispublished", None)
         is_published = (
-            None if is_published not in ["true", "false", "draft"] else is_published
+            None
+            if is_published not in ["true", "false", "draft"]
+            else is_published
         )
         page = request.GET.get("page", 1)
         if is_published == "draft":
-            document = dashboard_common_constants.FUNCTIONAL_OBJECT_ENUM.FORM.value
-            template = dashboard_constants.DASHBOARD_FORMS_TEMPLATE_TABLE_PAGINATION
+            document = (
+                dashboard_common_constants.FUNCTIONAL_OBJECT_ENUM.FORM.value
+            )
+            template = (
+                dashboard_constants.DASHBOARD_FORMS_TEMPLATE_TABLE_PAGINATION
+            )
         else:
-            document = dashboard_common_constants.FUNCTIONAL_OBJECT_ENUM.RECORD.value
+            document = (
+                dashboard_common_constants.FUNCTIONAL_OBJECT_ENUM.RECORD.value
+            )
             template = self.data_template
 
         context = {
@@ -213,7 +236,9 @@ class DashboardRegistryRecords(DashboardRecords):
         if is_published == "draft":
             filtered_data = self.load_drafts(request, context)
         else:
-            filtered_data = self.load_records(request, is_published, custom_resources)
+            filtered_data = self.load_records(
+                request, is_published, custom_resources
+            )
 
         # Paginator
         results_paginator = ResultsPaginator.get_results(
@@ -235,10 +260,14 @@ class DashboardRegistryRecords(DashboardRecords):
                 "user_form": user_form,
                 "document": document,
                 "template": template,
-                "action_form": ActionForm([("2", "Change owner of selected records")]),
+                "action_form": ActionForm(
+                    [("2", "Change owner of selected records")]
+                ),
                 "menu": self.administration,
                 "administration": self.administration,
-                "username_list": get_id_username_dict(user_api.get_all_users()),
+                "username_list": get_id_username_dict(
+                    user_api.get_all_users()
+                ),
                 "resources": True,
                 "url_resources": reverse("core-admin:core_dashboard_records")
                 if self.administration
@@ -250,7 +279,9 @@ class DashboardRegistryRecords(DashboardRecords):
                     [
                         cr.slug
                         for cr in custom_resources
-                        if custom_resource_api._is_custom_resource_type_resource(cr)
+                        if custom_resource_api._is_custom_resource_type_resource(
+                            cr
+                        )
                         and cr.display_icon
                     ]
                 ),
@@ -268,13 +299,19 @@ class DashboardRegistryRecords(DashboardRecords):
         assets = self._get_assets()
 
         return self.common_render(
-            request, self.template, context=context, assets=assets, modals=modals
+            request,
+            self.template,
+            context=context,
+            assets=assets,
+            modals=modals,
         )
 
     # FIXME is_published is never used
     def _format_data_context_registry(self, data_list, is_published):
         data_context_list = []
-        username_list = dict((x.id, x.username) for x in user_api.get_all_users())
+        username_list = dict(
+            (x.id, x.username) for x in user_api.get_all_users()
+        )
         for data in data_list:
             data_context_list.append(
                 {
@@ -291,7 +328,9 @@ class DashboardRegistryRecords(DashboardRecords):
                     "can_read": True,
                     "can_write": True,
                     "is_owner": True,
-                    "can_change_workspace": check_if_workspace_can_be_changed(data),
+                    "can_change_workspace": check_if_workspace_can_be_changed(
+                        data
+                    ),
                     "can_set_public": not data_api.is_data_public(data),
                 }
             )
@@ -301,7 +340,9 @@ class DashboardRegistryRecords(DashboardRecords):
         # add js & css for the super class
         assets = super()._get_assets()
         # add css relatives to the registry
-        assets["css"].append("core_dashboard_registry_app/user/css/list/records.css")
+        assets["css"].append(
+            "core_dashboard_registry_app/user/css/list/records.css"
+        )
         assets["css"].append(
             "core_main_registry_app/user/css/resource_banner/resource_banner.css"
         )
@@ -326,7 +367,10 @@ class DashboardRegistryRecords(DashboardRecords):
             {"path": dashboard_constants.JS_RECORD_REGISTRY, "is_raw": False}
         )
         assets["js"].append(
-            {"path": "core_dashboard_registry_app/user/js/get_url.js", "is_raw": False}
+            {
+                "path": "core_dashboard_registry_app/user/js/get_url.js",
+                "is_raw": False,
+            }
         )
         assets["js"].append(EditDataView.get_modal_js_path())
         return assets
@@ -335,7 +379,9 @@ class DashboardRegistryRecords(DashboardRecords):
 class DashboardRegistryWorkspaceRecords(DashboardWorkspaceRecords):
     """List the records of a workspace for the registry."""
 
-    def _format_data_context(self, data_list, user, user_can_read, user_can_write):
+    def _format_data_context(
+        self, data_list, user, user_can_read, user_can_write
+    ):
         detailed_user_data = []
         username_list = get_id_username_dict(user_api.get_all_users())
         for data in data_list:
@@ -368,7 +414,9 @@ class DashboardRegistryWorkspaceRecords(DashboardWorkspaceRecords):
         # add js & css for the super class
         assets = super()._get_assets()
         # add css relatives to the registry
-        assets["css"].append("core_dashboard_registry_app/user/css/list/records.css")
+        assets["css"].append(
+            "core_dashboard_registry_app/user/css/list/records.css"
+        )
         # add js relatives to the registry
         assets["js"].append(
             {
@@ -383,7 +431,10 @@ class DashboardRegistryWorkspaceRecords(DashboardWorkspaceRecords):
             }
         )
         assets["js"].append(
-            {"path": "core_dashboard_registry_app/user/js/get_url.js", "is_raw": False}
+            {
+                "path": "core_dashboard_registry_app/user/js/get_url.js",
+                "is_raw": False,
+            }
         )
         assets["js"].append(EditDataView.get_modal_js_path())
         return assets
@@ -401,7 +452,9 @@ class DashboardRegistryForms(DashboardForms):
                         custom_resource_api.get_by_role_for_current_template(
                             x, request=self.request
                         ).title
-                        for x in curate_data_structure_registry_api.get_role(form)
+                        for x in curate_data_structure_registry_api.get_role(
+                            form
+                        )
                     ]
                     if form.form_string
                     else ["None"]

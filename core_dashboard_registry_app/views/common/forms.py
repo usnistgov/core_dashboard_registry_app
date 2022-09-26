@@ -12,7 +12,10 @@ class EditDataForm(ModelForm):
     title = forms.CharField(
         label="Title",
         widget=forms.TextInput(
-            attrs={"class": "form-control", "placeholder": "Type the new title"}
+            attrs={
+                "class": "form-control",
+                "placeholder": "Type the new title",
+            }
         ),
     )
 

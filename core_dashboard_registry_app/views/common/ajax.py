@@ -33,12 +33,15 @@ def switch_data_status(request):
             data_registry_api.set_status(data, new_status, request)
         else:
             return HttpResponseBadRequest(
-                json.dumps({"message": "The data id and the new status are required"}),
+                json.dumps(
+                    {"message": "The data id and the new status are required"}
+                ),
                 content_type="application/javascript",
             )
     except exceptions.DoesNotExist as dne:
         return HttpResponseBadRequest(
-            json.dumps({"message": escape(str(dne))}), content_type="application/json"
+            json.dumps({"message": escape(str(dne))}),
+            content_type="application/json",
         )
     except Exception as exception:
         return HttpResponseBadRequest(
@@ -72,12 +75,15 @@ def publish(request):
             )
     except exceptions.DoesNotExist as dne:
         return HttpResponseBadRequest(
-            json.dumps({"message": escape(str(dne))}), content_type="application/json"
+            json.dumps({"message": escape(str(dne))}),
+            content_type="application/json",
         )
     except AccessControlError:
         return HttpResponseBadRequest(
             json.dumps(
-                {"message": "You don't have enough right to perform this action."}
+                {
+                    "message": "You don't have enough right to perform this action."
+                }
             ),
             content_type="application/json",
         )
