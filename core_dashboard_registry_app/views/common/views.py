@@ -66,6 +66,9 @@ def home(request):
         "css": ["core_dashboard_registry_app/user/css/home.css"],
     }
 
+    # Set page title
+    context.update({"page_title": "Dashboard"})
+
     return render(
         request,
         dashboard_constants.DASHBOARD_HOME_TEMPLATE,
@@ -297,6 +300,9 @@ class DashboardRegistryRecords(DashboardRecords):
         ]
 
         assets = self._get_assets()
+
+        # Set page title
+        context.update({"page_title": "Dashboard"})
 
         return self.common_render(
             request,
