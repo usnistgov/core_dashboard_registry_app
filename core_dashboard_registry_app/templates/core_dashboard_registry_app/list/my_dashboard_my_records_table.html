@@ -87,6 +87,11 @@
                     {% url 'core_dashboard_app_edit_data' data_loaded.data.id as edit_url %}
                 {% endif %}
                 {% include 'core_main_app/common/buttons/edit.html' with label="Edit Title" %}
+                {% if data.administration %}
+                    {% with data_loaded.delete_url as delete_url %}
+                    {% include 'core_main_app/common/buttons/delete.html' %}
+                    {% endwith %}
+                {% endif %}
             {% endif %}
 
         </td>

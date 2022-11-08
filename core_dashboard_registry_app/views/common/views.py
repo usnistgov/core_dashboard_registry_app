@@ -338,6 +338,11 @@ class DashboardRegistryRecords(DashboardRecords):
                         data
                     ),
                     "can_set_public": not data_api.is_data_public(data),
+                    "delete_url": reverse(
+                        "admin:core_main_app_data_delete", args=(data.id,)
+                    )
+                    if self.administration
+                    else None,
                 }
             )
         return data_context_list
