@@ -1,8 +1,10 @@
 """ Common views for the registry dashboard
 """
+from django.conf import settings as conf_settings
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from django.urls import reverse_lazy
+from django.utils.decorators import method_decorator
 
 import core_curate_app.components.curate_data_structure.api as curate_data_structure_api
 from core_dashboard_common_app import constants as dashboard_common_constants
@@ -77,6 +79,7 @@ def home(request):
     )
 
 
+@method_decorator(login_required, name="dispatch")
 class DashboardRegistryRecords(DashboardRecords):
     """List the records for the registry"""
 
@@ -113,7 +116,18 @@ class DashboardRegistryRecords(DashboardRecords):
         )
         filtered_data = []
         try:
-            loaded_data = data_api.execute_json_query(
+            if conf_settings.MONGODB_INDEXING:
+                from core_main_app.components.mongo.api import (
+                    execute_mongo_query,
+                )
+
+                query_api = execute_mongo_query
+            else:
+                from core_main_app.components.data.api import execute_query
+
+                query_api = execute_query
+
+            loaded_data = query_api(
                 create_query_dashboard_resources(
                     request, role_name_list, self.administration
                 ),
@@ -208,7 +222,6 @@ class DashboardRegistryRecords(DashboardRecords):
             ).order_by("sort")
         )
         # Get arguments
-
         is_published = request.GET.get("ispublished", None)
         is_published = (
             None

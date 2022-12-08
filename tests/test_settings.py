@@ -11,9 +11,29 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.sites",
+    # Extra apps
+    "django_celery_beat",
     # Local apps
+    "core_main_app",
+    "core_main_registry_app",
+    "core_parser_app",
+    "core_curate_app",
+    "core_explore_common_app",
+    "core_dashboard_common_app",
     "tests",
 ]
+
+# IN-MEMORY TEST DATABASE
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": ":memory:",
+        "USER": "",
+        "PASSWORD": "",
+        "HOST": "",
+        "PORT": "",
+    },
+}
 
 MIDDLEWARE = (
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -39,3 +59,8 @@ TEMPLATES = [
 ]
 MONGODB_INDEXING = False
 MONGODB_ASYNC_SAVE = False
+CUSTOM_NAME = "Test"
+CELERYBEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"
+CAN_ANONYMOUS_ACCESS_PUBLIC_DOCUMENT = True
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+ROOT_URLCONF = "core_dashboard_registry_app.urls"
