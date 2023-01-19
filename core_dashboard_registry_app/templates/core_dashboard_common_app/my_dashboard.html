@@ -51,33 +51,16 @@
         {% include 'core_main_registry_app/resource_banner/resource_banner.html' %}
         <ul class="nav nav-tabs">
             <li class="nav-item pointer">
-            {% if data.ispublished == None %}
-                <a class="nav-link active" onclick="get_url('None', '');">All</a>
-            {%else%}
-                <a class="nav-link" onclick="get_url('None', '');">All</a>
-            {% endif%}
-
+                <a class="nav-link {% if data.ispublished == 'all' %}active{% endif%}" onclick="get_url('all', '');">All</a>
             </li>
             <li class="nav-item pointer">
-            {% if data.ispublished == 'true' %}
-                <a class="nav-link active" onclick="get_url('true', '');">Published</a>
-            {%else%}
-                <a class="nav-link" onclick="get_url('true', '');">Published</a>
-            {% endif%}
+                <a class="nav-link {% if data.ispublished == 'published' %}active{% endif%}" onclick="get_url('published', '');">Published</a>
             </li>
             <li class="nav-item pointer">
-            {% if data.ispublished == 'false' %}
-                <a class="nav-link active" onclick="get_url('false', '');">Not Published</a>
-            {%else%}
-                    <a class="nav-link" onclick="get_url('false', '');">Not Published</a>
-            {% endif%}
+                <a class="nav-link {% if data.ispublished == 'unpublished' %}active{% endif%}" onclick="get_url('unpublished', '');">Not Published</a>
             </li>
             <li id="draft" class="nav-item pointer">
-            {% if data.ispublished == 'draft' %}
-                <a class="nav-link active" onclick="get_url('draft', '');">Drafts</a>
-            {%else%}
-                <a class="nav-link" onclick="get_url('draft', '');">Drafts</a>
-            {% endif%}
+                <a class="nav-link {% if data.ispublished == 'draft' %}active{% endif%}" onclick="get_url('draft', '');">Drafts</a>
             </li>
         </ul>
     {% endif %}

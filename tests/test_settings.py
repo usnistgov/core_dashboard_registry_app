@@ -18,6 +18,7 @@ INSTALLED_APPS = [
     "core_main_registry_app",
     "core_parser_app",
     "core_curate_app",
+    "core_curate_registry_app",
     "core_explore_common_app",
     "core_dashboard_common_app",
     "tests",

@@ -1,7 +1,7 @@
 /**
  * Update URL
  */
-get_url = function (ispublished, page) {
+get_url = function (tab, page) {
     var url = urlResources;
     var list_role = '';
     url_name = '' ;
@@ -16,16 +16,8 @@ get_url = function (ispublished, page) {
         }
     }
 
-    // Check if publish or not published
-    if (ispublished === 'true') {
-        url_name = 'ispublished=true';
-    } else if (ispublished === 'false') {
-        url_name = 'ispublished=false';
-    }
-    else if (ispublished === 'draft') {
-        url_name = 'ispublished=draft';
-    }
-
+    // Set tab
+    url_name = 'ispublished=' +  tab;
 
     // Update URL with roles, publish and page
     if (list_role !== '') {

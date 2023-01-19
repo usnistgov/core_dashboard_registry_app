@@ -28,6 +28,7 @@ from core_main_app.commons import exceptions as exceptions
 from core_main_app.components.data import api as data_api
 from core_main_app.components.user import api as user_api
 from core_main_app.components.user.api import get_id_username_dict
+from core_main_app.components.workspace import api as workspace_api
 from core_main_app.components.workspace.api import (
     check_if_workspace_can_be_changed,
 )
@@ -101,12 +102,12 @@ class DashboardRegistryRecords(DashboardRecords):
 
         return list_name_in_schema
 
-    def load_records(self, request, is_published, custom_resources):
+    def load_records(self, request, tab, custom_resources):
         """Get list of records
 
         Args:
             request:
-            is_published:
+            tab:
             custom_resources:
         Returns:
             filtered_data
@@ -114,17 +115,20 @@ class DashboardRegistryRecords(DashboardRecords):
         role_name_list = self._get_list_name_in_shema_from_slug(
             request.GET.getlist("role", []), custom_resources
         )
-        filtered_data = []
         try:
             if conf_settings.MONGODB_INDEXING:
+                from mongoengine.queryset.visitor import Q
                 from core_main_app.components.mongo.api import (
                     execute_mongo_query,
                 )
 
+                workspace_key = "_workspace_id"
                 query_api = execute_mongo_query
             else:
+                from mongoengine.queryset.visitor import Q
                 from core_main_app.components.data.api import execute_query
 
+                workspace_key = "workspace_id"
                 query_api = execute_query
 
             loaded_data = query_api(
@@ -134,32 +138,28 @@ class DashboardRegistryRecords(DashboardRecords):
                 request.user,
             )
         except AccessControlError:
-            loaded_data = []
-        for data in loaded_data:
-            if (
-                is_published is None
-                or (is_published == "true" and data_api.is_data_public(data))
-                or (
-                    is_published == "false"
-                    and not data_api.is_data_public(data)
-                )
-            ):
-                filtered_data.append(data)
+            return []
+
+        if tab == "published":
+            global_workspace = workspace_api.get_global_workspace()
+            filtered_data = loaded_data.filter(
+                Q(**{f"{workspace_key}": global_workspace.id})
+            )
+        elif tab == "unpublished":
+            filtered_data = loaded_data.filter(Q(**{f"{workspace_key}": None}))
+        else:
+            filtered_data = loaded_data
+
         return filtered_data
 
-    def load_drafts(self, request, context):
+    def load_drafts(self, request):
         """Get list of drafts
 
         Args:
             request:
-            context:
         Returns:
             filtered_data
         """
-
-        role_name_list = request.GET.getlist("role", [])
-        filtered_data = []
-
         if self.administration:
             forms = curate_data_structure_api.get_all_with_no_data(
                 request.user
@@ -168,31 +168,7 @@ class DashboardRegistryRecords(DashboardRecords):
             forms = curate_data_structure_api.get_all_by_user_id_with_no_data(
                 request.user.id
             )
-
-        detailed_forms = []
-        for form in forms:
-            try:
-                role = ", ".join(
-                    [
-                        custom_resource_api.get_by_role_for_current_template(
-                            x, request=request
-                        ).title
-                        for x in curate_data_structure_registry_api.get_role(
-                            form
-                        )
-                    ]
-                    if form.form_string
-                    else ["None"]
-                )
-            except exceptions.ModelError:
-                role = "None"
-            if role_name_list != []:
-                if "-".join(role.lower().split()) in context["roles"]:
-                    detailed_forms.append({"form": form, "role": role})
-            else:
-                detailed_forms.append({"form": form, "role": role})
-        filtered_data.extend(detailed_forms)
-        return filtered_data
+        return forms
 
     def get(self, request, *args, **kwargs):
         """Retrieve a list of drafts or records
@@ -222,14 +198,14 @@ class DashboardRegistryRecords(DashboardRecords):
             ).order_by("sort")
         )
         # Get arguments
-        is_published = request.GET.get("ispublished", None)
-        is_published = (
-            None
-            if is_published not in ["true", "false", "draft"]
-            else is_published
+        tab = request.GET.get("ispublished", "all")
+        tab = (
+            tab
+            if tab in ["all", "published", "unpublished", "draft"]
+            else "all"
         )
         page = request.GET.get("page", 1)
-        if is_published == "draft":
+        if tab == "draft":
             document = (
                 dashboard_common_constants.FUNCTIONAL_OBJECT_ENUM.FORM.value
             )
@@ -245,16 +221,14 @@ class DashboardRegistryRecords(DashboardRecords):
         context = {
             "page": page,
             "roles": ",".join(request.GET.getlist("role", [cr_type_all.slug])),
-            "ispublished": is_published,
+            "ispublished": tab,
         }
 
         # Get resources
-        if is_published == "draft":
-            filtered_data = self.load_drafts(request, context)
+        if tab == "draft":
+            filtered_data = self.load_drafts(request)
         else:
-            filtered_data = self.load_records(
-                request, is_published, custom_resources
-            )
+            filtered_data = self.load_records(request, tab, custom_resources)
 
         # Paginator
         results_paginator = ResultsPaginator.get_results(
@@ -262,9 +236,15 @@ class DashboardRegistryRecords(DashboardRecords):
         )
 
         # Data context
-        if is_published != "draft":
+        if tab in ["all", "published", "unpublished"]:
             results_paginator.object_list = self._format_data_context_registry(
-                results_paginator.object_list, is_published
+                results_paginator.object_list,
+            )
+        elif tab == "draft":
+            results_paginator.object_list = (
+                self._format_draft_context_registry(
+                    results_paginator.object_list,
+                )
             )
 
         # Add user_form for change owner
@@ -325,8 +305,15 @@ class DashboardRegistryRecords(DashboardRecords):
             modals=modals,
         )
 
-    # FIXME is_published is never used
-    def _format_data_context_registry(self, data_list, is_published):
+    def _format_data_context_registry(self, data_list):
+        """Format context for registry data
+
+        Args:
+            data_list:
+
+        Returns:
+
+        """
         data_context_list = []
         username_list = dict(
             (x.id, x.username) for x in user_api.get_all_users()
@@ -359,6 +346,35 @@ class DashboardRegistryRecords(DashboardRecords):
                 }
             )
         return data_context_list
+
+    def _format_draft_context_registry(self, draft_list):
+        """Format context for registry draft
+
+        Args:
+            draft_list:
+
+        Returns:
+
+        """
+        draft_context_list = []
+        for draft in draft_list:
+            try:
+                role = ", ".join(
+                    [
+                        custom_resource_api.get_by_role_for_current_template(
+                            x, request=self.request
+                        ).title
+                        for x in curate_data_structure_registry_api.get_role(
+                            draft
+                        )
+                    ]
+                    if draft.form_string
+                    else ["None"]
+                )
+            except exceptions.ModelError:
+                role = "None"
+            draft_context_list.append({"form": draft, "role": role})
+        return draft_context_list
 
     def _get_assets(self):
         # add js & css for the super class
