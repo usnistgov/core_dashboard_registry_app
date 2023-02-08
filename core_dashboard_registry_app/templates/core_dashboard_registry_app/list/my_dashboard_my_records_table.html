@@ -79,6 +79,9 @@
                 <a class="btn btn-secondary edit-record-btn">
                     <i class="fas fa-edit"></i> {% if data_loaded.data|has_draft:request.user %} Edit draft {% else %} Create new version {% endif %}
                 </a>
+                <a class="btn btn-secondary open-record-btn">
+                    <i class="fas fa-code"></i> Open
+                </a>
             {% endif %}
             {% if data_loaded.can_write %}
                 {% if data.administration %}
