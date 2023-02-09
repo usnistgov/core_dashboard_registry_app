@@ -401,6 +401,12 @@ class DashboardRegistryRecords(DashboardRecords):
             }
         )
         assets["js"].append(
+            {
+                "path": "core_dashboard_registry_app/user/js/list/open_form.raw.js",
+                "is_raw": True,
+            }
+        )
+        assets["js"].append(
             {"path": dashboard_constants.JS_PUBLISH_RESOURCE, "is_raw": False}
         )
         assets["js"].append(
