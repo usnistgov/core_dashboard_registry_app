@@ -3,14 +3,12 @@
 """
 from django.contrib.auth.decorators import login_required
 from django.urls import re_path
-from django.urls import reverse_lazy
 
 from core_dashboard_common_app import constants as dashboard_constants
 from core_dashboard_common_app.views.common import ajax, views as common_views
 from core_dashboard_common_app.views.common.views import (
     UserDashboardPasswordChangeFormView,
 )
-from core_main_registry_app.settings import ENABLE_BLOB_ENDPOINTS
 from core_dashboard_registry_app.views.common import (
     ajax as registry_common_ajax,
 )
@@ -18,7 +16,7 @@ from core_dashboard_registry_app.views.common import (
     views as registry_common_views,
 )
 from core_dashboard_registry_app.views.common.ajax import EditDataView
-
+from core_main_registry_app.settings import ENABLE_BLOB_ENDPOINTS
 
 urlpatterns = [
     # Common
@@ -61,7 +59,6 @@ urlpatterns = [
                 data_template="core_dashboard_registry_app/list/my_dashboard_my_records_table_pagination.html",
                 allow_change_workspace_if_public=False,
             ),
-            login_url=reverse_lazy("core_main_app_login"),
         ),
         name="core_dashboard_records",
     ),
@@ -76,7 +73,6 @@ urlpatterns = [
             registry_common_views.DashboardRegistryForms.as_view(
                 document=dashboard_constants.FUNCTIONAL_OBJECT_ENUM.FORM.value
             ),
-            login_url=reverse_lazy("core_main_app_login"),
         ),
         name="core_dashboard_forms",
     ),
@@ -84,7 +80,6 @@ urlpatterns = [
         r"^workspaces$",
         login_required(
             common_views.DashboardWorkspaces.as_view(),
-            login_url=reverse_lazy("core_main_app_login"),
         ),
         name="core_dashboard_workspaces",
     ),
@@ -92,7 +87,6 @@ urlpatterns = [
         r"^queries",
         login_required(
             common_views.DashboardQueries.as_view(),
-            login_url=reverse_lazy("core_main_app_login"),
         ),
         name="core_dashboard_queries",
     ),
@@ -102,7 +96,6 @@ urlpatterns = [
             registry_common_views.DashboardRegistryWorkspaceRecords.as_view(
                 data_template="core_dashboard_registry_app/list/my_dashboard_my_records_table_pagination.html"
             ),
-            login_url=reverse_lazy("core_main_app_login"),
         ),
         name="core_dashboard_workspace_list",
     ),
@@ -124,7 +117,6 @@ if ENABLE_BLOB_ENDPOINTS:
             r"^files$",
             login_required(
                 common_views.DashboardFiles.as_view(),
-                login_url=reverse_lazy("core_main_app_login"),
             ),
             name="core_dashboard_files",
         ),

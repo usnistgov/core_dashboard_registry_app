@@ -3,7 +3,6 @@
 from django.conf import settings as conf_settings
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
-from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 
 import core_curate_app.components.curate_data_structure.api as curate_data_structure_api
@@ -48,7 +47,7 @@ if "core_curate_registry_app" in INSTALLED_APPS:
     import core_curate_registry_app.components.curate_data_structure.api as curate_data_structure_registry_api
 
 
-@login_required(login_url=reverse_lazy("core_main_app_login"))
+@login_required
 def home(request):
     """Home page.
 
