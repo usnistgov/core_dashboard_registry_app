@@ -12,12 +12,12 @@ from core_dashboard_registry_app.views.common.views import (
 from core_main_app.access_control.exceptions import AccessControlError
 from core_main_app.commons.exceptions import ModelError
 from core_main_app.utils.integration_tests.integration_base_test_case import (
-    MongoIntegrationBaseTestCase,
+    IntegrationBaseTestCase,
 )
 from core_main_app.utils.tests_tools.MockUser import create_mock_user
 
 
-class TestDashboardRegistryRecords(MongoIntegrationBaseTestCase):
+class TestDashboardRegistryRecords(IntegrationBaseTestCase):
     """TestViewData"""
 
     def setUp(self):
