@@ -103,9 +103,10 @@
                 <a class="btn btn-secondary publish-record-btn float-right">
                     <i class="fas fa-share-alt"></i> Publish
                 </a>
-            {% else %}
-                <span class="float-right" style="font-size: 0.6em;"> Published on: {{ data_loaded.data.last_modification_date|print_datetime_utc_unaware }} </span>
             {% endif %}
+            <span class="float-right" style="font-size: 0.6em; margin: 0.7em;">
+                {% if data_loaded.can_set_public %}Updated{% else%}Published{% endif %} on: {{ data_loaded.data.last_modification_date|print_datetime_utc_unaware }}
+            </span>
         </td>
     </tr>
 </table>

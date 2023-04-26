@@ -446,6 +446,7 @@ class DashboardRegistryWorkspaceRecords(DashboardWorkspaceRecords):
                     "can_read": user_can_read or is_owner,
                     "can_write": user_can_write or is_owner,
                     "is_owner": is_owner,
+                    "can_set_public": not data_api.is_data_public(data),
                 }
             )
         return detailed_user_data
@@ -480,6 +481,9 @@ class DashboardRegistryWorkspaceRecords(DashboardWorkspaceRecords):
                 "path": "core_dashboard_registry_app/user/js/get_url.js",
                 "is_raw": False,
             }
+        )
+        assets["js"].append(
+            {"path": dashboard_constants.JS_PUBLISH_RESOURCE, "is_raw": False}
         )
         assets["js"].append(EditDataView.get_modal_js_path())
         return assets

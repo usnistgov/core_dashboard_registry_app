@@ -4,10 +4,12 @@ from unittest.mock import patch, MagicMock
 
 from django.contrib.auth.models import AnonymousUser
 from django.http import HttpResponse
-from django.test import RequestFactory, override_settings, tag
+from django.test import RequestFactory, override_settings, tag, SimpleTestCase
 
+from core_dashboard_registry_app import constants as dashboard_constants
 from core_dashboard_registry_app.views.common.views import (
     DashboardRegistryRecords,
+    DashboardRegistryWorkspaceRecords,
 )
 from core_main_app.access_control.exceptions import AccessControlError
 from core_main_app.commons.exceptions import ModelError
@@ -18,7 +20,7 @@ from core_main_app.utils.tests_tools.MockUser import create_mock_user
 
 
 class TestDashboardRegistryRecords(IntegrationBaseTestCase):
-    """TestViewData"""
+    """TestDashboardRegistryRecords"""
 
     def setUp(self):
         """setUp
@@ -449,3 +451,19 @@ class TestDashboardRegistryRecords(IntegrationBaseTestCase):
 
         # Assert
         self.assertEqual(result[0]["role"], "None")
+
+
+class TestDashboardRegistryWorkspaceRecords(SimpleTestCase):
+    """TestDashboardRegistryWorkspaceRecords"""
+
+    def test_publish_script_added_to_assets(self):
+        """test_publish_script_added_to_assets
+
+        Returns:
+
+        """
+        assets = DashboardRegistryWorkspaceRecords()._get_assets()
+        self.assertTrue(
+            dashboard_constants.JS_PUBLISH_RESOURCE
+            in [asset["path"] for asset in assets["js"]]
+        )
