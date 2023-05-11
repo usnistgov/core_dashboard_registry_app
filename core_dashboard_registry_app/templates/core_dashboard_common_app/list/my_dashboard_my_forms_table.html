@@ -35,29 +35,36 @@
                 </td>
                 {% endif %}
                 <td>
-                    {% if come_from_admin %}
-                        <a class="btn btn-secondary view-form-btn"
-                           href="{% url 'core-admin:core_curate_view_form' data_loaded.form.id %}">
-                            <i class="far fa-file-alt"></i> View
+                    <a class="btn btn-secondary dropdown-toggle" type="button" id="dropdownActions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-sliders"></i> Actions
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="dropdownActions">
+                        {% if come_from_admin %}
+                            <a class="dropdown-item view-form-btn"
+                               href="{% url 'core-admin:core_curate_view_form' data_loaded.form.id %}">
+                                <i class="far fa-file-alt"></i> View
+                            </a>
+                        {% else %}
+                            <a class="dropdown-item view-form-btn"
+                               href="{% url 'core_curate_view_form' data_loaded.form.id %}">
+                                <i class="far fa-file-alt"></i> View
+                            </a>
+                        {% endif %}
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item edit-form-btn" href="{% url 'core_curate_enter_data' data_loaded.form.id %}">
+                            <i class="fas fa-edit"></i> Edit
                         </a>
-                    {% else %}
-                        <a class="btn btn-secondary view-form-btn"
-                           href="{% url 'core_curate_view_form' data_loaded.form.id %}">
-                            <i class="far fa-file-alt"></i> View
+                        <a class="dropdown-item open-form-btn" href="#">
+                            <i class="fas fa-code"></i> Open
                         </a>
-                    {% endif %}
-                    <a class="btn btn-secondary edit-form-btn" href="{% url 'core_curate_enter_data' data_loaded.form.id %}">
-                        <i class="fas fa-edit"></i> Edit
-                    </a>
-                    <a class="btn btn-secondary open-form-btn">
-                        <i class="fas fa-code"></i> Open
-                    </a>
-                    <a class="btn btn-secondary change-owner-btn">
-                        <i class="fas fa-user-circle"></i> Change Owner
-                    </a>
-                    <button class="btn btn-danger delete-document-btn">
-                        <i class="fas fa-trash"></i> Delete
-                    </button>
+                        <a class="dropdown-item change-owner-btn" href="#">
+                            <i class="fas fa-user-circle"></i> Change Owner
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item delete-document-btn" href="#">
+                            <i class="fas fa-trash"></i> Delete
+                        </a>
+                    </div>
                 </td>
             </tr>
         {% endfor %}

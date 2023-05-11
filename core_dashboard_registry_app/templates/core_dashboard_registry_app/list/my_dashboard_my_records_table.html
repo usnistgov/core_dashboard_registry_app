@@ -79,9 +79,16 @@
                 <a class="btn btn-secondary edit-record-btn">
                     <i class="fas fa-edit"></i> {% if data_loaded.data|has_draft:request.user %} Edit draft {% else %} Create new version {% endif %}
                 </a>
-                <a class="btn btn-secondary open-record-btn">
-                    <i class="fas fa-code"></i> Open
-                </a>
+                {% if data_loaded.data|has_draft:request.user %}
+                    <a class="btn btn-secondary open-record-draft-btn">
+                        <i class="fas fa-code"></i> Open Draft
+                    </a>
+                {% else %}
+                    <a class="btn btn-secondary open-record-btn">
+                        <i class="fas fa-code"></i> Open
+                    </a>
+                {% endif %}
+
             {% endif %}
             {% if data_loaded.can_write %}
                 {% if data.administration %}
@@ -94,6 +101,11 @@
                     {% with data_loaded.delete_url as delete_url %}
                     {% include 'core_main_app/common/buttons/delete.html' %}
                     {% endwith %}
+                {% endif %}
+                {% if data_loaded.data|has_draft:request.user %}
+                    <a class="btn btn-danger delete-draft-btn">
+                        <i class="fas fa-trash"></i> Delete Draft
+                    </a>
                 {% endif %}
             {% endif %}
 
