@@ -1,6 +1,7 @@
 {% load dict_key_extras %}
 {% load draft_extras %}
 {% load timestamptags %}
+{% load tz %}
 
 
 {% for data_loaded in objects %}
@@ -117,7 +118,7 @@
                 </a>
             {% endif %}
             <span class="float-right" style="font-size: 0.6em; margin: 0.7em;">
-                {% if data_loaded.can_set_public %}Updated{% else%}Published{% endif %} on: {{ data_loaded.data.last_modification_date|print_datetime_utc_unaware }}
+                {% if data_loaded.can_set_public %}Updated{% else%}Published{% endif %} on: {{ data_loaded.data.last_modification_date|localtime }}
             </span>
         </td>
     </tr>

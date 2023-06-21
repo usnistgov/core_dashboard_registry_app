@@ -1,6 +1,7 @@
 {% load dict_key_extras %}
 {% load draft_extras %}
 {% load timestamptags %}
+{% load tz %}
 
 <thead>
     {% if data.menu and not data.title %}
@@ -33,7 +34,7 @@
                 {{ data_loaded.data_role }}
             </td>
             <td>
-                {{ data_loaded.data.last_modification_date|print_datetime_utc_unaware }}
+                {{ data_loaded.data.last_modification_date|localtime }}
             </td>
             {% if data.username_list %}
             <td>
