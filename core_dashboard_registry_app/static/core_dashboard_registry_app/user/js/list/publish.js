@@ -20,7 +20,7 @@ function publish(data_id){
         },
         error:function(data){
             var myArr = JSON.parse(data.responseText);
-            $.notify(myArr.message, {style: myArr.tags });
+            $.notify(myArr.message, "danger");
         }
     });
 }

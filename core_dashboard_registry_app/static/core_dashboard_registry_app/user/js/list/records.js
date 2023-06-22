@@ -21,7 +21,7 @@ function switchStatus(data_id, old_status, new_status, btn_element){
             },
             error: function(data) {
                 var errors = $.parseJSON(data.responseText);
-                $.notify(errors.message, {style: 'error'});
+                $.notify(errors.message, "danger");
             }
         });
     }
