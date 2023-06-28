@@ -80,7 +80,7 @@
                 {% endif %}
             </td>
             <td class="status-cell-admin">
-                <span class="float-right dropdown">
+                <span class="{% if BOOTSTRAP_VERSION == "4.6.2" %}float-right{% elif BOOTSTRAP_VERSION == "5.1.3" %}float-end{% endif %} dropdown">
                     {% if data_loaded.data_status == data_loaded.data_status_values.ACTIVE  %}
                         <span data-status="active" class="dropbtn status-active"></span>
                     {% endif %}
@@ -99,13 +99,13 @@
                   </div>
                 </span>
                 {% if data_loaded.data_status == data_loaded.data_status_values.ACTIVE  %}
-                    <span class="float-right label-status font-active">Active</span>
+                    <span class="{% if BOOTSTRAP_VERSION == "4.6.2" %}float-right{% elif BOOTSTRAP_VERSION == "5.1.3" %}float-end{% endif %} label-status font-active">Active</span>
                 {% endif %}
                 {% if data_loaded.data_status == data_loaded.data_status_values.INACTIVE  %}
-                    <span class="float-right label-status font-inactive">Inactive</span>
+                    <span class="{% if BOOTSTRAP_VERSION == "4.6.2" %}float-right{% elif BOOTSTRAP_VERSION == "5.1.3" %}float-end{% endif %} label-status font-inactive">Inactive</span>
                 {% endif %}
                 {% if data_loaded.data_status == data_loaded.data_status_values.DELETED  %}
-                    <span class="float-right label-status font-deleted">Deleted</span>
+                    <span class="{% if BOOTSTRAP_VERSION == "4.6.2" %}float-right{% elif BOOTSTRAP_VERSION == "5.1.3" %}float-end{% endif %} label-status font-deleted">Deleted</span>
                 {% endif %}
             </td>
         </tr>
