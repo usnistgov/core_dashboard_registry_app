@@ -6,9 +6,6 @@ from django.urls import re_path
 
 from core_dashboard_common_app import constants as dashboard_constants
 from core_dashboard_common_app.views.common import ajax, views as common_views
-from core_dashboard_common_app.views.common.views import (
-    UserDashboardPasswordChangeFormView,
-)
 from core_dashboard_registry_app.views.common import (
     ajax as registry_common_ajax,
 )
@@ -28,14 +25,6 @@ urlpatterns = [
         r"^my-profile/edit$",
         common_views.my_profile_edit,
         name="core_dashboard_profile_edit",
-    ),
-    re_path(
-        r"^my-profile/change-password",
-        UserDashboardPasswordChangeFormView.as_view(
-            template_name="core_dashboard_common_app/my_profile_change_password.html",
-            success_url="/",
-        ),
-        name="core_dashboard_profile_change_password",
     ),
     re_path(
         r"^delete-document",
