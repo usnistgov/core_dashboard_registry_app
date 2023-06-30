@@ -1,5 +1,6 @@
 """ Common views for the registry dashboard
 """
+from core_main_app.commons.exceptions import DoesNotExist
 from django.conf import settings as conf_settings
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
@@ -318,6 +319,15 @@ class DashboardRegistryRecords(DashboardRecords):
             (x.id, x.username) for x in user_api.get_all_users()
         )
         for data in data_list:
+            forms_count = (
+                len(
+                    curate_data_structure_api.get_all_curate_data_structures_by_data(
+                        data, self.request.user
+                    )
+                )
+                if self.administration
+                else 0
+            )
             data_context_list.append(
                 {
                     "data": data,
@@ -330,6 +340,8 @@ class DashboardRegistryRecords(DashboardRecords):
                             for x in get_role(data)
                         ]
                     ),
+                    "form_id": _get_form_id(data, self.request.user),
+                    "forms_count": forms_count,
                     "can_read": True,
                     "can_write": True,
                     "is_owner": True,
@@ -430,6 +442,15 @@ class DashboardRegistryWorkspaceRecords(DashboardWorkspaceRecords):
         detailed_user_data = []
         username_list = get_id_username_dict(user_api.get_all_users())
         for data in data_list:
+            forms_count = (
+                len(
+                    curate_data_structure_api.get_all_curate_data_structures_by_data(
+                        data, self.request.user
+                    )
+                )
+                if self.administration
+                else 0
+            )
             is_owner = str(data.user_id) == str(user.id) or self.administration
             detailed_user_data.append(
                 {
@@ -443,6 +464,8 @@ class DashboardRegistryWorkspaceRecords(DashboardWorkspaceRecords):
                             for x in get_role(data)
                         ]
                     ),
+                    "form_id": _get_form_id(data, self.request.user),
+                    "forms_count": forms_count,
                     "can_read": user_can_read or is_owner,
                     "can_write": user_can_write or is_owner,
                     "is_owner": is_owner,
@@ -532,3 +555,21 @@ def _get_role_label(role, request):
         ).title
     except (exceptions.ModelError, exceptions.DoesNotExist):
         return role
+
+
+def _get_form_id(data, user):
+    """Get form id by data and user
+
+    Args:
+        data:
+        user
+
+    Returns:
+
+    """
+    try:
+        return curate_data_structure_api.get_by_data_id_and_user(
+            data.id, user
+        ).id
+    except DoesNotExist:
+        return None

@@ -1,6 +1,6 @@
 {% load dict_key_extras %}
-{% load draft_extras %}
 {% load timestamptags %}
+{% load special_plural %}
 {% load tz %}
 
 
@@ -13,7 +13,11 @@
             {% else %}
                 <span style="font-weight: bold;">{{ data_loaded.data.title }}</span> ({{ data_loaded.data_role }})
             {% endif %}
-            {% if data_loaded.data|has_draft:request.user%}, <text class="text-danger">&nbsp;Draft</text>{% endif %}
+            {% if data.administration and data_loaded.forms_count > 0  %}
+                ,<text class="text-danger"> Draft{{ data_loaded.forms_count|pluralize }} </text>
+            {% elif data_loaded.form_id %}
+                ,<text class="text-danger"> Draft </text>
+            {% endif %}
 
         </td>
         <td class="cell-dropdown">
@@ -78,18 +82,17 @@
             {% endif %}
             {% if data_loaded.can_write %}
                 <a class="btn btn-secondary edit-record-btn">
-                    <i class="fas fa-edit"></i> {% if data_loaded.data|has_draft:request.user %} Edit draft {% else %} Create new version {% endif %}
+                    <i class="fas fa-edit"></i> {% if data_loaded.form_id %} Edit draft {% else %} Create new version {% endif %}
                 </a>
-                {% if data_loaded.data|has_draft:request.user %}
-                    <a class="btn btn-secondary open-record-draft-btn">
-                        <i class="fas fa-code"></i> Open Draft
-                    </a>
+                {% if data_loaded.form_id %}
+                <a class="btn btn-secondary" href="{% url 'core_curate_app_xml_text_editor_view'%}?id={{ data_loaded.form_id }}">
+                    <i class="fas fa-code"></i> Open Draft
+                </a>
                 {% else %}
-                    <a class="btn btn-secondary open-record-btn">
-                        <i class="fas fa-code"></i> Open
-                    </a>
+                <a class="btn btn-secondary open-record-btn" href="#">
+                    <i class="fas fa-code"></i> Open
+                </a>
                 {% endif %}
-
             {% endif %}
             {% if data_loaded.can_write %}
                 {% if data.administration %}
@@ -103,10 +106,14 @@
                     {% include 'core_main_app/common/buttons/delete.html' %}
                     {% endwith %}
                 {% endif %}
-                {% if data_loaded.data|has_draft:request.user %}
-                    <a class="btn btn-danger delete-draft-btn">
-                        <i class="fas fa-trash"></i> Delete Draft
-                    </a>
+                {% if data.administration and  data_loaded.forms_count > 0 %}
+                <a objectid="{{data_loaded.data.id}}" class="btn btn-danger delete-data-draft-list-btn" href="#">
+                    <i class="fas fa-trash"></i> Delete Draft{{ data_loaded.forms_count|pluralize }}
+                </a>
+                {% elif data_loaded.form_id %}
+                <a objectid="{{data_loaded.form_id}}" class="btn btn-danger  delete-draft-btn" href="#">
+                    <i class="fas fa-trash"></i> Delete Draft
+                </a>
                 {% endif %}
             {% endif %}
 

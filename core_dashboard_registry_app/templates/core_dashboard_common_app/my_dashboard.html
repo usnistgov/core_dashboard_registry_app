@@ -51,16 +51,16 @@
         {% include 'core_main_registry_app/resource_banner/resource_banner.html' %}
         <ul class="nav nav-tabs">
             <li class="nav-item pointer">
-                <a class="nav-link {% if data.ispublished == 'all' %}active{% endif%}" onclick="get_url('all', '');">All</a>
+                <a class="nav-link {% if data.ispublished == 'all' %}active{% endif %}" onclick="get_url('all', '');">All</a>
             </li>
             <li class="nav-item pointer">
-                <a class="nav-link {% if data.ispublished == 'published' %}active{% endif%}" onclick="get_url('published', '');">Published</a>
+                <a class="nav-link {% if data.ispublished == 'published' %}active{% endif %}" onclick="get_url('published', '');">Published</a>
             </li>
             <li class="nav-item pointer">
-                <a class="nav-link {% if data.ispublished == 'unpublished' %}active{% endif%}" onclick="get_url('unpublished', '');">Not Published</a>
+                <a class="nav-link {% if data.ispublished == 'unpublished' %}active{% endif %}" onclick="get_url('unpublished', '');">Not Published</a>
             </li>
             <li id="draft" class="nav-item pointer">
-                <a class="nav-link {% if data.ispublished == 'draft' %}active{% endif%}" onclick="get_url('draft', '');">Drafts</a>
+                <a class="nav-link {% if data.ispublished == 'draft' %}active{% endif %}" onclick="get_url('draft', '');">Drafts</a>
             </li>
         </ul>
     {% endif %}

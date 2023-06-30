@@ -64,4 +64,5 @@ CUSTOM_NAME = "Test"
 CELERYBEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"
 CAN_ANONYMOUS_ACCESS_PUBLIC_DOCUMENT = True
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-ROOT_URLCONF = "core_dashboard_registry_app.urls"
+ROOT_URLCONF = "tests.urls"
+ENABLE_SAML2_SSO_AUTH = False

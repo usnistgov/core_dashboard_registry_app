@@ -1,5 +1,4 @@
 {% load dict_key_extras %}
-{% load draft_extras %}
 {% load timestamptags %}
 {% load tz %}
 
@@ -28,7 +27,12 @@
             </td>
             {% endif %}
             <td>
-                {{ data_loaded.data.title }}{% if data_loaded.data|has_draft:request.user %},<text class="text-danger">&nbsp;Draft</text>{% endif %}
+                {{ data_loaded.data.title }}
+                {% if data.administration and data_loaded.forms_count > 0  %}
+                    ,<text class="text-danger"> Draft{{ data_loaded.forms_count|pluralize }} </text>
+                {% elif data_loaded.form_id %}
+                    ,<text class="text-danger"> Draft </text>
+                {% endif %}
             </td>
             <td>
                 {{ data_loaded.data_role }}
@@ -53,31 +57,56 @@
             </td>
             {% endif %}
             <td>
-                {% if data_loaded.can_read %}
-                    <a class="btn btn-secondary view-record-btn">
-                        <i class="far fa-file-alt"></i> View
-                    </a>
-                {% endif %}
-                {% if data_loaded.can_write %}
-                    <a class="btn btn-secondary edit-record-btn">
-                        <i class="fas fa-edit"></i> Edit
-                    </a>
-                    {% if data_loaded.can_change_workspace %}
-                        <a class="btn btn-secondary assign-workspace-record-btn">
+                                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownActions" {% if BOOTSTRAP_VERSION == "4.6.2" %}data-toggle{% elif BOOTSTRAP_VERSION == "5.1.3" %}data-bs-toggle{% endif %}="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fas fa-sliders"></i> Actions
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownActions">
+                    {% if data_loaded.can_read %}
+                        <a class="dropdown-item view-record-btn" href="#">
+                            <i class="fas fa-file-alt"></i> View
+                        </a>
+                    {% endif %}
+                    <div class="dropdown-divider"></div>
+
+                    {% if data_loaded.can_write %}
+                        <a class="dropdown-item edit-record-btn" href="#">
+                            <i class="fas fa-edit"></i> Edit
+                        </a>
+                        {% if data_loaded.form_id %}
+                            <a class="dropdown-item" href="{% url 'core_curate_app_xml_text_editor_view'%}?id={{ data_loaded.form_id }}">
+                                <i class="fas fa-code"></i> Open Draft
+                            </a>
+                        {% else %}
+                            <a class="dropdown-item open-record-btn" href="#">
+                                <i class="fas fa-code"></i> Open
+                            </a>
+                        {% endif %}
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item assign-workspace-record-btn {% if not data_loaded.can_change_workspace %}disabled{% endif %}" href="#">
                             <i class="fas fa-folder"></i> Change workspace
                         </a>
                     {% endif %}
-                {% endif %}
-                {% if data_loaded.is_owner %}
-                    <a class="btn btn-secondary change-owner-btn">
-                        <i class="fas fa-user-circle"></i> Change Owner
-                    </a>
-                {% endif %}
-                {% if data_loaded.can_set_public %}
-                    <a class="btn btn-secondary publish-record-btn">
-                        <i class="fas fa-share-alt"></i> Publish
-                    </a>
-                {% endif %}
+                    {% if data_loaded.is_owner %}
+                        <a class="dropdown-item change-owner-btn" href="#"><i class="fas fa-user-circle"></i> Change Owner</a>
+                        <div class="dropdown-divider"></div>
+                    {% endif %}
+
+                    {% if data_loaded.can_set_public %}
+                        <a class="dropdown-item publish-record-btn" href="#">
+                            <i class="fas fa-share-alt"></i> Publish
+                        </a>
+                    {% endif %}
+
+                    {% if data.administration and  data_loaded.forms_count > 0 %}
+                        <a objectid="{{data_loaded.data.id}}" class="dropdown-item delete-data-draft-list-btn" href="#">
+                            <i class="fas fa-trash"></i> Delete Draft{{ data_loaded.forms_count|pluralize }}
+                        </a>
+                    {% elif data_loaded.form_id %}
+                        <a objectid="{{data_loaded.form_id}}" class="dropdown-item  delete-draft-btn" href="#">
+                            <i class="fas fa-trash"></i> Delete Draft
+                        </a>
+                    {% endif %}
+                </div>
             </td>
             <td class="status-cell-admin">
                 <span class="{% if BOOTSTRAP_VERSION == "4.6.2" %}float-right{% elif BOOTSTRAP_VERSION == "5.1.3" %}float-end{% endif %} dropdown">

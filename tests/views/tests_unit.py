@@ -2,9 +2,13 @@
 """
 from unittest.mock import patch, MagicMock
 
+from core_main_app.components.workspace.models import Workspace
+
+import core_dashboard_registry_app
+from core_main_app.components.data.models import Data
 from django.contrib.auth.models import AnonymousUser
 from django.http import HttpResponse
-from django.test import RequestFactory, override_settings, tag, SimpleTestCase
+from django.test import RequestFactory, override_settings, tag
 
 from core_dashboard_registry_app import constants as dashboard_constants
 from core_dashboard_registry_app.views.common.views import (
@@ -122,6 +126,8 @@ class TestDashboardRegistryRecords(IntegrationBaseTestCase):
         response = DashboardRegistryRecords.as_view()(request)
         self.assertEqual(response.status_code, 200)
 
+    @patch.object(core_dashboard_registry_app.views.common.views, "get_status")
+    @patch.object(core_dashboard_registry_app.views.common.views, "get_role")
     @patch("core_main_app.components.workspace.api.get_global_workspace")
     @patch("core_main_app.views.common.views.CommonView.common_render")
     @patch("core_main_app.components.data.api.execute_query")
@@ -138,6 +144,8 @@ class TestDashboardRegistryRecords(IntegrationBaseTestCase):
         execute_query,
         common_render,
         get_global_workspace,
+        get_status,
+        get_role,
     ):
         """test_request_published_records
 
@@ -150,18 +158,18 @@ class TestDashboardRegistryRecords(IntegrationBaseTestCase):
 
         current_template = MagicMock()
         loaded_data = MagicMock()
-        loaded_data.filter.return_value = []
+        loaded_data.filter.return_value = [Data(id=0)]
         execute_query.return_value = loaded_data
-
+        get_role.return_value = []
         expected_response = HttpResponse()
         common_render.return_value = expected_response
-
         workspace = MagicMock()
         workspace.id = 1
         get_global_workspace.return_value = workspace
-
         get_current_custom_resource_type_all.return_value = cr_type_all
+
         get_all_of_current_template.return_value = current_template
+
         request = self.factory.get(
             "core_dashboard_records", data={"ispublished": "published"}
         )
@@ -453,8 +461,17 @@ class TestDashboardRegistryRecords(IntegrationBaseTestCase):
         self.assertEqual(result[0]["role"], "None")
 
 
-class TestDashboardRegistryWorkspaceRecords(SimpleTestCase):
+class TestDashboardRegistryWorkspaceRecords(IntegrationBaseTestCase):
     """TestDashboardRegistryWorkspaceRecords"""
+
+    def setUp(self):
+        """setUp
+
+        Returns:
+
+        """
+        self.factory = RequestFactory()
+        self.user1 = create_mock_user(user_id="1")
 
     def test_publish_script_added_to_assets(self):
         """test_publish_script_added_to_assets
@@ -467,3 +484,36 @@ class TestDashboardRegistryWorkspaceRecords(SimpleTestCase):
             dashboard_constants.JS_PUBLISH_RESOURCE
             in [asset["path"] for asset in assets["js"]]
         )
+
+    @patch.object(core_dashboard_registry_app.views.common.views, "get_role")
+    @patch.object(core_dashboard_registry_app.views.common.views, "get_status")
+    def test_data_drafts_added_to_context(
+        self,
+        get_status,
+        get_role,
+    ):
+        """test_data_drafts_added_to_context
+
+        Returns:
+
+        """
+        # Arrange
+        workspace = Workspace()
+        workspace.id = 1
+        data_list = [Data(id=0, workspace=workspace)]
+
+        get_status.return_value = None
+        get_role.return_value = []
+
+        self.request = self.factory.get("core_dashboard_workspace_list")
+        self.administration = False
+        self.request.user = self.user1
+        # Act
+        data_context = DashboardRegistryWorkspaceRecords._format_data_context(
+            self, data_list, self.user1, True, True
+        )
+
+        # Assert
+        for data in data_context:
+            self.assertEqual(data["form_id"], None)
+            self.assertEqual(data["forms_count"], 0)
