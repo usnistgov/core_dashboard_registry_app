@@ -16,8 +16,10 @@ function switchStatus(data_id, old_status, new_status, btn_element){
             success: function(data){
                 btn_element.attr('class', 'dropbtn status-' + new_status);
                 btn_element.attr('data-status', new_status);
-                btn_element.closest('td').children('span.label-status').attr('class', 'float-right label-status font-'+ new_status);
-                btn_element.closest('td').children('span.label-status').text(new_status);
+                var labelStatus = btn_element.closest('td').children('span.label-status')
+                var floatClass = labelStatus.attr('class').split(' ')[0]
+                labelStatus.attr('class', floatClass+' label-status font-'+ new_status);
+                labelStatus.children('span.label-status').text(new_status);
             },
             error: function(data) {
                 var errors = $.parseJSON(data.responseText);
