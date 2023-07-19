@@ -91,3 +91,7 @@
 .label-status {
     padding-top: 12px;
 }
+
+.valign-top{
+    vertical-align:top !important;
+}

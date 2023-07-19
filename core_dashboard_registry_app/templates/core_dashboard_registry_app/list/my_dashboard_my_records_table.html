@@ -7,9 +7,9 @@
 {% for data_loaded in objects %}
 <table class="table table-borderless table-card">
     <tr objectid="{{data_loaded.data.id}}">
-        <td class="px-3 pull-left">
+        <td class="px-3 pull-left valign-top">
             {% if data_loaded.can_read %}
-                <a class="view-record-btn font-weight-bold pointer">{{ data_loaded.data.title }}</a> ({{ data_loaded.data_role }})
+                <a class="view-record-btn font-weight-bold pointer fw-bold">{{ data_loaded.data.title }}</a> ({{ data_loaded.data_role }})
             {% else %}
                 <span style="font-weight: bold;">{{ data_loaded.data.title }}</span> ({{ data_loaded.data_role }})
             {% endif %}
