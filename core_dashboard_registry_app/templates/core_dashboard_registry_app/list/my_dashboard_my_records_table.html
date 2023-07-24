@@ -21,7 +21,7 @@
 
         </td>
         <td class="cell-dropdown">
-            <span class="{% if BOOTSTRAP_VERSION == "4.6.2" %}float-right{% elif BOOTSTRAP_VERSION == "5.1.3" %}float-end{% endif %} dropdown">
+            <span class="{% if BOOTSTRAP_VERSION|first == "4" %}float-right{% elif BOOTSTRAP_VERSION|first == "5"  %}float-end{% endif %} dropdown">
                 {% if data_loaded.data_status == data_loaded.data_status_values.ACTIVE  %}
                     <span data-status="active" class="dropbtn status-active pointer"></span>
                 {% endif %}
@@ -40,13 +40,13 @@
               </div>
             </span>
             {% if data_loaded.data_status == data_loaded.data_status_values.ACTIVE  %}
-                <span class="{% if BOOTSTRAP_VERSION == "4.6.2" %}float-right{% elif BOOTSTRAP_VERSION == "5.1.3" %}float-end{% endif %} label-status font-active">Active</span>
+                <span class="{% if BOOTSTRAP_VERSION|first == "4" %}float-right{% elif BOOTSTRAP_VERSION|first == "5"  %}float-end{% endif %} label-status font-active">Active</span>
             {% endif %}
             {% if data_loaded.data_status == data_loaded.data_status_values.INACTIVE  %}
-                <span class="{% if BOOTSTRAP_VERSION == "4.6.2" %}float-right{% elif BOOTSTRAP_VERSION == "5.1.3" %}float-end{% endif %} label-status font-inactive">Inactive</span>
+                <span class="{% if BOOTSTRAP_VERSION|first == "4" %}float-right{% elif BOOTSTRAP_VERSION|first == "5"  %}float-end{% endif %} label-status font-inactive">Inactive</span>
             {% endif %}
             {% if data_loaded.data_status == data_loaded.data_status_values.DELETED  %}
-                <span class="{% if BOOTSTRAP_VERSION == "4.6.2" %}float-right{% elif BOOTSTRAP_VERSION == "5.1.3" %}float-end{% endif %} label-status font-deleted">Deleted</span>
+                <span class="{% if BOOTSTRAP_VERSION|first == "4" %}float-right{% elif BOOTSTRAP_VERSION|first == "5"  %}float-end{% endif %} label-status font-deleted">Deleted</span>
             {% endif %}
         </td>
     </tr>
@@ -120,11 +120,11 @@
         </td>
         <td style="padding: 10px;">
             {% if data_loaded.can_set_public %}
-                <a class="btn btn-secondary publish-record-btn {% if BOOTSTRAP_VERSION == "4.6.2" %}float-right{% elif BOOTSTRAP_VERSION == "5.1.3" %}float-end{% endif %}">
+                <a class="btn btn-secondary publish-record-btn {% if BOOTSTRAP_VERSION|first == "4" %}float-right{% elif BOOTSTRAP_VERSION|first == "5"  %}float-end{% endif %}">
                     <i class="fas fa-share-alt"></i> Publish
                 </a>
             {% endif %}
-            <span class="{% if BOOTSTRAP_VERSION == "4.6.2" %}float-right{% elif BOOTSTRAP_VERSION == "5.1.3" %}float-end{% endif %}" style="font-size: 0.6em; margin: 0.7em;">
+            <span class="{% if BOOTSTRAP_VERSION|first == "4" %}float-right{% elif BOOTSTRAP_VERSION|first == "5"  %}float-end{% endif %}" style="font-size: 0.6em; margin: 0.7em;">
                 {% if data_loaded.can_set_public %}Updated{% else%}Published{% endif %} on: {{ data_loaded.data.last_modification_date|localtime }}
             </span>
         </td>
