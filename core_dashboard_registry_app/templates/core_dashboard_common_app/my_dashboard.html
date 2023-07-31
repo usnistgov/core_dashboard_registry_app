@@ -66,11 +66,7 @@
     {% endif %}
 
     <div class="tab-content">
-        {% if data.user_data %}
-            {% include data.template with objects=data.user_data group='user' %}
-        {% else %}
-            No {{data.document|special_plural}} found.
-        {% endif %}
+        {% include data.template with objects=data.user_data group='user' %}
     </div>
 {% endblock %}
 

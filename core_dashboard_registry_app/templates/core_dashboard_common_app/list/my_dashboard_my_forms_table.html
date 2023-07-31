@@ -67,6 +67,12 @@
                     </div>
                 </td>
             </tr>
+        {% empty %}
+            <tr>
+                <td class="empty" style="text-align: center;" colspan="100%">
+                     No {{data.document}} found.
+                </td>
+            </tr>
         {% endfor %}
     </tbody>
 </table>
