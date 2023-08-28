@@ -1,6 +1,5 @@
 """ Common views for the registry dashboard
 """
-from core_main_app.commons.exceptions import DoesNotExist
 from django.conf import settings as conf_settings
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
@@ -21,10 +20,12 @@ from core_dashboard_registry_app import constants as dashboard_constants
 from core_dashboard_registry_app.settings import INSTALLED_APPS
 from core_dashboard_registry_app.utils.query.mongo.prepare import (
     create_query_dashboard_resources,
+    create_query_other_resources,
 )
 from core_dashboard_registry_app.views.common.ajax import EditDataView
 from core_main_app.access_control.exceptions import AccessControlError
 from core_main_app.commons import exceptions as exceptions
+from core_main_app.commons.exceptions import DoesNotExist
 from core_main_app.components.data import api as data_api
 from core_main_app.components.user import api as user_api
 from core_main_app.components.user.api import get_id_username_dict
@@ -42,7 +43,10 @@ from core_main_registry_app.components.custom_resource import (
 )
 from core_main_registry_app.components.data.api import get_status, get_role
 from core_main_registry_app.constants import CUSTOM_RESOURCE_TYPE
-from core_main_registry_app.settings import ENABLE_BLOB_ENDPOINTS
+from core_main_registry_app.settings import (
+    ENABLE_BLOB_ENDPOINTS,
+    ALLOW_MULTIPLE_SCHEMAS,
+)
 
 if "core_curate_registry_app" in INSTALLED_APPS:
     import core_curate_registry_app.components.curate_data_structure.api as curate_data_structure_registry_api
@@ -152,6 +156,36 @@ class DashboardRegistryRecords(DashboardRecords):
 
         return filtered_data
 
+    def load_other_records(self, request):
+        """Get list of records not curated using registry template
+
+        Args:
+            request:
+
+        Returns:
+            filtered_data
+        """
+        try:
+            if conf_settings.MONGODB_INDEXING:
+                from core_main_app.components.mongo.api import (
+                    execute_mongo_query,
+                )
+
+                query_api = execute_mongo_query
+            else:
+                from core_main_app.components.data.api import execute_query
+
+                query_api = execute_query
+
+            loaded_data = query_api(
+                create_query_other_resources(request, self.administration),
+                request.user,
+            )
+        except AccessControlError:
+            return []
+
+        return loaded_data
+
     def load_drafts(self, request):
         """Get list of drafts
 
@@ -201,7 +235,7 @@ class DashboardRegistryRecords(DashboardRecords):
         tab = request.GET.get("ispublished", "all")
         tab = (
             tab
-            if tab in ["all", "published", "unpublished", "draft"]
+            if tab in ["all", "published", "unpublished", "draft", "other"]
             else "all"
         )
         page = request.GET.get("page", 1)
@@ -227,6 +261,8 @@ class DashboardRegistryRecords(DashboardRecords):
         # Get resources
         if tab == "draft":
             filtered_data = self.load_drafts(request)
+        elif tab == "other":
+            filtered_data = self.load_other_records(request)
         else:
             filtered_data = self.load_records(request, tab, custom_resources)
 
@@ -236,7 +272,7 @@ class DashboardRegistryRecords(DashboardRecords):
         )
 
         # Data context
-        if tab in ["all", "published", "unpublished"]:
+        if tab in ["all", "published", "unpublished", "other"]:
             results_paginator.object_list = self._format_data_context_registry(
                 results_paginator.object_list,
             )
@@ -282,6 +318,7 @@ class DashboardRegistryRecords(DashboardRecords):
                     ]
                 ),
                 "type_resource": CUSTOM_RESOURCE_TYPE.RESOURCE.value,
+                "ALLOW_MULTIPLE_SCHEMAS": ALLOW_MULTIPLE_SCHEMAS,
             }
         )
 
@@ -328,6 +365,7 @@ class DashboardRegistryRecords(DashboardRecords):
                 if self.administration
                 else 0
             )
+            data_role = get_role(data)
             data_context_list.append(
                 {
                     "data": data,
@@ -337,9 +375,11 @@ class DashboardRegistryRecords(DashboardRecords):
                     "data_role": ", ".join(
                         [
                             _get_role_label(x, request=self.request)
-                            for x in get_role(data)
+                            for x in data_role
                         ]
-                    ),
+                    )
+                    if data_role
+                    else None,
                     "form_id": _get_form_id(data, self.request.user),
                     "forms_count": forms_count,
                     "can_read": True,
@@ -452,6 +492,7 @@ class DashboardRegistryWorkspaceRecords(DashboardWorkspaceRecords):
                 else 0
             )
             is_owner = str(data.user_id) == str(user.id) or self.administration
+            data_role = get_role(data)
             detailed_user_data.append(
                 {
                     "data": data,
@@ -461,9 +502,11 @@ class DashboardRegistryWorkspaceRecords(DashboardWorkspaceRecords):
                     "data_role": ", ".join(
                         [
                             _get_role_label(x, request=self.request)
-                            for x in get_role(data)
+                            for x in data_role
                         ]
-                    ),
+                    )
+                    if data_role
+                    else None,
                     "form_id": _get_form_id(data, self.request.user),
                     "forms_count": forms_count,
                     "can_read": user_can_read or is_owner,

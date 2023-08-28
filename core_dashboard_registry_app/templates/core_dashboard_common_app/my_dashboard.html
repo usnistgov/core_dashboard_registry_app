@@ -59,6 +59,11 @@
             <li class="nav-item pointer">
                 <a class="nav-link {% if data.ispublished == 'unpublished' %}active{% endif %}" onclick="get_url('unpublished', '');">Not Published</a>
             </li>
+            {% if data.ALLOW_MULTIPLE_SCHEMAS %}
+            <li class="nav-item pointer">
+                <a class="nav-link {% if data.ispublished == 'other' %}active{% endif %}" onclick="get_url('other', '');">Other</a>
+            </li>
+            {% endif %}
             <li id="draft" class="nav-item pointer">
                 <a class="nav-link {% if data.ispublished == 'draft' %}active{% endif %}" onclick="get_url('draft', '');">Drafts</a>
             </li>

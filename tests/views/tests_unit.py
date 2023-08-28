@@ -2,14 +2,11 @@
 """
 from unittest.mock import patch, MagicMock
 
-from core_main_app.components.workspace.models import Workspace
-
-import core_dashboard_registry_app
-from core_main_app.components.data.models import Data
 from django.contrib.auth.models import AnonymousUser
 from django.http import HttpResponse
 from django.test import RequestFactory, override_settings, tag
 
+import core_dashboard_registry_app
 from core_dashboard_registry_app import constants as dashboard_constants
 from core_dashboard_registry_app.views.common.views import (
     DashboardRegistryRecords,
@@ -17,6 +14,8 @@ from core_dashboard_registry_app.views.common.views import (
 )
 from core_main_app.access_control.exceptions import AccessControlError
 from core_main_app.commons.exceptions import ModelError
+from core_main_app.components.data.models import Data
+from core_main_app.components.workspace.models import Workspace
 from core_main_app.utils.integration_tests.integration_base_test_case import (
     IntegrationBaseTestCase,
 )
@@ -55,8 +54,12 @@ class TestDashboardRegistryRecords(IntegrationBaseTestCase):
     @patch(
         "core_main_registry_app.components.custom_resource.api.get_all_of_current_template"
     )
+    @patch(
+        "core_main_registry_app.components.template.api.get_current_registry_template"
+    )
     def test_a_user_can_access_using_psql(
         self,
+        get_current_registry_template,
         get_all_of_current_template,
         get_current_custom_resource_type_all,
         execute_query,
@@ -79,6 +82,7 @@ class TestDashboardRegistryRecords(IntegrationBaseTestCase):
 
         get_current_custom_resource_type_all.return_value = cr_type_all
         get_all_of_current_template.return_value = current_template
+        get_current_registry_template.return_value = current_template
         request = self.factory.get("core_dashboard_records")
         request.user = self.user1
 
@@ -96,8 +100,12 @@ class TestDashboardRegistryRecords(IntegrationBaseTestCase):
     @patch(
         "core_main_registry_app.components.custom_resource.api.get_all_of_current_template"
     )
+    @patch(
+        "core_main_registry_app.components.template.api.get_current_registry_template"
+    )
     def test_user_without_required_perm_get_no_results(
         self,
+        get_current_registry_template,
         get_all_of_current_template,
         get_current_custom_resource_type_all,
         execute_query,
@@ -119,6 +127,7 @@ class TestDashboardRegistryRecords(IntegrationBaseTestCase):
 
         get_current_custom_resource_type_all.return_value = cr_type_all
         get_all_of_current_template.return_value = current_template
+        get_current_registry_template.return_value = current_template
         request = self.factory.get("core_dashboard_records")
         request.user = self.user1
 
@@ -137,8 +146,12 @@ class TestDashboardRegistryRecords(IntegrationBaseTestCase):
     @patch(
         "core_main_registry_app.components.custom_resource.api.get_all_of_current_template"
     )
+    @patch(
+        "core_main_registry_app.components.template.api.get_current_registry_template"
+    )
     def test_request_published_records(
         self,
+        get_current_registry_template,
         get_all_of_current_template,
         get_current_custom_resource_type_all,
         execute_query,
@@ -169,6 +182,7 @@ class TestDashboardRegistryRecords(IntegrationBaseTestCase):
         get_current_custom_resource_type_all.return_value = cr_type_all
 
         get_all_of_current_template.return_value = current_template
+        get_current_registry_template.return_value = current_template
 
         request = self.factory.get(
             "core_dashboard_records", data={"ispublished": "published"}
@@ -187,8 +201,12 @@ class TestDashboardRegistryRecords(IntegrationBaseTestCase):
     @patch(
         "core_main_registry_app.components.custom_resource.api.get_all_of_current_template"
     )
+    @patch(
+        "core_main_registry_app.components.template.api.get_current_registry_template"
+    )
     def test_request_unpublished_records(
         self,
+        get_current_registry_template,
         get_all_of_current_template,
         get_current_custom_resource_type_all,
         execute_query,
@@ -213,6 +231,7 @@ class TestDashboardRegistryRecords(IntegrationBaseTestCase):
 
         get_current_custom_resource_type_all.return_value = cr_type_all
         get_all_of_current_template.return_value = current_template
+        get_current_registry_template.return_value = current_template
         request = self.factory.get(
             "core_dashboard_records", data={"ispublished": "unpublished"}
         )
@@ -230,8 +249,12 @@ class TestDashboardRegistryRecords(IntegrationBaseTestCase):
     @patch(
         "core_main_registry_app.components.custom_resource.api.get_all_of_current_template"
     )
+    @patch(
+        "core_main_registry_app.components.template.api.get_current_registry_template"
+    )
     def test_request_all_records(
         self,
+        get_current_registry_template,
         get_all_of_current_template,
         get_current_custom_resource_type_all,
         execute_query,
@@ -256,6 +279,7 @@ class TestDashboardRegistryRecords(IntegrationBaseTestCase):
 
         get_current_custom_resource_type_all.return_value = cr_type_all
         get_all_of_current_template.return_value = current_template
+        get_current_registry_template.return_value = current_template
         request = self.factory.get(
             "core_dashboard_records", data={"ispublished": "all"}
         )
@@ -316,10 +340,14 @@ class TestDashboardRegistryRecords(IntegrationBaseTestCase):
     @patch(
         "core_main_registry_app.components.custom_resource.api.get_all_of_current_template"
     )
+    @patch(
+        "core_main_registry_app.components.template.api.get_current_registry_template"
+    )
     @override_settings(MONGODB_INDEXING=True)
     @tag("mongodb")
     def test_a_user_can_access_using_mongodb(
         self,
+        get_current_registry_template,
         get_all_of_current_template,
         get_current_custom_resource_type_all,
         execute_query,
@@ -342,6 +370,7 @@ class TestDashboardRegistryRecords(IntegrationBaseTestCase):
 
         get_current_custom_resource_type_all.return_value = cr_type_all
         get_all_of_current_template.return_value = current_template
+        get_current_registry_template.return_value = current_template
         request = self.factory.get("core_dashboard_records")
         request.user = self.user1
 
@@ -459,6 +488,177 @@ class TestDashboardRegistryRecords(IntegrationBaseTestCase):
 
         # Assert
         self.assertEqual(result[0]["role"], "None")
+
+    @patch("core_main_app.views.common.views.CommonView.common_render")
+    @patch("core_main_app.components.data.api.execute_query")
+    @patch(
+        "core_main_registry_app.components.custom_resource.api.get_current_custom_resource_type_all"
+    )
+    @patch(
+        "core_main_registry_app.components.custom_resource.api.get_all_of_current_template"
+    )
+    @patch(
+        "core_main_registry_app.components.template.api.get_current_registry_template"
+    )
+    @patch("core_main_app.components.template.api.get_all")
+    def test_request_other_records(
+        self,
+        mock_templates_get_all,
+        get_current_registry_template,
+        get_all_of_current_template,
+        get_current_custom_resource_type_all,
+        execute_query,
+        common_render,
+    ):
+        """test_request_other_records
+
+        Returns:
+
+        """
+        # Arrange
+        cr_type_all = MagicMock()
+        cr_type_all.slug = "test"
+
+        current_template = MagicMock()
+        loaded_data = MagicMock()
+        loaded_data.filter.return_value = []
+        execute_query.return_value = loaded_data
+
+        expected_response = HttpResponse()
+        common_render.return_value = expected_response
+
+        get_current_custom_resource_type_all.return_value = cr_type_all
+        get_all_of_current_template.return_value = current_template
+        get_current_registry_template.return_value = current_template
+
+        mock_other_templates = MagicMock()
+        mock_other_templates.values_list.return_value = []
+        mock_all_templates = MagicMock()
+        mock_all_templates.exclude.return_value = mock_other_templates
+        mock_templates_get_all.return_value = mock_all_templates
+
+        request = self.factory.get(
+            "core_dashboard_records", data={"ispublished": "other"}
+        )
+        request.user = self.user1
+
+        # Act
+        response = DashboardRegistryRecords.as_view()(request)
+        self.assertEqual(response.status_code, 200)
+
+    @override_settings(MONGODB_INDEXING=True)
+    @tag("mongodb")
+    @patch("core_main_app.views.common.views.CommonView.common_render")
+    @patch("core_main_app.components.mongo.api.execute_mongo_query")
+    @patch(
+        "core_main_registry_app.components.custom_resource.api.get_current_custom_resource_type_all"
+    )
+    @patch(
+        "core_main_registry_app.components.custom_resource.api.get_all_of_current_template"
+    )
+    @patch(
+        "core_main_registry_app.components.template.api.get_current_registry_template"
+    )
+    @patch("core_main_app.components.template.api.get_all")
+    def test_request_other_records_mongodb(
+        self,
+        mock_templates_get_all,
+        get_current_registry_template,
+        get_all_of_current_template,
+        get_current_custom_resource_type_all,
+        execute_query,
+        common_render,
+    ):
+        """test_request_other_records_mongodb
+
+        Returns:
+
+        """
+        # Arrange
+        cr_type_all = MagicMock()
+        cr_type_all.slug = "test"
+
+        current_template = MagicMock()
+        loaded_data = MagicMock()
+        loaded_data.filter.return_value = []
+        execute_query.return_value = loaded_data
+
+        expected_response = HttpResponse()
+        common_render.return_value = expected_response
+
+        get_current_custom_resource_type_all.return_value = cr_type_all
+        get_all_of_current_template.return_value = current_template
+        get_current_registry_template.return_value = current_template
+
+        mock_other_templates = MagicMock()
+        mock_other_templates.values_list.return_value = []
+        mock_all_templates = MagicMock()
+        mock_all_templates.exclude.return_value = mock_other_templates
+        mock_templates_get_all.return_value = mock_all_templates
+
+        request = self.factory.get(
+            "core_dashboard_records", data={"ispublished": "other"}
+        )
+        request.user = self.user1
+
+        # Act
+        response = DashboardRegistryRecords.as_view()(request)
+        self.assertEqual(response.status_code, 200)
+
+    @patch("core_main_app.views.common.views.CommonView.common_render")
+    @patch("core_main_app.components.data.api.execute_query")
+    @patch(
+        "core_main_registry_app.components.custom_resource.api.get_current_custom_resource_type_all"
+    )
+    @patch(
+        "core_main_registry_app.components.custom_resource.api.get_all_of_current_template"
+    )
+    @patch(
+        "core_main_registry_app.components.template.api.get_current_registry_template"
+    )
+    @patch("core_main_app.components.template.api.get_all")
+    def test_request_other_records_with_acl_error(
+        self,
+        mock_templates_get_all,
+        get_current_registry_template,
+        get_all_of_current_template,
+        get_current_custom_resource_type_all,
+        execute_query,
+        common_render,
+    ):
+        """test_request_other_records_with_acl_error
+
+        Returns:
+
+        """
+        # Arrange
+        cr_type_all = MagicMock()
+        cr_type_all.slug = "test"
+
+        current_template = MagicMock()
+        execute_query.side_effect = AccessControlError("error")
+
+        expected_response = HttpResponse()
+        common_render.return_value = expected_response
+
+        get_current_custom_resource_type_all.return_value = cr_type_all
+        get_all_of_current_template.return_value = current_template
+        get_current_registry_template.return_value = current_template
+
+        mock_other_templates = MagicMock()
+        mock_other_templates.values_list.return_value = []
+        mock_all_templates = MagicMock()
+        mock_all_templates.exclude.return_value = mock_other_templates
+        mock_templates_get_all.return_value = mock_all_templates
+
+        request = self.factory.get(
+            "core_dashboard_records", data={"ispublished": "other"}
+        )
+        request.user = self.user1
+
+        # Act
+        response = DashboardRegistryRecords.as_view()(request)
+        self.assertEqual(response.status_code, 200)
 
 
 class TestDashboardRegistryWorkspaceRecords(IntegrationBaseTestCase):
