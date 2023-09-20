@@ -470,6 +470,11 @@ class DashboardRegistryWorkspaceRecords(DashboardWorkspaceRecords):
                     "can_write": user_can_write or is_owner,
                     "is_owner": is_owner,
                     "can_set_public": not data_api.is_data_public(data),
+                    "delete_url": reverse(
+                        "admin:core_main_app_data_delete", args=(data.id,)
+                    )
+                    if self.administration
+                    else None,
                 }
             )
         return detailed_user_data
