@@ -80,18 +80,31 @@
                     <i class="fas fa-user-circle"></i> Change owner
                 </a>
             {% endif %}
+
             {% if data_loaded.can_write %}
                 <a class="btn btn-secondary edit-record-btn">
                     <i class="fas fa-edit"></i> {% if data_loaded.form_id %} Edit draft {% else %} Create new version {% endif %}
                 </a>
-                {% if data_loaded.form_id %}
-                <a class="btn btn-secondary" href="{% url 'core_curate_app_xml_text_editor_view'%}?id={{ data_loaded.form_id }}">
-                    <i class="fas fa-code"></i> Open Draft
-                </a>
-                {% else %}
-                <a class="btn btn-secondary open-record-btn" href="#">
-                    <i class="fas fa-code"></i> Open
-                </a>
+                {% if data_loaded.data.template.format == "XSD" %}
+                    {% if data_loaded.form_id %}
+                    <a class="btn btn-secondary" href="{% url 'core_curate_app_xml_text_editor_view'%}?id={{ data_loaded.form_id }}">
+                        <i class="fas fa-code"></i> Open Draft
+                    </a>
+                    {% else %}
+                    <a class="btn btn-secondary open-xml-record-btn" href="#">
+                        <i class="fas fa-code"></i> Open
+                    </a>
+                    {% endif %}
+                {% elif data_loaded.data.template.format == "JSON" %}
+                    {% if data_loaded.form_id %}
+                    <a class="btn btn-secondary" href="{% url 'core_curate_app_json_text_editor_view'%}?id={{ data_loaded.form_id }}">
+                        <i class="fas fa-code"></i> Open Draft
+                    </a>
+                    {% else %}
+                    <a class="btn btn-secondary open-json-record-btn" href="#">
+                        <i class="fas fa-code"></i> Open
+                    </a>
+                    {% endif %}
                 {% endif %}
             {% endif %}
             {% if data_loaded.can_write %}

@@ -66,17 +66,29 @@
                     </a>
 
                     <div class="dropdown-divider"></div>
+                    {% if data_loaded.data.template.format == "XSD" %}
                     <a class="dropdown-item edit-record-btn {% if not data_loaded.can_write %} disabled {% endif %}" href="#">
                             <i class="fas fa-edit"></i> Edit
                     </a>
-                    {% if data_loaded.form_id %}
-                    <a class="dropdown-item {% if not data_loaded.can_write %} disabled {% endif %}" href="{% url 'core_curate_app_xml_text_editor_view'%}?id={{ data_loaded.form_id }}">
-                        <i class="fas fa-code"></i> Open Draft
-                    </a>
-                    {% else %}
-                    <a class="dropdown-item open-record-btn {% if not data_loaded.can_write %} disabled {% endif %}" href="#">
-                        <i class="fas fa-code"></i> Open
-                    </a>
+                        {% if data_loaded.form_id %}
+                        <a class="dropdown-item {% if not data_loaded.can_write %} disabled {% endif %}" href="{% url 'core_curate_app_xml_text_editor_view'%}?id={{ data_loaded.form_id }}">
+                            <i class="fas fa-code"></i> Open Draft
+                        </a>
+                        {% else %}
+                        <a class="dropdown-item open-xml-record-btn {% if not data_loaded.can_write %} disabled {% endif %}" href="#">
+                            <i class="fas fa-code"></i> Open
+                        </a>
+                        {% endif %}
+                    {% elif data_loaded.data.template.format == "JSON" %}
+                        {% if data_loaded.form_id %}
+                        <a class="dropdown-item {% if not data_loaded.can_write %} disabled {% endif %}" href="{% url 'core_curate_app_json_text_editor_view'%}?id={{ data_loaded.form_id }}">
+                            <i class="fas fa-code"></i> Open Draft
+                        </a>
+                        {% else %}
+                        <a class="dropdown-item open-json-record-btn {% if not data_loaded.can_write %} disabled {% endif %}" href="#">
+                            <i class="fas fa-code"></i> Open
+                        </a>
+                        {% endif %}
                     {% endif %}
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item assign-workspace-record-btn {% if not data_loaded.can_change_workspace %} disabled {% endif %}" href="#">

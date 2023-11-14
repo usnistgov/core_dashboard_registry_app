@@ -51,12 +51,18 @@
                             </a>
                         {% endif %}
                         <div class="dropdown-divider"></div>
+                        {% if data_loaded.form.template.format == "XSD" %}
                         <a class="dropdown-item edit-form-btn" href="{% url 'core_curate_enter_data' data_loaded.form.id %}">
                             <i class="fas fa-edit"></i> Edit
                         </a>
-                        <a class="dropdown-item open-form-btn" href="#">
+                        <a class="dropdown-item open-xml-form-btn" href="#">
                             <i class="fas fa-code"></i> Open
                         </a>
+                        {% elif data_loaded.form.template.format == "JSON" %}
+                        <a class="dropdown-item open-json-form-btn" href="#">
+                            <i class="fas fa-code"></i> Open
+                        </a>
+                        {% endif %}
                         <a class="dropdown-item change-owner-btn" href="#">
                             <i class="fas fa-user-circle"></i> Change Owner
                         </a>
