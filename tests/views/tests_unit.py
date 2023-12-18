@@ -13,7 +13,7 @@ from core_dashboard_registry_app.views.common.views import (
     DashboardRegistryWorkspaceRecords,
 )
 from core_main_app.access_control.exceptions import AccessControlError
-from core_main_app.commons.exceptions import ModelError
+from core_main_app.commons.exceptions import ModelError, XMLError
 from core_main_app.components.data.models import Data
 from core_main_app.components.workspace.models import Workspace
 from core_main_app.utils.integration_tests.integration_base_test_case import (
@@ -465,13 +465,48 @@ class TestDashboardRegistryRecords(IntegrationBaseTestCase):
         get_role,
         get_by_role_for_current_template,
     ):
-        """test_format_draft_context_registry_without_role
+        """test_format_draft_context_registry_with_error
 
         Returns:
 
         """
         # Arrange
         get_by_role_for_current_template.side_effect = ModelError("Error")
+
+        get_role.return_value = ["test"]
+
+        draft = MagicMock()
+        draft.form_string = "form_string"
+
+        request = self.factory.get("core_dashboard_records")
+        request.user = self.user1
+        view = DashboardRegistryRecords()
+        view.request = request
+
+        # Act
+        result = view._format_draft_context_registry(draft_list=[draft])
+
+        # Assert
+        self.assertEqual(result[0]["role"], "None")
+
+    @patch(
+        "core_main_registry_app.components.custom_resource.api.get_by_role_for_current_template"
+    )
+    @patch(
+        "core_curate_registry_app.components.curate_data_structure.api.get_role"
+    )
+    def test_format_draft_context_registry_with_xml_error(
+        self,
+        get_role,
+        get_by_role_for_current_template,
+    ):
+        """test_format_draft_context_registry_with_xml_error
+
+        Returns:
+
+        """
+        # Arrange
+        get_by_role_for_current_template.side_effect = XMLError("Error")
 
         get_role.return_value = ["test"]
 

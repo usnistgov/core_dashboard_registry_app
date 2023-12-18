@@ -422,6 +422,8 @@ class DashboardRegistryRecords(DashboardRecords):
                     if draft.form_string
                     else ["None"]
                 )
+            except exceptions.XMLError:
+                role = "None"
             except exceptions.ModelError:
                 role = "None"
             draft_context_list.append({"form": draft, "role": role})
