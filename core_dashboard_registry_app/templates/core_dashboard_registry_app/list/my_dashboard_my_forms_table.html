@@ -34,10 +34,10 @@
                 <a class="btn btn-secondary change-owner-btn">
                     <i class="fas fa-user-circle"></i> Change Owner
                 </a>
-                {% if data_loaded.form.template.format == "XSD" %}
                 <a class="btn btn-secondary edit-form-btn" href="{% url 'core_curate_enter_data' data_loaded.form.id %}">
                     <i class="fas fa-edit"></i> Edit
                 </a>
+                {% if data_loaded.form.template.format == "XSD" %}
                 <a class="btn btn-secondary open-xml-form-btn">
                     <i class="fas fa-code"></i> Open
                 </a>

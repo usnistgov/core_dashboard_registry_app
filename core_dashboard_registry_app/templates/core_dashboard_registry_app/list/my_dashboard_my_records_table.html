@@ -82,10 +82,10 @@
             {% endif %}
 
             {% if data_loaded.can_write %}
-                {% if data_loaded.data.template.format == "XSD" %}
-                    <a class="btn btn-secondary edit-record-btn">
+                <a class="btn btn-secondary edit-record-btn">
                         <i class="fas fa-edit"></i> {% if data_loaded.form_id %} Edit draft {% else %} Create new version {% endif %}
                     </a>
+                {% if data_loaded.data.template.format == "XSD" %}
                     {% if data_loaded.form_id %}
                     <a class="btn btn-secondary" href="{% url 'core_curate_app_xml_text_editor_view'%}?id={{ data_loaded.form_id }}">
                         <i class="fas fa-code"></i> Open Draft

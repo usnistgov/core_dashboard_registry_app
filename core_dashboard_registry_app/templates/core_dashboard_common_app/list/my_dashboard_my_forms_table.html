@@ -51,10 +51,10 @@
                             </a>
                         {% endif %}
                         <div class="dropdown-divider"></div>
-                        {% if data_loaded.form.template.format == "XSD" %}
                         <a class="dropdown-item edit-form-btn" href="{% url 'core_curate_enter_data' data_loaded.form.id %}">
                             <i class="fas fa-edit"></i> Edit
                         </a>
+                        {% if data_loaded.form.template.format == "XSD" %}
                         <a class="dropdown-item open-xml-form-btn" href="#">
                             <i class="fas fa-code"></i> Open
                         </a>
