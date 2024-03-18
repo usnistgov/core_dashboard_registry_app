@@ -66,7 +66,7 @@ def publish(request):
             messages.add_message(
                 request,
                 messages.SUCCESS,
-                get_data_label().capitalize() + " published with success.",
+                get_data_label().capitalize() + " published.",
             )
         else:
             return HttpResponseBadRequest(
@@ -101,7 +101,7 @@ class EditDataView(EditObjectModalView):
 
     form_class = EditDataForm
     model = Data
-    success_message = "Title edited with success."
+    success_message = "Title edited."
 
     def _save(self, form):
         # Save treatment.
