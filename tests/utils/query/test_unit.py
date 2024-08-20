@@ -1,5 +1,6 @@
 """Query tool unit tests
 """
+
 from unittest import TestCase
 from unittest.mock import patch, MagicMock
 

@@ -1,5 +1,6 @@
 """ ajax file
 """
+
 import json
 
 from django.contrib import messages

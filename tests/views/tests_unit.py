@@ -1,5 +1,6 @@
 """ Unit tests views
 """
+
 from unittest.mock import patch, MagicMock
 
 from django.contrib.auth.models import AnonymousUser

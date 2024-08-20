@@ -1,5 +1,6 @@
 """ Common views for the registry dashboard
 """
+
 from django.conf import settings as conf_settings
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
@@ -301,9 +302,11 @@ class DashboardRegistryRecords(DashboardRecords):
                     user_api.get_all_users()
                 ),
                 "resources": True,
-                "url_resources": reverse("core-admin:core_dashboard_records")
-                if self.administration
-                else reverse("core_dashboard_records"),
+                "url_resources": (
+                    reverse("core-admin:core_dashboard_records")
+                    if self.administration
+                    else reverse("core_dashboard_records")
+                ),
                 "custom_resources": custom_resources,
                 "display_not_resource": True,  # display all resource
                 "role_custom_resource_type_all": cr_type_all.slug,
@@ -372,14 +375,16 @@ class DashboardRegistryRecords(DashboardRecords):
                     "username_list": username_list,
                     "data_status": get_status(data),
                     "data_status_values": DataStatus,
-                    "data_role": ", ".join(
-                        [
-                            _get_role_label(x, request=self.request)
-                            for x in data_role
-                        ]
-                    )
-                    if data_role
-                    else None,
+                    "data_role": (
+                        ", ".join(
+                            [
+                                _get_role_label(x, request=self.request)
+                                for x in data_role
+                            ]
+                        )
+                        if data_role
+                        else None
+                    ),
                     "form_id": _get_form_id(data, self.request.user),
                     "forms_count": forms_count,
                     "can_read": True,
@@ -389,11 +394,13 @@ class DashboardRegistryRecords(DashboardRecords):
                         data
                     ),
                     "can_set_public": not data_api.is_data_public(data),
-                    "delete_url": reverse(
-                        "admin:core_main_app_data_delete", args=(data.id,)
-                    )
-                    if self.administration
-                    else None,
+                    "delete_url": (
+                        reverse(
+                            "admin:core_main_app_data_delete", args=(data.id,)
+                        )
+                        if self.administration
+                        else None
+                    ),
                 }
             )
         return data_context_list
@@ -501,25 +508,29 @@ class DashboardRegistryWorkspaceRecords(DashboardWorkspaceRecords):
                     "username_list": username_list,
                     "data_status": get_status(data),
                     "data_status_values": DataStatus,
-                    "data_role": ", ".join(
-                        [
-                            _get_role_label(x, request=self.request)
-                            for x in data_role
-                        ]
-                    )
-                    if data_role
-                    else None,
+                    "data_role": (
+                        ", ".join(
+                            [
+                                _get_role_label(x, request=self.request)
+                                for x in data_role
+                            ]
+                        )
+                        if data_role
+                        else None
+                    ),
                     "form_id": _get_form_id(data, self.request.user),
                     "forms_count": forms_count,
                     "can_read": user_can_read or is_owner,
                     "can_write": user_can_write or is_owner,
                     "is_owner": is_owner,
                     "can_set_public": not data_api.is_data_public(data),
-                    "delete_url": reverse(
-                        "admin:core_main_app_data_delete", args=(data.id,)
-                    )
-                    if self.administration
-                    else None,
+                    "delete_url": (
+                        reverse(
+                            "admin:core_main_app_data_delete", args=(data.id,)
+                        )
+                        if self.administration
+                        else None
+                    ),
                 }
             )
         return detailed_user_data

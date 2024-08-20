@@ -1,5 +1,6 @@
 """ Mongo query builder tools
 """
+
 from core_dashboard_registry_app.constants import PATH_ROLE
 from django.conf import settings
 from core_main_registry_app.components.template import (
