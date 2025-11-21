@@ -29,7 +29,9 @@
     {% endif %}
 
     {% if data.user_data %}
-        Total number of {{data.document|special_plural}}: {{ data.number_total }}
+        <span style="background-color: #10309a !important" class="badge bg-primary item-count-badge">
+            {{ data.number_total }} items
+        </span>
     {% endif %}
 
     {% if data.menu and not data.title %}
