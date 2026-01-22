@@ -4,8 +4,17 @@
 {% block box_title %}
     {% if data.title %}
         {{data.title}}
-    {% elif come_from_admin %}
-        {{ data.document|title|special_plural}} list {% else %} My {{data.document|special_plural}}
+    {% else %}
+        {% if come_from_admin %}
+            <span>{{ data.document|special_plural|capfirst}} list</span>
+        {% else %}
+            <span style="font-size: 2rem">My {{data.document|special_plural}}</span>
+        {% endif %}
+        {% if data.user_data %}
+            <span style="background-color: #10309a !important" class="badge bg-primary item-count-badge">
+            {{ data.number_total }} items
+        </span>
+        {% endif %}
     {% endif %}
 {% endblock %}
 
@@ -26,12 +35,6 @@
 {% block box_body %}
     {% if data.administration and data.owner %}
         <p>Owner: <a href="{{ data.owner_change_url }}">{{ data.owner }}</a></p>
-    {% endif %}
-
-    {% if data.user_data %}
-        <span style="background-color: #10309a !important" class="badge bg-primary item-count-badge">
-            {{ data.number_total }} items
-        </span>
     {% endif %}
 
     {% if data.menu and not data.title %}
