@@ -241,14 +241,20 @@ class DashboardRegistryRecords(DashboardRecords):
         )
         page = request.GET.get("page", 1)
         if tab == "draft":
-            document = (
+            document_type = (
+                dashboard_common_constants.FUNCTIONAL_OBJECT_ENUM.FORM.name
+            )
+            document_name = (
                 dashboard_common_constants.FUNCTIONAL_OBJECT_ENUM.FORM.value
             )
             template = (
                 dashboard_constants.DASHBOARD_FORMS_TEMPLATE_TABLE_PAGINATION
             )
         else:
-            document = (
+            document_type = (
+                dashboard_common_constants.FUNCTIONAL_OBJECT_ENUM.RECORD.name
+            )
+            document_name = (
                 dashboard_common_constants.FUNCTIONAL_OBJECT_ENUM.RECORD.value
             )
             template = self.data_template
@@ -291,7 +297,8 @@ class DashboardRegistryRecords(DashboardRecords):
                 "number_total": len(filtered_data),
                 "user_data": results_paginator,
                 "user_form": user_form,
-                "document": document,
+                "document_name": document_name,
+                "document_type": document_type,
                 "template": template,
                 "action_form": ActionForm(
                     [("2", "Change owner of selected records")]

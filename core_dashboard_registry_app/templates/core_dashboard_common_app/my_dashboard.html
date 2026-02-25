@@ -6,9 +6,9 @@
         {{data.title}}
     {% else %}
         {% if come_from_admin %}
-            <span>{{ data.document|special_plural|capfirst}} list</span>
+            <span>{{ data.document_name|special_plural|capfirst}} list</span>
         {% else %}
-            <span style="font-size: 2rem">My {{data.document|special_plural}}</span>
+            <span style="font-size: 2rem">My {{data.document_name|special_plural}}</span>
         {% endif %}
         {% if data.user_data %}
             <span style="background-color: #10309a !important" class="badge bg-primary item-count-badge">

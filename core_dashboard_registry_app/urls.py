@@ -45,7 +45,8 @@ urlpatterns = [
         r"^records$",
         login_required(
             registry_common_views.DashboardRegistryRecords.as_view(
-                document=dashboard_constants.FUNCTIONAL_OBJECT_ENUM.RECORD.value,
+                document_type=dashboard_constants.FUNCTIONAL_OBJECT_ENUM.RECORD.name,
+                document_name=dashboard_constants.FUNCTIONAL_OBJECT_ENUM.RECORD.value,
                 data_template="core_dashboard_registry_app/list/my_dashboard_my_records_table_pagination.html",
                 allow_change_workspace_if_public=False,
             ),
@@ -61,7 +62,8 @@ urlpatterns = [
         r"^forms$",
         login_required(
             registry_common_views.DashboardRegistryForms.as_view(
-                document=dashboard_constants.FUNCTIONAL_OBJECT_ENUM.FORM.value
+                document_type=dashboard_constants.FUNCTIONAL_OBJECT_ENUM.FORM.name,
+                document_name=dashboard_constants.FUNCTIONAL_OBJECT_ENUM.FORM.value,
             ),
         ),
         name="core_dashboard_forms",

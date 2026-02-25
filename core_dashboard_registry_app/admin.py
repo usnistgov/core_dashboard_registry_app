@@ -33,7 +33,8 @@ admin_urls = [
         r"^forms$",
         staff_member_required(
             registry_common_views.DashboardRegistryForms.as_view(
-                document=dashboard_constants.FUNCTIONAL_OBJECT_ENUM.FORM.value,
+                document_type=dashboard_constants.FUNCTIONAL_OBJECT_ENUM.FORM.name,
+                document_name=dashboard_constants.FUNCTIONAL_OBJECT_ENUM.FORM.value,
                 administration=True,
                 template=dashboard_constants.ADMIN_DASHBOARD_TEMPLATE,
             )
