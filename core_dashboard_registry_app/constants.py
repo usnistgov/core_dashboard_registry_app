@@ -1,5 +1,5 @@
 """
-    Registry User Dashboard constants
+Registry User Dashboard constants
 """
 
 # Templates

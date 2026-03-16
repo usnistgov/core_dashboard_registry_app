@@ -1,5 +1,4 @@
-""" Common views for the registry dashboard
-"""
+"""Common views for the registry dashboard"""
 
 from django.conf import settings as conf_settings
 from django.contrib.auth.decorators import login_required

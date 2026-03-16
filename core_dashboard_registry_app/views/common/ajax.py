@@ -1,5 +1,4 @@
-""" ajax file
-"""
+"""ajax file"""
 
 import json
 

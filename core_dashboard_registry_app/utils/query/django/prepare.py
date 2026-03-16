@@ -1,5 +1,4 @@
-""" Mongo query builder tools
-"""
+"""Mongo query builder tools"""
 
 from django.db.models import Q
 

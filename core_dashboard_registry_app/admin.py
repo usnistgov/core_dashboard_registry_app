@@ -15,7 +15,6 @@ from core_dashboard_registry_app.views.common import (
 )
 from core_dashboard_registry_app.views.common.ajax import EditDataView
 
-
 admin_urls = [
     # Admin
     re_path(

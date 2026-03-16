@@ -1,5 +1,4 @@
-""" Mongo query builder tools
-"""
+"""Mongo query builder tools"""
 
 from core_dashboard_registry_app.constants import PATH_ROLE
 from django.conf import settings

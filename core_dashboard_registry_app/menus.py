@@ -1,5 +1,4 @@
-""" User Dashboard menu
-"""
+"""User Dashboard menu"""
 
 from django.urls import reverse
 from menu import Menu, MenuItem
